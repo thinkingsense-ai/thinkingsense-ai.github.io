@@ -357,33 +357,37 @@
     </div>
 
     <div id="navAdmin">
-      <div class="navlabel">Configuration</div>
+      <div class="navlabel">AI &amp; models</div>
       <button class="navitem active" onclick="showView('llm')"><span class="ico">🧠</span>LLM settings</button>
+      <button class="navitem" onclick="showView('skills')"><span class="ico">🧩</span>Skills</button>
+      <button class="navitem" onclick="showView('templates')"><span class="ico">📋</span>Prompt templates</button>
+      <button class="navitem" onclick="showView('agents')"><span class="ico">🤖</span>Agents</button>
+      <button class="navitem" onclick="showView('eval')"><span class="ico">🧪</span>Evaluation</button>
+      <div class="navlabel">Data &amp; sources</div>
       <button class="navitem" onclick="showView('sources')"><span class="ico">🗄</span>Data sources</button>
       <button class="navitem" onclick="showView('context')"><span class="ico">📄</span>Context builder</button>
       <button class="navitem" onclick="showView('pdfextract')"><span class="ico">🧾</span>PDF Extract</button>
-      <button class="navitem" onclick="showView('groups')"><span class="ico">👥</span>Groups</button>
-      <button class="navitem" onclick="showView('users')"><span class="ico">🔑</span>Users &amp; access</button>
-      <button class="navitem" onclick="showView('skills')"><span class="ico">🧩</span>Skills</button>
-      <button class="navitem" onclick="showView('templates')"><span class="ico">📋</span>Prompt templates</button>
       <button class="navitem" onclick="showView('knowledge')"><span class="ico">🧠</span>Knowledge signals</button>
       <button class="navitem" onclick="showView('slack')"><span class="ico">#</span>Slack</button>
-      <div class="navlabel">Quality &amp; performance</div>
-      <button class="navitem" onclick="showView('activity')"><span class="ico">🗨</span>Question activity</button>
-      <button class="navitem" onclick="showView('reviewed')"><span class="ico">✓</span>Reviewed queries</button>
-      <button class="navitem" onclick="showView('negfeedback')"><span class="ico">👎</span>Negative feedback</button>
-      <button class="navitem" onclick="showView('health')"><span class="ico">♥</span>Domain health</button>
+      <div class="navlabel">Query intelligence</div>
       <button class="navitem" onclick="showView('ontology')"><span class="ico">◎</span>Ontology review</button>
       <button class="navitem" onclick="showView('rollups')"><span class="ico">⚡</span>Rollups</button>
       <button class="navitem" onclick="showView('plans')"><span class="ico">⑃</span>Federation plans</button>
       <button class="navitem" onclick="showView('sqlplay')"><span class="ico">▤</span>SQL Playground</button>
       <button class="navitem" onclick="showView('playground')"><span class="ico">⚗</span>Knowledge playground</button>
-      <button class="navitem" onclick="showView('eval')"><span class="ico">🧪</span>Evaluation</button>
-      <button class="navitem" onclick="showView('agents')"><span class="ico">🤖</span>Agents</button>
+      <div class="navlabel">Quality &amp; activity</div>
+      <button class="navitem" onclick="showView('activity')"><span class="ico">🗨</span>Question activity</button>
+      <button class="navitem" onclick="showView('reviewed')"><span class="ico">✓</span>Reviewed queries</button>
+      <button class="navitem" onclick="showView('negfeedback')"><span class="ico">👎</span>Negative feedback</button>
+      <button class="navitem" onclick="showView('health')"><span class="ico">♥</span>Domain health</button>
+      <div class="navlabel">Access &amp; org</div>
+      <button class="navitem" onclick="showView('groups')"><span class="ico">👥</span>Groups</button>
+      <button class="navitem" onclick="showView('users')"><span class="ico">🔑</span>Users &amp; access</button>
+      <button class="navitem" onclick="showView('orgs')"><span class="ico">🏢</span>Organizations</button>
+      <button class="navitem" onclick="showView('helpdesk')"><span class="ico">🆘</span>Help requests</button>
+      <div class="navlabel">System</div>
       <button class="navitem" onclick="showView('advanced')"><span class="ico">⚙</span>Advanced</button>
       <button class="navitem" onclick="showView('developers')"><span class="ico">🔌</span>Developers</button>
-      <button class="navitem" onclick="showView('helpdesk')"><span class="ico">🆘</span>Help requests</button>
-      <button class="navitem" onclick="showView('orgs')"><span class="ico">🏢</span>Organizations</button>
     </div>
 
     <div id="navBiz" style="display:none">
