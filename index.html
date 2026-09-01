@@ -102,8 +102,13 @@
   .capjump a:hover{ border-color:var(--accent); color:var(--accent); }
   .capgroup{ margin-top:40px; scroll-margin-top:90px; }
   .capgroup:first-of-type{ margin-top:0; }
-  .capgroup-head{ display:flex; align-items:baseline; gap:8px; font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-dim); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule); }
+  .capgroup-head{ display:flex; align-items:baseline; gap:8px; width:100%; font:inherit; font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-dim); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule); background:none; border-left:none; border-right:none; border-top:none; cursor:pointer; text-align:left; }
+  .capgroup-head:hover{ color:var(--accent); }
   .capgroup-head .n{ font-variant-numeric:tabular-nums; color:var(--ink-faint); font-weight:600; text-transform:none; letter-spacing:normal; }
+  .capgroup-head .chev{ margin-left:auto; font-size:13px; transition:transform .15s ease; color:var(--ink-faint); }
+  .capgroup.open .capgroup-head .chev{ transform:rotate(90deg); }
+  .capgroup .grid4{ display:none; }
+  .capgroup.open .grid4{ display:grid; }
 
   .model-strip{ display:flex; align-items:stretch; gap:0; margin-bottom:16px; }
   .model-step{ flex:1; background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:18px 16px; box-shadow:var(--shadow); }
@@ -146,6 +151,9 @@
 
   /* ---------------- diagrams ---------------- */
   figure.diagram{ margin:0 0 40px; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 22px 20px; box-shadow:var(--shadow); }
+  figure.diagram.flywheel-diagram{ border:1.5px solid var(--teal); box-shadow:0 0 0 1px var(--teal-soft), var(--shadow); }
+  .flywheel-badges{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+  .flywheel-badge{ background:var(--teal-soft); border:1px solid var(--teal); border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:650; color:var(--teal); }
   figure.diagram svg{ width:100%; height:auto; display:block; }
   figure.diagram figcaption{ font-size:13px; color:var(--ink-faint); margin-top:14px; text-align:center; }
   .diagram text{ font-family:'Inter',sans-serif; }
@@ -345,6 +353,84 @@
   </div>
 </section>
 
+<!-- ================= THE FLYWHEEL ================= -->
+<section id="flywheel" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The flywheel</div>
+      <h2>It gets smarter every time someone asks</h2>
+    </div>
+    <p class="section-sub">
+      This is the part that compounds. Every answer feeds evidence back into the ontology — a
+      question asked repeatedly promotes a candidate join into a reviewed rollup; a 👎 demotes a
+      bad one. The semantic layer improves with usage, not just with engineering time spent on it
+      directly — the longer it runs, the further ahead it gets.
+    </p>
+
+    <div class="flywheel-badges">
+      <div class="flywheel-badge">Repeated questions → promoted joins</div>
+      <div class="flywheel-badge">👎 feedback → demoted joins</div>
+      <div class="flywheel-badge">Every candidate reviewed, never auto-applied</div>
+    </div>
+
+    <figure class="diagram flywheel-diagram">
+      <svg viewBox="0 0 1000 330" role="img" aria-label="A business question is answered through NL2SQL guided by the ontology, planned into a federated query, executed, and fed back as evidence that improves the ontology and rollups for every question after it — a closed, compounding loop." style="color:var(--diagram-ink)">
+        <defs>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+          <marker id="arrowLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"/>
+          </marker>
+        </defs>
+
+        <path d="M897,150 C897,10 289,10 289,30" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#arrowLoop)"/>
+        <text x="593" y="26" text-anchor="middle" font-size="14" font-weight="750" fill="var(--teal)">🔁 repeated questions promote better joins &amp; rollups — 👎 demotes bad ones</text>
+
+        <rect x="20" y="94" width="150" height="56" rx="10" fill="var(--navy-soft)" stroke="none"/>
+        <text x="95" y="118" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">Business question</text>
+        <text x="95" y="136" text-anchor="middle" font-size="10" fill="var(--navy)" opacity=".85">Ask app or Claude via MCP</text>
+
+        <path d="M170,122 L210,122" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="214" y="30" width="150" height="60" rx="10" fill="var(--teal)" stroke="none"/>
+        <text x="289" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Ontology</text>
+        <text x="289" y="75" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">join keys, glossary</text>
+
+        <rect x="214" y="154" width="150" height="56" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="289" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">NL2SQL</text>
+        <text x="289" y="196" text-anchor="middle" font-size="10" fill="var(--ink-dim)">generate + judge</text>
+
+        <path d="M289,90 L289,154" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrow2)"/>
+
+        <path d="M364,182 L410,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="414" y="154" width="160" height="56" rx="10" fill="var(--accent)" stroke="none"/>
+        <text x="494" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Federated plan</text>
+        <text x="494" y="196" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">semi-join pushdown</text>
+
+        <path d="M574,182 L616,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="620" y="154" width="150" height="56" rx="10" fill="var(--purple-soft)" stroke="none"/>
+        <text x="695" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--purple)">Backends</text>
+        <text x="695" y="196" text-anchor="middle" font-size="10" fill="var(--purple)" opacity=".85">JDBC + REST + S3</text>
+
+        <path d="M770,182 L810,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <rect x="814" y="154" width="166" height="56" rx="10" fill="var(--amber-soft)" stroke="none"/>
+        <text x="897" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">Sourced answer</text>
+        <text x="897" y="196" text-anchor="middle" font-size="10" fill="var(--amber)" opacity=".85">evidence + feedback</text>
+
+        <text x="95" y="246" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">ask once</text>
+        <text x="695" y="246" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">execute across every connected source</text>
+
+        <line x1="20" y1="278" x2="980" y2="278" stroke="var(--rule)" stroke-width="1"/>
+        <text x="500" y="308" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Every question ever asked is training data for the next one.</text>
+      </svg>
+      <figcaption>Fig. 2 — the flywheel: a question is answered, and the answer becomes evidence — repeated patterns promote rollups, negative feedback demotes bad joins, and every candidate still lands in a reviewable queue rather than being auto-applied.</figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- ================= ARCHITECTURE ================= -->
 <section id="architecture" class="rule-top">
   <div class="wrap">
@@ -488,56 +574,7 @@
         <text x="44" y="686" font-size="12" fill="var(--ink-faint)">→ SAP side pushed down as real SQL; Salesforce fetched via REST connector and joined in-process</text>
         <text x="44" y="708" font-size="12" fill="var(--ink-faint)">→ measured per-backend timing captured in Federation Plans, real join key promoted via Ontology review</text>
       </svg>
-      <figcaption>Fig. 2 — wire-protocol core: every frontend converges on one canonical statement, flows through the same six-stage pipeline, and fans out to any backend.</figcaption>
-    </figure>
-
-    <figure class="diagram">
-      <svg viewBox="0 0 1000 300" role="img" aria-label="A business question is answered through NL2SQL guided by the ontology, planned into a federated query, executed, and fed back as signal that improves the ontology and rollups." style="color:var(--diagram-ink)">
-        <defs>
-          <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
-          </marker>
-        </defs>
-        <rect x="20" y="90" width="150" height="56" rx="10" fill="var(--navy-soft)" stroke="none"/>
-        <text x="95" y="114" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">Business question</text>
-        <text x="95" y="132" text-anchor="middle" font-size="10" fill="var(--navy)" opacity=".85">Ask app or Claude via MCP</text>
-
-        <path d="M170,118 L210,118" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
-
-        <rect x="214" y="30" width="150" height="56" rx="10" fill="var(--teal-soft)" stroke="none"/>
-        <text x="289" y="54" text-anchor="middle" font-size="12" font-weight="700" fill="var(--teal)">Ontology</text>
-        <text x="289" y="72" text-anchor="middle" font-size="10" fill="var(--teal)" opacity=".85">join keys, glossary</text>
-
-        <rect x="214" y="150" width="150" height="56" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
-        <text x="289" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">NL2SQL</text>
-        <text x="289" y="192" text-anchor="middle" font-size="10" fill="var(--ink-dim)">generate + judge</text>
-
-        <path d="M289,86 L289,150" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrow2)"/>
-
-        <path d="M364,178 L410,178" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
-
-        <rect x="414" y="150" width="160" height="56" rx="10" fill="var(--accent)" stroke="none"/>
-        <text x="494" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Federated plan</text>
-        <text x="494" y="192" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">semi-join pushdown</text>
-
-        <path d="M574,178 L616,178" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
-
-        <rect x="620" y="150" width="150" height="56" rx="10" fill="var(--purple-soft)" stroke="none"/>
-        <text x="695" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="var(--purple)">Real backends</text>
-        <text x="695" y="192" text-anchor="middle" font-size="10" fill="var(--purple)" opacity=".85">JDBC + REST + S3</text>
-
-        <path d="M770,178 L810,178" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
-        <rect x="814" y="150" width="166" height="56" rx="10" fill="var(--amber-soft)" stroke="none"/>
-        <text x="897" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">Sourced answer</text>
-        <text x="897" y="192" text-anchor="middle" font-size="10" fill="var(--amber)" opacity=".85">evidence + feedback</text>
-
-        <path d="M897,150 C897,20 289,20 289,30" stroke="var(--diagram-line)" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
-        <text x="600" y="16" text-anchor="middle" font-size="11" fill="var(--ink-faint)">👎 feedback + repeated questions promote better joins and rollups</text>
-
-        <text x="95" y="242" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">ask once</text>
-        <text x="695" y="242" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">execute across every real source</text>
-      </svg>
-      <figcaption>Fig. 3 — semantic layer: the ontology guides NL2SQL, the federated plan executes across real backends, and the outcome feeds back into a reviewable ontology/rollup queue.</figcaption>
+      <figcaption>Fig. 3 — wire-protocol core: every frontend converges on one canonical statement, flows through the same six-stage pipeline, and fans out to any backend.</figcaption>
     </figure>
 
     <p class="section-sub">Every statement — every wire frontend, gRPC, the HTTP API — passes through <code>StatsCollectorStage</code> exactly once. That single point feeds three export surfaces, so a Prometheus scrape, the admin console, and an OTLP-speaking vendor are never looking at three different sets of numbers.</p>
@@ -654,22 +691,22 @@
       <div class="feature">
         <div class="num">01 · immediate</div>
         <h3>Schema metadata</h3>
-        <p>Mechanical, not probabilistic — no LLM call. Every foreign key becomes a real relationship; a detected junction table becomes a many-to-many edge. Runs the instant the backend is registered.</p>
+        <p>Mechanical, not probabilistic — no LLM call. Every foreign key becomes a relationship; a detected junction table becomes a many-to-many edge. Runs the instant the backend is registered.</p>
       </div>
       <div class="feature">
         <div class="num">02 · async</div>
-        <h3>Real row data</h3>
-        <p>Samples actual column values across tables to catch joins no foreign key declares — two columns that share real values are a join candidate, PII-typed columns get flagged for access policy.</p>
+        <h3>Row data</h3>
+        <p>Samples actual column values across tables to catch joins no foreign key declares — two columns that share overlapping values are a join candidate, PII-typed columns get flagged for access policy.</p>
       </div>
       <div class="feature">
         <div class="num">03 · continuous</div>
         <h3>Query logs</h3>
-        <p>Mines the audit log of real executed NL2SQL statements — a join pattern analysts actually use repeatedly is stronger evidence than a schema guess, and gets weighted accordingly.</p>
+        <p>Mines the audit log of executed NL2SQL statements — a join pattern analysts actually use repeatedly is stronger evidence than a schema guess, and gets weighted accordingly.</p>
       </div>
       <div class="feature">
         <div class="num">04 · on upload</div>
         <h3>Policy &amp; reference documents</h3>
-        <p>Extracts computed business terms a schema alone can't express — "revenue" means <code>quantity × price</code>, a credit policy's threshold clause becomes a real, queryable term.</p>
+        <p>Extracts computed business terms a schema alone can't express — "revenue" means <code>quantity × price</code>, a credit policy's threshold clause becomes a queryable term.</p>
       </div>
     </div>
 
@@ -677,7 +714,7 @@
       <div class="card-head"><div class="card-title">Every candidate lands in a review queue — never straight into production</div></div>
       <p style="margin:0; font-size:13.6px; color:var(--ink-dim)">
         None of these four sources write to the live ontology directly. Structural, mechanically-certain
-        candidates (a real foreign key) can auto-accept; everything inferred — value-overlap joins, mined
+        candidates (a declared foreign key) can auto-accept; everything inferred — value-overlap joins, mined
         query patterns, document-derived terms — lands in <b>Ontology review</b> for a human decision.
         A bad join degrades one answer; a bad access-policy grant is a security decision — this project
         never lets an inference make that second kind of call on its own.
@@ -807,7 +844,7 @@
       <div class="kicker">The product model</div>
       <h2>Ask → Analyze → Monitor → Act — governed end to end</h2>
     </div>
-    <p class="section-sub">Not a slide deck — every capability below is a real, working part of <a href="demo.html" target="_blank">demo.html</a>: context checks before an answer, real charts instead of static numbers, and admin surfaces for the parts of the product that make answers trustworthy in the first place.</p>
+    <p class="section-sub">Every capability below is a working part of <a href="demo.html" target="_blank">demo.html</a>: context checks before an answer, live charts instead of static numbers, and admin surfaces for the parts of the product that make answers trustworthy in the first place.</p>
 
     <div class="model-strip">
       <div class="model-step"><div class="model-num">1 · Ask</div><h4>Ask</h4><p>A question in plain language, across every connected system — one governed, sourced answer back.</p></div>
@@ -821,20 +858,20 @@
     <div class="model-governed"><b>Governed end to end</b> — access control, sensitivity classification, and an audit trail enforced at every step above, not bolted on after.</div>
 
     <nav class="capjump" aria-label="Jump to a capability group">
-      <a href="#cap-ask">Ask</a>
-      <a href="#cap-analyze">Analyze</a>
-      <a href="#cap-monitor">Monitor</a>
-      <a href="#cap-act">Act</a>
-      <a href="#cap-governed">Governed end to end</a>
+      <a href="#cap-ask" onclick="document.getElementById('cap-ask').classList.add('open')">Ask</a>
+      <a href="#cap-analyze" onclick="document.getElementById('cap-analyze').classList.add('open')">Analyze</a>
+      <a href="#cap-monitor" onclick="document.getElementById('cap-monitor').classList.add('open')">Monitor</a>
+      <a href="#cap-act" onclick="document.getElementById('cap-act').classList.add('open')">Act</a>
+      <a href="#cap-governed" onclick="document.getElementById('cap-governed').classList.add('open')">Govern</a>
     </nav>
 
-    <div class="capgroup" id="cap-ask">
-      <div class="capgroup-head">Ask <span class="n">14</span></div>
+    <div class="capgroup open" id="cap-ask">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Ask <span class="n">14</span><span class="chev">&#9656;</span></button>
       <div class="grid4">
         <div class="feature">
           <div class="num">Ask</div>
           <h3>Free-text Ask</h3>
-          <p>Type any question instead of only clicking a preset chip — matched against the demo's real scenarios by keyword overlap, with an honest "not covered by this demo" fallback rather than a fabricated answer.</p>
+          <p>Type any question instead of only clicking a preset chip — matched against the demo's own scenarios by keyword overlap, with an honest "not covered by this demo" fallback rather than a fabricated answer.</p>
         </div>
         <div class="feature">
           <div class="num">Ask</div>
@@ -843,7 +880,7 @@
         </div>
         <div class="feature">
           <div class="num">Ask</div>
-          <h3>Real chart engine</h3>
+          <h3>Chart engine</h3>
           <p>Gradient bar charts, a smooth cubic-bezier trend/area view, and a table view — with grid lines, animated draw-in, value labels, and hover tooltips. Heterogeneous KPIs are chart-scaled honestly, never silently misleading.</p>
         </div>
         <div class="feature">
@@ -905,7 +942,7 @@
     </div>
 
     <div class="capgroup" id="cap-analyze">
-      <div class="capgroup-head">Analyze <span class="n">7</span></div>
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Analyze <span class="n">7</span><span class="chev">&#9656;</span></button>
       <div class="grid4">
         <div class="feature">
           <div class="num">Explore</div>
@@ -940,18 +977,18 @@
         <div class="feature">
           <div class="num">Explore</div>
           <h3>PDF Extract</h3>
-          <p>Reconciles POs stored as PDF/OCR in S3 against SAP via a real <code class="mono">PDF_EXTRACT()</code> table function — every value is independently checked against the document's own text before a join is allowed to trust it.</p>
+          <p>Reconciles POs stored as PDF/OCR in S3 against SAP via a working <code class="mono">PDF_EXTRACT()</code> table function — every value is independently checked against the document's own text before a join is allowed to trust it.</p>
         </div>
       </div>
     </div>
 
     <div class="capgroup" id="cap-monitor">
-      <div class="capgroup-head">Monitor <span class="n">7</span></div>
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Monitor <span class="n">7</span><span class="chev">&#9656;</span></button>
       <div class="grid4">
         <div class="feature">
           <div class="num">Dashboards</div>
           <h3>Pin any answer to a dashboard</h3>
-          <p>"+ Add to dashboard" on any chat answer creates a live widget using the same chart engine — a real chat-answer-to-dashboard round trip, not a mockup screenshot.</p>
+          <p>"+ Add to dashboard" on any chat answer creates a live widget using the same chart engine — an actual chat-answer-to-dashboard round trip, not a mockup screenshot.</p>
         </div>
         <div class="feature">
           <div class="num">Dashboards</div>
@@ -987,7 +1024,7 @@
     </div>
 
     <div class="capgroup" id="cap-act">
-      <div class="capgroup-head">Act <span class="n">4</span></div>
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Act <span class="n">4</span><span class="chev">&#9656;</span></button>
       <div class="grid4">
         <div class="feature">
           <div class="num">Agents</div>
@@ -997,7 +1034,7 @@
         <div class="feature">
           <div class="num">Agents</div>
           <h3>Parameterized runs</h3>
-          <p>"Run with parameters" on an agent produces a one-off preview using the real chart engine — labeled honestly when this demo has no backend to actually segment by the chosen parameters.</p>
+          <p>"Run with parameters" on an agent produces a one-off preview using the same chart engine — labeled honestly when this demo has no backend to actually segment by the chosen parameters.</p>
         </div>
         <div class="feature">
           <div class="num">Agents</div>
@@ -1013,7 +1050,7 @@
     </div>
 
     <div class="capgroup" id="cap-governed">
-      <div class="capgroup-head">Governed end to end <span class="n">8</span></div>
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Govern <span class="n">8</span><span class="chev">&#9656;</span></button>
       <div class="grid4">
         <div class="feature">
           <div class="num">Security</div>
@@ -1023,7 +1060,7 @@
         <div class="feature">
           <div class="num">Security</div>
           <h3>Sensitivity-gated sharing approval</h3>
-          <p>Every source is classified L0 (Public) through L4 (Highly Restricted); sharing a dashboard that touches a sensitive one is blocked behind a real approval DAG — Data owner, Manager, and Security &amp; Privacy as the classification escalates — with a timestamped audit trail, not just a label.</p>
+          <p>Every source is classified L0 (Public) through L4 (Highly Restricted); sharing a dashboard that touches a sensitive one is blocked behind an approval DAG — Data owner, Manager, and Security &amp; Privacy as the classification escalates — with a timestamped audit trail, not just a label.</p>
         </div>
         <div class="feature">
           <div class="num">Security</div>
@@ -1038,7 +1075,7 @@
         <div class="feature">
           <div class="num">Security</div>
           <h3>User attributes editor</h3>
-          <p>The real key/value pairs an RLS policy's <code class="mono">USER_ATTRIBUTE('desk')</code> reads from — previously only implied in policy text, now an editable table per user.</p>
+          <p>The key/value pairs an RLS policy's <code class="mono">USER_ATTRIBUTE('desk')</code> reads from — previously only implied in policy text, now an editable table per user.</p>
         </div>
         <div class="feature">
           <div class="num">Dev</div>
@@ -1048,7 +1085,7 @@
         <div class="feature">
           <div class="num">Dev</div>
           <h3>API keys &amp; embedding</h3>
-          <p>Generate/revoke API keys, and real embed snippets for both an <code class="mono">&lt;iframe&gt;</code> and the <code class="mono">@thinkingsense/react</code> SDK — the two ways this would actually get embedded in another product.</p>
+          <p>Generate/revoke API keys, and embed snippets for both an <code class="mono">&lt;iframe&gt;</code> and the <code class="mono">@thinkingsense/react</code> SDK — the two ways this would actually get embedded in another product.</p>
         </div>
         <div class="feature">
           <div class="num">Dev</div>
@@ -1072,7 +1109,7 @@
       A scripted, self-contained mockup — no server behind it — covering the full admin console
       (data-source groups, LLM settings, Skills, Slack, RLS/CLS policies, ontology review, rollups,
       federation plans, SQL Playground, Evaluation, Agents, and Developers/embedding) plus a live
-      Ask experience with real charts, Deep Analysis, and Dashboards — see
+      Ask experience with live charts, Deep Analysis, and Dashboards — see
       <a href="#capabilities">What's new</a> for the full list.
     </p>
     <div class="demo-frame-wrap">
@@ -1116,7 +1153,7 @@ open http://localhost:8080/</pre>
 
         <div class="step" style="margin-top:26px">
           <div class="num">3</div>
-          <div><div class="t">Connect like it's a real Postgres</div><div class="d">Because, on the wire, it is one.</div></div>
+          <div><div class="t">Connect like it's a genuine Postgres</div><div class="d">Because, on the wire, it is one.</div></div>
         </div>
         <pre class="code">psql -h localhost -p 5433 -U myuser -d mydb</pre>
       </div>
@@ -1124,7 +1161,7 @@ open http://localhost:8080/</pre>
       <div>
         <div class="step">
           <div class="num">4</div>
-          <div><div class="t">Point at your own backend</div><div class="d">Minimal single-backend run — proxy Postgres wire traffic straight through to a real database.</div></div>
+          <div><div class="t">Point at your own backend</div><div class="d">Minimal single-backend run — proxy Postgres wire traffic straight through to an actual database.</div></div>
         </div>
         <pre class="code"><span class="k">export</span> OMNIGATE_BACKENDS=<span class="s">"primary=jdbc:postgresql://host:5432/mydb|user|pass"</span></pre>
         <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">
