@@ -374,7 +374,7 @@
     </div>
 
     <figure class="diagram flywheel-diagram">
-      <svg viewBox="0 0 1000 330" role="img" aria-label="A business question is answered through NL2SQL guided by the ontology, planned into a federated query, executed, and fed back as evidence that improves the ontology and rollups for every question after it — a closed, compounding loop." style="color:var(--diagram-ink)">
+      <svg viewBox="0 0 1000 362" role="img" aria-label="A business question is answered through NL2SQL guided by the ontology, planned into a federated query, executed, and fed back as evidence that improves the ontology and rollups for every question after it — a closed, compounding loop." style="color:var(--diagram-ink)">
         <defs>
           <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
@@ -384,47 +384,47 @@
           </marker>
         </defs>
 
-        <path d="M897,150 C897,10 289,10 289,30" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#arrowLoop)"/>
-        <text x="593" y="26" text-anchor="middle" font-size="14" font-weight="750" fill="var(--teal)">🔁 repeated questions promote better joins &amp; rollups — 👎 demotes bad ones</text>
+        <text x="500" y="20" text-anchor="middle" font-size="14" font-weight="750" fill="var(--teal)">🔁 repeated questions promote better joins &amp; rollups — 👎 demotes bad ones</text>
+        <path d="M897,180 C897,46 289,46 289,60" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#arrowLoop)"/>
 
-        <rect x="20" y="94" width="150" height="56" rx="10" fill="var(--navy-soft)" stroke="none"/>
-        <text x="95" y="118" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">Business question</text>
-        <text x="95" y="136" text-anchor="middle" font-size="10" fill="var(--navy)" opacity=".85">Ask app or Claude via MCP</text>
+        <rect x="20" y="124" width="150" height="56" rx="10" fill="var(--navy-soft)" stroke="none"/>
+        <text x="95" y="148" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">Business question</text>
+        <text x="95" y="166" text-anchor="middle" font-size="10" fill="var(--navy)" opacity=".85">Ask app or Claude via MCP</text>
 
-        <path d="M170,122 L210,122" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M170,152 L210,152" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
 
-        <rect x="214" y="30" width="150" height="60" rx="10" fill="var(--teal)" stroke="none"/>
-        <text x="289" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Ontology</text>
-        <text x="289" y="75" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">join keys, glossary</text>
+        <rect x="214" y="60" width="150" height="60" rx="10" fill="var(--teal)" stroke="none"/>
+        <text x="289" y="85" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Ontology</text>
+        <text x="289" y="105" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">join keys, glossary</text>
 
-        <rect x="214" y="154" width="150" height="56" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
-        <text x="289" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">NL2SQL</text>
-        <text x="289" y="196" text-anchor="middle" font-size="10" fill="var(--ink-dim)">generate + judge</text>
+        <rect x="214" y="184" width="150" height="56" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="289" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">NL2SQL</text>
+        <text x="289" y="226" text-anchor="middle" font-size="10" fill="var(--ink-dim)">generate + judge</text>
 
-        <path d="M289,90 L289,154" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M289,120 L289,184" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrow2)"/>
 
-        <path d="M364,182 L410,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M364,212 L410,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
 
-        <rect x="414" y="154" width="160" height="56" rx="10" fill="var(--accent)" stroke="none"/>
-        <text x="494" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Federated plan</text>
-        <text x="494" y="196" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">semi-join pushdown</text>
+        <rect x="414" y="184" width="160" height="56" rx="10" fill="var(--accent)" stroke="none"/>
+        <text x="494" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Federated plan</text>
+        <text x="494" y="226" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">semi-join pushdown</text>
 
-        <path d="M574,182 L616,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M574,212 L616,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
 
-        <rect x="620" y="154" width="150" height="56" rx="10" fill="var(--purple-soft)" stroke="none"/>
-        <text x="695" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--purple)">Backends</text>
-        <text x="695" y="196" text-anchor="middle" font-size="10" fill="var(--purple)" opacity=".85">JDBC + REST + S3</text>
+        <rect x="620" y="184" width="150" height="56" rx="10" fill="var(--purple-soft)" stroke="none"/>
+        <text x="695" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--purple)">Backends</text>
+        <text x="695" y="226" text-anchor="middle" font-size="10" fill="var(--purple)" opacity=".85">JDBC + REST + S3</text>
 
-        <path d="M770,182 L810,182" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
-        <rect x="814" y="154" width="166" height="56" rx="10" fill="var(--amber-soft)" stroke="none"/>
-        <text x="897" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">Sourced answer</text>
-        <text x="897" y="196" text-anchor="middle" font-size="10" fill="var(--amber)" opacity=".85">evidence + feedback</text>
+        <path d="M770,212 L810,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <rect x="814" y="184" width="166" height="56" rx="10" fill="var(--amber-soft)" stroke="none"/>
+        <text x="897" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">Sourced answer</text>
+        <text x="897" y="226" text-anchor="middle" font-size="10" fill="var(--amber)" opacity=".85">evidence + feedback</text>
 
-        <text x="95" y="246" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">ask once</text>
-        <text x="695" y="246" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">execute across every connected source</text>
+        <text x="95" y="276" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">ask once</text>
+        <text x="695" y="276" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">execute across every connected source</text>
 
-        <line x1="20" y1="278" x2="980" y2="278" stroke="var(--rule)" stroke-width="1"/>
-        <text x="500" y="308" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Every question ever asked is training data for the next one.</text>
+        <line x1="20" y1="308" x2="980" y2="308" stroke="var(--rule)" stroke-width="1"/>
+        <text x="500" y="338" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Every question ever asked is training data for the next one.</text>
       </svg>
       <figcaption>Fig. 2 — the flywheel: a question is answered, and the answer becomes evidence — repeated patterns promote rollups, negative feedback demotes bad joins, and every candidate still lands in a reviewable queue rather than being auto-applied.</figcaption>
     </figure>
