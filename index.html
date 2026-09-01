@@ -139,6 +139,10 @@
   .usecase-sys{ display:flex; flex-wrap:wrap; gap:6px; }
   .sys-pill{ font-size:11.5px; font-weight:650; padding:4px 10px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); }
   .usecase-out{ font-size:13.6px; color:var(--ink-dim); margin-top:auto; padding-top:10px; border-top:1px solid var(--rule); }
+  .problem-callout{ background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:14px; padding:22px 24px; margin-top:24px; }
+  .problem-callout .pc-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); margin-bottom:10px; }
+  .problem-callout p{ font-size:13.8px; color:var(--ink-dim); margin:0; line-height:1.6; max-width:820px; }
+  .problem-callout p + p{ margin-top:12px; }
 
   /* ---------------- diagrams ---------------- */
   figure.diagram{ margin:0 0 40px; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 22px 20px; box-shadow:var(--shadow); }
@@ -240,6 +244,61 @@
   </div>
 </div>
 
+<!-- ================= USE CASES ================= -->
+<section id="use-cases" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The problem</div>
+      <h2>The question no single system can answer</h2>
+    </div>
+    <p class="section-sub">
+      Three shapes of question that need more than one system to answer honestly — the kind that
+      today means a data-engineering ticket, a one-off ETL pipeline, and weeks or months of work
+      before anyone sees a number, just to answer one cross-system question a business user could
+      have typed in a sentence.
+    </p>
+
+    <div class="grid3">
+      <div class="usecase">
+        <div class="usecase-label">Ask across systems</div>
+        <div class="usecase-q">"Which customers are at risk because of delayed orders?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">Support data</span>
+        </div>
+        <div class="usecase-out">→ one governed answer — grounded in real order and case records, not a guess stitched from three dashboards.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Investigate risk</div>
+        <div class="usecase-q">"Which applications and customers are exposed to this third-party incident?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CMDB</span>
+          <span class="sys-pill">Vendor data</span>
+          <span class="sys-pill">Policy documents</span>
+        </div>
+        <div class="usecase-out">→ impact and evidence — the exact systems and accounts touched, with the policy clause that governs the response.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Analyze operations</div>
+        <div class="usecase-q">"Why did order-to-cash increase this quarter?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">Process data</span>
+        </div>
+        <div class="usecase-out">→ real drivers, not a hunch — ranked contributing factors with the underlying transactions behind each one.</div>
+      </div>
+    </div>
+
+    <div class="problem-callout">
+      <div class="pc-label">The obvious shortcut doesn't scale</div>
+      <p>The instinct is to wire an MCP server directly to every database, SaaS app, and document store an AI agent needs. That works for one source. It stops working past a handful: every system needs its own server built, patched, and kept running; every one is a new set of credentials an AI agent holds directly, with no shared access-control layer in between; and nothing stops a model that can reach ten different MCP servers from crossing into data no single team ever reviewed it to see.</p>
+      <p>That's integration and security debt that compounds with every new source — not a governance model. The fix isn't an MCP server per system; it's one governed layer in front of every system, enforcing identity and policy before anything executes, regardless of how many sources sit behind it.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= POSITIONING ================= -->
 <section id="positioning" class="rule-top">
   <div class="wrap">
@@ -283,55 +342,6 @@
       </svg>
       <figcaption>Fig. 1 — ThinkingSense (understand/govern/plan/learn) sits above a governed execution layer (connect/federate/route/execute) that reaches databases, SaaS, and documents/APIs.</figcaption>
     </figure>
-  </div>
-</section>
-
-<!-- ================= USE CASES ================= -->
-<section id="use-cases" class="rule-top">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">Use cases</div>
-      <h2>What this actually gets you</h2>
-    </div>
-    <p class="section-sub">
-      Three shapes of question that need more than one system to answer honestly — the kind that
-      today means a data-engineering ticket, a one-off ETL pipeline, and weeks or months of work
-      before anyone sees a number, just to answer one cross-system question a business user could
-      have typed in a sentence.
-    </p>
-
-    <div class="grid3">
-      <div class="usecase">
-        <div class="usecase-label">Ask across systems</div>
-        <div class="usecase-q">"Which customers are at risk because of delayed orders?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">CRM</span>
-          <span class="sys-pill">ERP</span>
-          <span class="sys-pill">Support data</span>
-        </div>
-        <div class="usecase-out">→ one governed answer — grounded in real order and case records, not a guess stitched from three dashboards.</div>
-      </div>
-      <div class="usecase">
-        <div class="usecase-label">Investigate risk</div>
-        <div class="usecase-q">"Which applications and customers are exposed to this third-party incident?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">CMDB</span>
-          <span class="sys-pill">Vendor data</span>
-          <span class="sys-pill">Policy documents</span>
-        </div>
-        <div class="usecase-out">→ impact and evidence — the exact systems and accounts touched, with the policy clause that governs the response.</div>
-      </div>
-      <div class="usecase">
-        <div class="usecase-label">Analyze operations</div>
-        <div class="usecase-q">"Why did order-to-cash increase this quarter?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">ERP</span>
-          <span class="sys-pill">CRM</span>
-          <span class="sys-pill">Process data</span>
-        </div>
-        <div class="usecase-out">→ real drivers, not a hunch — ranked contributing factors with the underlying transactions behind each one.</div>
-      </div>
-    </div>
   </div>
 </section>
 
