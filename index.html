@@ -196,8 +196,8 @@
 <nav class="top">
   <div class="inner">
     <div class="navlinks">
-      <a href="#architecture">Architecture</a>
       <a href="#use-cases">Use cases</a>
+      <a href="#architecture">Architecture</a>
       <a href="#ontology-generation">Ontology</a>
       <a href="#inside">What's inside</a>
       <a href="#connectors">Connectors</a>
@@ -283,6 +283,55 @@
       </svg>
       <figcaption>Fig. 1 — ThinkingSense (understand/govern/plan/learn) sits above a governed execution layer (connect/federate/route/execute) that reaches databases, SaaS, and documents/APIs.</figcaption>
     </figure>
+  </div>
+</section>
+
+<!-- ================= USE CASES ================= -->
+<section id="use-cases" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Use cases</div>
+      <h2>What this actually gets you</h2>
+    </div>
+    <p class="section-sub">
+      Three shapes of question that need more than one system to answer honestly — the kind that
+      today means a data-engineering ticket, a one-off ETL pipeline, and weeks or months of work
+      before anyone sees a number, just to answer one cross-system question a business user could
+      have typed in a sentence.
+    </p>
+
+    <div class="grid3">
+      <div class="usecase">
+        <div class="usecase-label">Ask across systems</div>
+        <div class="usecase-q">"Which customers are at risk because of delayed orders?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">Support data</span>
+        </div>
+        <div class="usecase-out">→ one governed answer — grounded in real order and case records, not a guess stitched from three dashboards.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Investigate risk</div>
+        <div class="usecase-q">"Which applications and customers are exposed to this third-party incident?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CMDB</span>
+          <span class="sys-pill">Vendor data</span>
+          <span class="sys-pill">Policy documents</span>
+        </div>
+        <div class="usecase-out">→ impact and evidence — the exact systems and accounts touched, with the policy clause that governs the response.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Analyze operations</div>
+        <div class="usecase-q">"Why did order-to-cash increase this quarter?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">Process data</span>
+        </div>
+        <div class="usecase-out">→ real drivers, not a hunch — ranked contributing factors with the underlying transactions behind each one.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -575,53 +624,6 @@
       </svg>
       <figcaption>Fig. 4 — observability: one collector, three export surfaces, reaching any scraper, the admin console, and Datadog/New Relic/Grafana Cloud directly, or CloudWatch/Azure Monitor/GCP via a collector — by their real ingest paths, not invented ones.</figcaption>
     </figure>
-  </div>
-</section>
-
-<!-- ================= USE CASES ================= -->
-<section id="use-cases" class="rule-top">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="kicker">Use cases</div>
-      <h2>What this actually gets you</h2>
-    </div>
-    <p class="section-sub">
-      Three shapes of question that need more than one system to answer honestly — the kind that
-      usually means a Slack thread, three open tabs, and an hour, instead of one governed answer.
-    </p>
-
-    <div class="grid3">
-      <div class="usecase">
-        <div class="usecase-label">Ask across systems</div>
-        <div class="usecase-q">"Which customers are at risk because of delayed orders?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">CRM</span>
-          <span class="sys-pill">ERP</span>
-          <span class="sys-pill">Support data</span>
-        </div>
-        <div class="usecase-out">→ one governed answer — grounded in real order and case records, not a guess stitched from three dashboards.</div>
-      </div>
-      <div class="usecase">
-        <div class="usecase-label">Investigate risk</div>
-        <div class="usecase-q">"Which applications and customers are exposed to this third-party incident?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">CMDB</span>
-          <span class="sys-pill">Vendor data</span>
-          <span class="sys-pill">Policy documents</span>
-        </div>
-        <div class="usecase-out">→ impact and evidence — the exact systems and accounts touched, with the policy clause that governs the response.</div>
-      </div>
-      <div class="usecase">
-        <div class="usecase-label">Analyze operations</div>
-        <div class="usecase-q">"Why did order-to-cash increase this quarter?"</div>
-        <div class="usecase-sys">
-          <span class="sys-pill">ERP</span>
-          <span class="sys-pill">CRM</span>
-          <span class="sys-pill">Process data</span>
-        </div>
-        <div class="usecase-out">→ real drivers, not a hunch — ranked contributing factors with the underlying transactions behind each one.</div>
-      </div>
-    </div>
   </div>
 </section>
 
