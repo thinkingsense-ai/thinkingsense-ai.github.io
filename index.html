@@ -765,10 +765,11 @@
       <h2>60+ data sources, extensible with zero core rebuild</h2>
     </div>
     <p class="section-sub">
-      Named JDBC presets for every major database, real lakehouse table-format readers for Iceberg
-      and Delta Lake (schema evolution and partition pruning, not just flat files), NoSQL
-      connectors for MongoDB/Cassandra/DynamoDB, a generic REST connector that reaches any
-      authenticated JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
+      Named JDBC presets for every major database including SAP HANA, real lakehouse table-format
+      readers for Iceberg, Delta Lake, and Delta Sharing (the open protocol behind SAP Business Data
+      Cloud and Databricks Marketplace — schema evolution and partition pruning, not just flat
+      files), NoSQL connectors for MongoDB/Cassandra/DynamoDB, a generic REST connector that reaches
+      any authenticated JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
       <code>ConnectorProvider</code> SPI — drop a connector JAR in a directory, no restart, no
       rebuild, to register a new source.
     </p>
@@ -794,6 +795,7 @@
       <div class="conn-tile"><div class="conn-badge" style="background:#054ada">Db</div><div class="conn-label">IBM Db2</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#0091da">Vt</div><div class="conn-label">Vertica</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#aa00ff">Ss</div><div class="conn-label">SingleStore</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0faaff">HA</div><div class="conn-label">SAP HANA</div></div>
     </div>
 
     <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">Lakehouse table formats — real schema evolution and partition pruning, not flat files</h3>
@@ -801,6 +803,7 @@
     <div class="conn-grid" style="margin-bottom:32px">
       <div class="conn-tile"><div class="conn-badge" style="background:#0b6cb3">Ic</div><div class="conn-label">Apache Iceberg</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#00add4">De</div><div class="conn-label">Delta Lake</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#00294d">DS</div><div class="conn-label">Delta Sharing</div></div>
     </div>
 
     <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">NoSQL &amp; document stores</h3>
