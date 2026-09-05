@@ -762,14 +762,15 @@
   <div class="wrap">
     <div class="section-head">
       <div class="kicker">Connectors</div>
-      <h2>60+ data sources, extensible with zero core rebuild</h2>
+      <h2>65+ data sources, extensible with zero core rebuild</h2>
     </div>
     <p class="section-sub">
       Named JDBC presets for every major database including SAP HANA, real lakehouse table-format
-      readers for Iceberg, Delta Lake, and Delta Sharing (the open protocol behind SAP Business Data
-      Cloud and Databricks Marketplace — schema evolution and partition pruning, not just flat
-      files), NoSQL connectors for MongoDB/Cassandra/DynamoDB, a generic REST connector that reaches
-      any authenticated JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
+      readers for Iceberg, Delta Lake, Apache Hudi, and Delta Sharing (the open protocol behind SAP
+      Business Data Cloud and Databricks Marketplace — schema evolution, partition pruning, and
+      snapshot metadata, not just flat files), NoSQL connectors for MongoDB/Cassandra/DynamoDB, a
+      real bounded-snapshot Kafka connector, a generic REST connector that reaches any authenticated
+      JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
       <code>ConnectorProvider</code> SPI — drop a connector JAR in a directory, no restart, no
       rebuild, to register a new source.
     </p>
@@ -803,6 +804,7 @@
     <div class="conn-grid" style="margin-bottom:32px">
       <div class="conn-tile"><div class="conn-badge" style="background:#0b6cb3">Ic</div><div class="conn-label">Apache Iceberg</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#00add4">De</div><div class="conn-label">Delta Lake</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#c62a88">Hu</div><div class="conn-label">Apache Hudi</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#00294d">DS</div><div class="conn-label">Delta Sharing</div></div>
     </div>
 
@@ -811,6 +813,12 @@
       <div class="conn-tile"><div class="conn-badge" style="background:#00684a">Mo</div><div class="conn-label">MongoDB</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#1287b1">Ca</div><div class="conn-label">Cassandra</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#4053d6">Dy</div><div class="conn-label">DynamoDB</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">Streaming</h3>
+    <p style="font-size:12.6px; color:var(--ink-faint); margin-bottom:12px">A real bounded-snapshot scan per query — each partition's watermark captured once, same semantics Trino's own Kafka connector uses.</p>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#000000">Ka</div><div class="conn-label">Apache Kafka</div></div>
     </div>
 
     <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">SaaS &amp; productivity — via the generic REST connector</h3>
