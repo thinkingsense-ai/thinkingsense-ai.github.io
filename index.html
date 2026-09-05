@@ -762,10 +762,12 @@
   <div class="wrap">
     <div class="section-head">
       <div class="kicker">Connectors</div>
-      <h2>50+ data sources, extensible with zero core rebuild</h2>
+      <h2>60+ data sources, extensible with zero core rebuild</h2>
     </div>
     <p class="section-sub">
-      Named JDBC presets for every major database, a generic REST connector that reaches any
+      Named JDBC presets for every major database, real lakehouse table-format readers for Iceberg
+      and Delta Lake (schema evolution and partition pruning, not just flat files), NoSQL
+      connectors for MongoDB/Cassandra/DynamoDB, a generic REST connector that reaches any
       authenticated JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
       <code>ConnectorProvider</code> SPI — drop a connector JAR in a directory, no restart, no
       rebuild, to register a new source.
@@ -787,6 +789,25 @@
       <div class="conn-tile"><div class="conn-badge" style="background:#ffcc01;color:#1c2b4a">CH</div><div class="conn-label">ClickHouse</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#6933ff">CR</div><div class="conn-label">CockroachDB</div></div>
       <div class="conn-tile"><div class="conn-badge" style="background:#003b57">Sq</div><div class="conn-label">SQLite</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#2a2a2a">Dr</div><div class="conn-label">Druid</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#3b6cf6">Pn</div><div class="conn-label">Pinot</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#054ada">Db</div><div class="conn-label">IBM Db2</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0091da">Vt</div><div class="conn-label">Vertica</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#aa00ff">Ss</div><div class="conn-label">SingleStore</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">Lakehouse table formats — real schema evolution and partition pruning, not flat files</h3>
+    <p style="font-size:12.6px; color:var(--ink-faint); margin-bottom:12px">Beyond flat Parquet/CSV objects: real table metadata, snapshots, and schema evolution, read directly — no separate query engine required.</p>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#0b6cb3">Ic</div><div class="conn-label">Apache Iceberg</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#00add4">De</div><div class="conn-label">Delta Lake</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">NoSQL &amp; document stores</h3>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#00684a">Mo</div><div class="conn-label">MongoDB</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#1287b1">Ca</div><div class="conn-label">Cassandra</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#4053d6">Dy</div><div class="conn-label">DynamoDB</div></div>
     </div>
 
     <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">SaaS &amp; productivity — via the generic REST connector</h3>
