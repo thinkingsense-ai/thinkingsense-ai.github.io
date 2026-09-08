@@ -1177,12 +1177,19 @@ docker compose up --build</pre>
 
         <div class="step" style="margin-top:26px">
           <div class="num">2</div>
-          <div><div class="t">Open the console</div><div class="d">Same container, same port, for both surfaces.</div></div>
+          <div><div class="t">Open the console</div><div class="d">Same container, same port by default, for both surfaces.</div></div>
         </div>
         <pre class="code"><span class="c"># admin console</span>
 open http://localhost:8080/admin
 <span class="c"># business-user Ask app</span>
 open http://localhost:8080/</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">
+          Want them on separate ports instead — e.g. to expose the Ask app publicly while keeping
+          the admin console internal-only? Set <code>OMNIGATE_ASK_PORT</code> (e.g. <code>8081</code>)
+          alongside <code>OMNIGATE_HTTP_PORT</code>. It's a hard split: once set, the admin port
+          stops serving Ask-app routes and the Ask port stops serving admin routes. Leave it unset
+          to keep the single-port default above.
+        </p>
 
         <div class="step" style="margin-top:26px">
           <div class="num">3</div>
@@ -1216,6 +1223,10 @@ open http://localhost:8080/</pre>
             <tr><td>OMNIGATE_STATS_REFRESH_INTERVAL_MINUTES</td><td>Turns on statistics collection that feeds cost-based federated planning.</td></tr>
             <tr><td>OMNIGATE_SQL_PLAN_HISTORY_SIZE</td><td>Turns on Federation Plans — measured per-backend leaf-scan timing.</td></tr>
             <tr><td>OMNIGATE_CONNECTORS_DIR</td><td>Drop-in directory for dynamically-loaded connector JARs — new sources with zero core rebuild.</td></tr>
+            <tr><td>OMNIGATE_ASK_PORT</td><td>Serves the Ask app on its own port, hard-split from the admin console (see step 2).</td></tr>
+            <tr><td>OMNIGATE_APP_USERS</td><td>Business-user accounts for the Ask app (distinct from admin login).</td></tr>
+            <tr><td>OMNIGATE_INSIGHTS_INTERVAL_MINUTES</td><td>Turns on Proactive Insights — scheduled re-checks of approved questions, flags material changes.</td></tr>
+            <tr><td>OMNIGATE_SLACK_WEBHOOK_URL</td><td>Sends Proactive Insights findings to a Slack channel.</td></tr>
           </tbody>
         </table>
         </div>
