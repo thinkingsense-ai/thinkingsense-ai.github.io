@@ -150,10 +150,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.0.1%2Fomnigateokestack-release.zip" target="_blank" rel="noopener">
+      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.1.0%2Fomnigateokestack-v1.1.0.zip" target="_blank" rel="noopener">
         <img src="https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg" alt="Deploy to Oracle Cloud">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.0.1" target="_blank" rel="noopener">Download the zip ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.0" target="_blank" rel="noopener">Download the zip ↓</a>
     </div>
     <p class="hero-note">Opens the OCI Console's Create Stack wizard, pre-loaded from our published
       Resource Manager stack. You'll need your own OCI tenancy — <a href="https://signup.oraclecloud.com/" target="_blank" rel="noopener">sign up for Always Free</a>
@@ -240,9 +240,9 @@
         </div>
         <pre class="code"><span class="k">oci resource-manager stack create</span> \
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
-  <span class="k">--config-source</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.0.1/omnigateokestack-release.zip</span> \
+  <span class="k">--config-source</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.0/omnigateokestack-v1.1.0.zip</span> \
   <span class="k">--display-name</span> <span class="s">omnigateokestack</span> \
-  <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_users":"&lt;user:salt:hash::&gt;"}'</span></pre>
+  <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_password":"&lt;plain-text-password&gt;"}'</span></pre>
       </div>
       <div>
         <div class="stepcard" style="border:none; padding:0;">
@@ -256,10 +256,9 @@
     </div>
 
     <div class="callout" style="margin-top:28px">
-      <b>Generating an Ask-app login:</b> the wizard's password field expects a pre-hashed value,
-      not a raw password — <code>docker run --rm --entrypoint java &lt;image&gt; -cp omnigate.jar
-      com.omnigate.http.auth.PasswordHash &lt;your-password&gt;</code> prints the
-      <code>salt:hash</code> pair to paste in as <code>username:salt:hash::</code>. Full details in
+      <b>Ask-app login:</b> just type a plain username and password in the wizard —
+      <code>omnigate_app_password</code> is hashed automatically during Apply, using the deployed
+      image's own hashing utility. No local Docker, no manual hash generation. Full details in
       the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateokestack/README.md" target="_blank" rel="noopener">stack's README</a>.
     </div>
   </div>
@@ -279,7 +278,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.0.1">OKE Resource Manager stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.0">OKE Resource Manager stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
