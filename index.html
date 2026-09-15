@@ -64,6 +64,15 @@
   .navlinks{ display:flex; gap:22px; font-size:13.5px; font-weight:600; color:var(--ink-dim); }
   .navlinks a{ color:var(--ink-dim); text-decoration:none; white-space:nowrap; }
   .navlinks a:hover{ color:var(--accent); }
+  .navdrop{ position:relative; flex:none; }
+  .navdrop-trigger{ display:flex; align-items:center; gap:5px; font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; white-space:nowrap; }
+  .navdrop-trigger:hover{ color:var(--accent); }
+  .navdrop-trigger .caret{ font-size:9px; transition:transform .15s; }
+  .navdrop:hover .navdrop-trigger .caret, .navdrop:focus-within .navdrop-trigger .caret{ transform:rotate(180deg); }
+  .navdrop-menu{ display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); min-width:168px; z-index:30; }
+  .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
+  .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
+  .navdrop-menu a:hover{ background:var(--panel-2); }
   .navcta{ display:flex; gap:10px; flex:none; }
   @media (max-width:860px){
     .navlinks{ display:none; }
@@ -218,8 +227,13 @@
       <a href="#capabilities">What's new</a>
       <a href="#demo">Live demo</a>
       <a href="#docs">Docs &amp; setup</a>
-      <a href="deploy-oci.html">Deploy to OCI</a>
-      <a href="deploy-aws.html">Deploy to AWS</a>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Deploy to Cloud <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
+          <a href="deploy-aws.html">AWS (EKS)</a>
+        </div>
+      </div>
       <a href="#editions">Pricing</a>
     </div>
     <div class="navcta">
@@ -1239,18 +1253,13 @@ open http://localhost:8080/</pre>
 
     <div class="callout" style="margin-top:36px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
       <div>
-        <b>Want it running in Oracle Cloud instead of on your own machine?</b><br>
-        A one-click Resource Manager stack brings up OKE, Postgres, and OmniGate — no local tools required.
+        <b>Want it running in the cloud instead of on your own machine?</b><br>
+        A one-click stack brings up a right-sized cluster, Postgres, and OmniGate — no local tools required.
       </div>
-      <a class="btn small primary" href="deploy-oci.html" style="flex:none">Deploy to Oracle Cloud →</a>
-    </div>
-
-    <div class="callout" style="margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
-      <div>
-        <b>Prefer AWS?</b><br>
-        A one-click CloudFormation stack brings up EKS, Postgres, and OmniGate — no local tools required.
+      <div style="display:flex; gap:10px; flex:none;">
+        <a class="btn small primary" href="deploy-oci.html">Deploy to Oracle Cloud →</a>
+        <a class="btn small primary" href="deploy-aws.html">Deploy to AWS →</a>
       </div>
-      <a class="btn small primary" href="deploy-aws.html" style="flex:none">Deploy to AWS →</a>
     </div>
   </div>
 </section>
