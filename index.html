@@ -70,6 +70,7 @@
   .navdrop-trigger .caret{ font-size:9px; transition:transform .15s; }
   .navdrop:hover .navdrop-trigger .caret, .navdrop:focus-within .navdrop-trigger .caret{ transform:rotate(180deg); }
   .navdrop-menu{ display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); min-width:168px; z-index:30; }
+  .navdrop-menu::before{ content:""; position:absolute; top:-14px; left:0; right:0; height:14px; }
   .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
   .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
   .navdrop-menu a:hover{ background:var(--panel-2); }
