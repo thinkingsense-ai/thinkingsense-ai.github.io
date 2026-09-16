@@ -151,8 +151,8 @@
       build, nothing to push: the stack pulls the app from our public registry and builds its own
       small deploy helper into your account automatically.</p>
     <div class="hero-ctas" id="deploy">
-      <a class="btn large primary" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https%3A%2F%2Fthinkingsense-cfn-templates.s3.amazonaws.com%2Feks-stack-v1.0.1%2Ftemplate.yaml&stackName=omnigate-eks" target="_blank" rel="noopener">Launch Stack →</a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/eks-stack-v1.0.1" target="_blank" rel="noopener">View the template ↓</a>
+      <a class="btn large primary" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https%3A%2F%2Fthinkingsense-cfn-templates.s3.amazonaws.com%2Feks-stack-v1.0.2%2Ftemplate.yaml&stackName=omnigate-eks" target="_blank" rel="noopener">Launch Stack →</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/eks-stack-v1.0.2" target="_blank" rel="noopener">View the template ↓</a>
     </div>
     <p class="hero-note">Opens the AWS Console's Create Stack wizard, pre-loaded from our published
       CloudFormation template. You'll need your own AWS account — <a href="https://aws.amazon.com/free/" target="_blank" rel="noopener">sign up</a> if you don't have one yet.</p>
@@ -237,7 +237,7 @@
         </div>
         <pre class="code"><span class="k">aws cloudformation create-stack</span> \
   <span class="k">--stack-name</span> <span class="s">omnigate-eks</span> \
-  <span class="k">--template-url</span> <span class="s">https://thinkingsense-cfn-templates.s3.amazonaws.com/eks-stack-v1.0.1/template.yaml</span> \
+  <span class="k">--template-url</span> <span class="s">https://thinkingsense-cfn-templates.s3.amazonaws.com/eks-stack-v1.0.2/template.yaml</span> \
   <span class="k">--capabilities</span> <span class="s">CAPABILITY_NAMED_IAM</span> \
   <span class="k">--parameters</span> <span class="s">ParameterKey=OmnigateAppPassword,ParameterValue=&lt;plain-text-password&gt;</span></pre>
       </div>
@@ -274,7 +274,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/eks-stack-v1.0.1">EKS CloudFormation stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/eks-stack-v1.0.2">EKS CloudFormation stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
