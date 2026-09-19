@@ -129,6 +129,7 @@
       <a href="#steps">Deploy steps</a>
       <a href="#prereqs">Prerequisites</a>
       <a href="#cli">CLI path</a>
+      <a href="#manage">Check &amp; destroy</a>
     </div>
     <div class="navcta">
       <a class="btn small" href="https://github.com/thinkingsense-ai/Docker">Docker image</a>
@@ -267,6 +268,54 @@
   </div>
 </section>
 
+<section class="rule-top" id="manage">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">After it's deployed</div>
+      <h2>Check on it, or take it down</h2>
+    </div>
+    <p class="section-sub">There's no single "stack" object to look up here the way there is on
+      AWS or OCI — GCP has no equivalent of a CloudFormation stack's Outputs tab or an OCI
+      Resource Manager stack's Outputs group. Checking on (or tearing down) this deployment means
+      talking to the actual GKE cluster directly, from the same Cloud Shell directory (or any
+      other authenticated <code>gcloud</code>/<code>kubectl</code> session) you deployed from.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>List what's running</h3><p>Confirms the cluster and node pool are healthy, then points <code>kubectl</code> at them.</p></div>
+        </div>
+        <pre class="code"><span class="k">gcloud container clusters list</span> --project=&lt;your-project-id&gt;
+
+<span class="k">gcloud container clusters get-credentials</span> omnigate-gke \
+  --zone us-central1-a --project=&lt;your-project-id&gt;
+
+<span class="k">kubectl get pods</span> -n default
+<span class="k">kubectl get svc</span> omnigate-omnigate-http -n default</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">If <code>EXTERNAL-IP</code> isn't <code>&lt;pending&gt;</code>, that's your Ask app on port 8080.</p>
+      </div>
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>Tear it down</h3><p>Run from the same <code>omnigategkestack</code> directory you deployed from — reopening via the Cloud Shell button above clones fresh and won't have this deployment's state.</p></div>
+        </div>
+        <pre class="code"><span class="k">./destroy.sh</span></pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Runs <code>terraform destroy</code> when this directory has real state; otherwise offers a confirm-gated fallback that deletes the known resources directly by name. Leaves the Artifact Registry image alone either way — see the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigategkestack/README.md#cleanup" target="_blank" rel="noopener">README's Cleanup section</a> for that and for the manual <code>gcloud delete</code> commands this falls back to.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px">
+      <b>Lost your Cloud Shell session?</b> Your files usually aren't gone — Cloud Shell's home
+      directory persists across sessions even though the VM itself is ephemeral. Reopen Cloud
+      Shell directly (not the deploy button above) and look in <code>~/cloudshell_open/</code> for
+      the <code>Docker-N</code> clone you were actually using; that's where your
+      <code>terraform.tfstate</code> is. Full details in the README's
+      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigategkestack/README.md#reconnecting-to-an-existing-deployment-cloud-shell" target="_blank" rel="noopener">"Reconnecting to an existing deployment"</a> section.
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="footer-grid">
@@ -291,6 +340,7 @@
           <li><a href="#steps">Deploy steps</a></li>
           <li><a href="#prereqs">Prerequisites</a></li>
           <li><a href="#cli">CLI path</a></li>
+          <li><a href="#manage">Check &amp; destroy</a></li>
         </ul>
       </div>
       <div>
