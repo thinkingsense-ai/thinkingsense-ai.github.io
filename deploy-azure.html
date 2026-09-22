@@ -158,10 +158,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.2%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.2%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
+      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.3%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.3%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
         <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.2" target="_blank" rel="noopener">Download the template ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.3" target="_blank" rel="noopener">Download the template ↓</a>
     </div>
     <p class="hero-note">Opens the Azure Portal's Custom Deployment wizard, pre-loaded from our
       published Bicep/ARM template. You'll need your own Azure subscription — a
@@ -244,14 +244,16 @@
 
     <div class="callout" style="margin-top:24px">
       <b>Clean-room validated end to end on a real Azure subscription</b> (<code>westus2</code>).
-      Getting there surfaced seven real, live-confirmed bugs — a Service CIDR overlap, a missing
+      Getting there surfaced nine real, live-confirmed bugs — a Service CIDR overlap, a missing
       <code>curl</code>/<code>openssl</code> in the deployment-script container, OCIR rejecting
       image pulls from a Free Tier tenancy, a silently-disabled login from a malformed user-record
       format, malformed deployment-script output JSON, <code>kubectl</code> never actually being
-      installed, and a Portal CORS failure on the very first real click (GitHub release-asset URLs
+      installed, a Portal CORS failure on the very first real click (GitHub release-asset URLs
       don't send an <code>Access-Control-Allow-Origin</code> header, which the Portal's wizard
-      needs — the Deploy button above now points at <code>raw.githubusercontent.com</code>
-      instead, which does) — all already fixed. See the
+      needs), and — on the very next real click after that — the Portal wizard's own field
+      defaults silently drifting from the template's defaults (the wizard populates from
+      <code>createUiDefinition.json</code>'s own default, not the ARM template's, so a value-only
+      fix in one place invisibly missed the other) — all already fixed. See the
       <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list.
     </div>
   </div>
@@ -283,7 +285,7 @@
         </div>
         <pre class="code"><span class="k">az deployment group create</span> \
   <span class="k">--resource-group</span> <span class="s">omnigate-aks-rg</span> \
-  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.2/azuredeploy.json</span> \
+  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.3/azuredeploy.json</span> \
   <span class="k">--parameters</span> <span class="s">appPassword='&lt;plain-text-password&gt;' llmApiKey='&lt;anthropic-api-key&gt;'</span></pre>
       </div>
     </div>
@@ -345,7 +347,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.2">AKS Bicep/ARM stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.3">AKS Bicep/ARM stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
