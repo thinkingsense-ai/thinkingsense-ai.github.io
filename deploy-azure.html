@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deploy to Azure — ThinkingSense</title>
+<meta name="description" content="Deploy OmniGate onto a new AKS cluster in your own Azure subscription — a form-driven Bicep/ARM stack, no local tools required.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f1420'/%3E%3Cpolygon points='50,20 76,35 76,65 50,80 24,65 24,35' fill='none' stroke='%233d7fe8' stroke-width='6' stroke-linejoin='round'/%3E%3Cline x1='50' y1='20' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='76' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='24' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='20' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='76' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='24' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%232f5fd6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f6f4; --panel:#ffffff; --panel-2:#fbfbf9; --ink:#191d24; --ink-dim:#565f6e; --ink-faint:#8992a1;
+    --rule:#e3e4e1; --rule-strong:#c9cbc6;
+    --navy:#1c2b4a; --navy-soft:#e8ecf4; --accent:#3457d5; --accent-soft:#e7ecfc; --accent-strong:#22398f;
+    --teal:#2f6f63; --teal-soft:#e2f0ec; --amber:#b5751f; --amber-soft:#f7ecdb; --purple:#6a4aa8; --purple-soft:#ede7f7;
+    --code-bg:#12172a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+    --shadow:0 1px 2px rgba(20,22,30,.05), 0 12px 28px -14px rgba(20,22,30,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12141a; --panel:#1b1e26; --panel-2:#1f222b; --ink:#ecedf1; --ink-dim:#a7adba; --ink-faint:#757c8a;
+      --rule:#2b2e38; --rule-strong:#3a3e4a;
+      --navy:#7f9cd6; --navy-soft:#212b40; --accent:#7f9cd6; --accent-soft:#1c2740; --accent-strong:#a9c2ea;
+      --teal:#7cbfae; --teal-soft:#182b26; --amber:#d9a251; --amber-soft:#2c2417; --purple:#a993d6; --purple-soft:#241d33;
+      --code-bg:#0c0f1a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12141a; --panel:#1b1e26; --panel-2:#1f222b; --ink:#ecedf1; --ink-dim:#a7adba; --ink-faint:#757c8a;
+    --rule:#2b2e38; --rule-strong:#3a3e4a;
+    --navy:#7f9cd6; --navy-soft:#212b40; --accent:#7f9cd6; --accent-soft:#1c2740; --accent-strong:#a9c2ea;
+    --teal:#7cbfae; --teal-soft:#182b26; --amber:#d9a251; --amber-soft:#2c2417; --purple:#a993d6; --purple-soft:#241d33;
+    --code-bg:#0c0f1a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',-apple-system,sans-serif; font-size:16px; line-height:1.6; overflow-x:hidden; }
+  code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif; font-weight:600; margin:0; text-wrap:balance;}
+  p{margin:0 0 1em;}
+  a{color:var(--accent);}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+  section{padding:56px 0;}
+  .rule-top{border-top:1px solid var(--rule);}
+
+  nav.top{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); }
+  nav.top .inner{ max-width:1080px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:750; font-size:15px; }
+  .brand .mark{ width:28px; height:28px; border-radius:8px; background:#0f1420; display:grid; place-items:center; flex:none; }
+  .brand .mark svg{ width:20px; height:20px; }
+  .hero-brand{ display:flex; align-items:center; gap:14px; font-weight:800; font-size:28px; letter-spacing:-.01em; margin-bottom:24px; }
+  .hero-brand .mark{ width:48px; height:48px; border-radius:13px; background:#0f1420; display:grid; place-items:center; flex:none; }
+  .hero-brand .mark svg{ width:34px; height:34px; }
+  @media (max-width:560px){ .hero-brand{ font-size:22px; } .hero-brand .mark{ width:40px; height:40px; } .hero-brand .mark svg{ width:28px; height:28px; } }
+  .navlinks{ display:flex; gap:22px; font-size:13.5px; font-weight:600; color:var(--ink-dim); }
+  .navlinks a{ color:var(--ink-dim); text-decoration:none; white-space:nowrap; }
+  .navlinks a:hover{ color:var(--accent); }
+  .navcta{ display:flex; gap:10px; flex:none; }
+  @media (max-width:860px){ .navlinks{ display:none; } nav.top .inner{ gap:12px; } }
+  @media (max-width:520px){ .navcta .btn:not(.primary){ display:none; } }
+
+  .btn{ display:inline-flex; align-items:center; gap:7px; font-size:13.5px; font-weight:650; padding:9px 16px; border-radius:9px; border:1px solid var(--rule-strong); background:var(--panel); color:var(--ink); text-decoration:none; }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.primary:hover{ opacity:.92; color:#fff; }
+  .btn.large{ padding:13px 22px; font-size:15px; border-radius:11px; }
+
+  .hero{ padding:72px 0 48px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); background:var(--accent-soft); padding:5px 12px; border-radius:999px; margin-bottom:22px; }
+  .hero h1{ font-size:46px; line-height:1.1; max-width:760px; margin-bottom:18px; }
+  .hero p.lede{ color:var(--ink-dim); font-size:18px; max-width:640px; margin-bottom:32px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .hero-ctas img{ display:block; height:44px; }
+  .hero-note{ font-size:12.8px; color:var(--ink-faint); max-width:520px; }
+
+  .section-head{ margin-bottom:8px; }
+  .kicker{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin-bottom:10px; }
+  .section-head h2{ font-size:30px; margin-bottom:14px; }
+  .section-sub{ color:var(--ink-dim); font-size:16px; max-width:680px; margin-bottom:36px; }
+
+  .steplist{ counter-reset:step; }
+  .stepcard{ display:flex; gap:18px; padding:22px 0; border-top:1px solid var(--rule); }
+  .stepcard:first-child{ border-top:none; padding-top:0; }
+  .stepcard .n{ flex:none; width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent); font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; display:grid; place-items:center; }
+  .stepcard h3{ font-family:'Inter'; font-size:16.5px; font-weight:750; margin-bottom:6px; }
+  .stepcard p{ font-size:14.5px; color:var(--ink-dim); margin:0; max-width:640px; }
+  .stepcard code{ font-size:12.8px; background:var(--panel-2); border:1px solid var(--rule); border-radius:5px; padding:1px 6px; }
+
+  pre.code{ background:var(--code-bg); color:var(--code-ink); border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:13px; line-height:1.65; margin:8px 0 0; box-shadow:var(--shadow); }
+  pre.code .c{color:var(--code-comment);} pre.code .k{color:var(--code-accent);} pre.code .s{color:var(--code-string);}
+
+  .cfg-table{ width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border:1px solid var(--rule); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .cfg-table th{ text-align:left; background:var(--panel-2); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:10px 14px; font-weight:700; }
+  .cfg-table td{ padding:10px 14px; border-top:1px solid var(--rule); vertical-align:top; font-size:13.5px; color:var(--ink-dim); }
+  .cfg-table td:first-child{ font-family:'JetBrains Mono',monospace; font-size:12px; white-space:nowrap; color:var(--accent-strong); }
+  .table-scroll{ overflow-x:auto; border-radius:12px; }
+
+  .callout{ border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--panel); padding:16px 18px; font-size:13.8px; color:var(--ink-dim); box-shadow:var(--shadow); }
+  .callout b{ color:var(--ink); }
+  .callout.warn{ border-left-color:var(--amber); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  @media (max-width:820px){ .grid2{grid-template-columns:1fr;} }
+
+  footer{ padding:50px 0 70px; border-top:1px solid var(--rule); }
+  .footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px; margin-bottom:36px; }
+  @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  .footer-grid h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; margin-bottom:12px; }
+  .footer-grid ul{ list-style:none; margin:0; padding:0; }
+  .footer-grid li{ margin-bottom:8px; }
+  .footer-grid a{ color:var(--ink-dim); text-decoration:none; font-size:13.5px; }
+  .footer-grid a:hover{ color:var(--accent); }
+  .footer-bottom{ font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:20px; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <a class="brand" href="index.html" style="text-decoration:none; color:var(--ink);">
+      <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+      <span>ThinkingSense</span>
+    </a>
+    <div class="navlinks">
+      <a href="index.html#docs">Local Docker setup</a>
+      <a href="#steps">Deploy steps</a>
+      <a href="#prereqs">Prerequisites</a>
+      <a href="#cli">CLI path</a>
+    </div>
+    <div class="navcta">
+      <a class="btn small" href="https://github.com/thinkingsense-ai/Docker">Docker image</a>
+      <a class="btn small primary" href="#deploy">Deploy now</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-brand">
+      <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+      <span>ThinkingSense</span>
+    </div>
+    <span class="eyebrow">● Runs in your own Azure subscription</span>
+    <h1>Deploy OmniGate to <span style="color:var(--accent)">Microsoft Azure</span>, no local tools required</h1>
+    <p class="lede">A form-driven Bicep/ARM template brings up a right-sized AKS cluster, a seeded
+      Postgres demo backend, and OmniGate itself — entirely from your browser. Nothing to build,
+      nothing to push: the stack pulls a pre-built image from our own public registry.</p>
+    <div class="hero-ctas" id="deploy">
+      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Faks-stack-v1.0.0%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Faks-stack-v1.0.0%2FcreateUiDefinition.json" target="_blank" rel="noopener">
+        <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">
+      </a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.0" target="_blank" rel="noopener">Download the template ↓</a>
+    </div>
+    <p class="hero-note">Opens the Azure Portal's Custom Deployment wizard, pre-loaded from our
+      published Bicep/ARM template. You'll need your own Azure subscription — a
+      <a href="https://azure.microsoft.com/free/" target="_blank" rel="noopener">free account</a>
+      covers everything this stack defaults to (Ampere Altra quota permitting — see Prerequisites).</p>
+  </div>
+</div>
+
+<section class="rule-top" id="steps">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">What actually happens</div>
+      <h2>Five steps, all in the browser</h2>
+    </div>
+    <p class="section-sub">No Terraform, Docker, or kubectl on your machine for this path — Azure
+      Resource Manager runs the provisioning inside Azure-managed infrastructure, including the
+      Helm install itself (via a deployment script, ARM's answer to a Lambda-backed custom
+      resource).</p>
+
+    <div class="steplist">
+      <div class="stepcard">
+        <div class="n">1</div>
+        <div><h3>Sign in to your subscription</h3><p>The Deploy button takes you to Azure Portal sign-in. New to Azure? The free-tier account covers everything this stack defaults to, Ampere Altra regional quota permitting.</p></div>
+      </div>
+      <div class="stepcard">
+        <div class="n">2</div>
+        <div><h3>Custom deployment, pre-loaded</h3><p>Portal lands on <b>Custom deployment</b> with the template and its form already set to our published release — fetched server-side, nothing to upload yourself.</p></div>
+      </div>
+      <div class="stepcard">
+        <div class="n">3</div>
+        <div><h3>Fill in the wizard</h3><p>A guided form, not a raw parameters JSON — resource group and region, an Ask-app login, and an Anthropic API key. That key is technically optional (the stack deploys fine without one), but the Ask app can't answer any question until it's set, so grab a free key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> before you start.</p></div>
+      </div>
+      <div class="stepcard">
+        <div class="n">4</div>
+        <div><h3>Review + create</h3><p>The real provisioning step. Takes roughly 15–20 minutes: the AKS cluster dominates, then the deployment script's Helm install of OmniGate + Postgres.</p></div>
+      </div>
+      <div class="stepcard">
+        <div class="n">5</div>
+        <div><h3>Open the Ask app</h3><p>The deployment's <b>Outputs</b> tab shows <code>askAppUrl</code> — open it, sign in with the login you set in step 3, and ask a real question.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="prereqs">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Before you click Create</div>
+      <h2>Subscription prerequisites</h2>
+    </div>
+    <p class="section-sub">This stack has one real regional constraint, worth checking before you
+      pick a region in the wizard.</p>
+
+    <div class="table-scroll">
+      <table class="cfg-table">
+        <thead><tr><th>Resource</th><th>Needed</th><th>Where to check</th></tr></thead>
+        <tbody>
+          <tr><td>AKS node VM</td><td>Ampere Altra (arm64) quota, e.g. <code>Standard_D2ps_v5</code></td><td>Confirmed live: <code>westus2</code> has clean, unrestricted availability; <code>eastus</code>, <code>eastus2</code>, and <code>westeurope</code> currently have none. Recheck with <code>az vm list-skus --size Standard_D2ps_v5 --location &lt;region&gt; -o table</code> before picking a different region.</td></tr>
+          <tr><td>AKS cluster</td><td>Standard-SKU LoadBalancer support</td><td>Default on all current AKS versions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px; color:var(--ink-faint); margin-top:14px">Node count and storage sizes are all adjustable in the wizard if your subscription has more headroom — or less.</p>
+
+    <div class="callout" style="margin-top:24px">
+      <b>Clean-room validated end to end on a real Azure subscription</b> (<code>westus2</code>).
+      Getting there surfaced six real, live-confirmed bugs — a Service CIDR overlap, a missing
+      <code>curl</code>/<code>openssl</code> in the deployment-script container, OCIR rejecting
+      image pulls from a Free Tier tenancy, a silently-disabled login from a malformed user-record
+      format, malformed deployment-script output JSON, and <code>kubectl</code> never actually
+      being installed — all already fixed. See the
+      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list.
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="cli">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Prefer the CLI</div>
+      <h2>Same stack, from your terminal</h2>
+    </div>
+    <p class="section-sub">Useful for scripting a deploy, or if you'd rather review the template
+      before Portal ever gets involved.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">1</div>
+          <div><h3>Create a resource group</h3><p>Pick a region with Ampere Altra availability.</p></div>
+        </div>
+        <pre class="code"><span class="k">az group create</span> \
+  <span class="k">--name</span> <span class="s">omnigate-aks-rg</span> \
+  <span class="k">--location</span> <span class="s">westus2</span>  <span class="c"># confirmed live Ampere Altra availability</span></pre>
+      </div>
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">2</div>
+          <div><h3>Deploy the template</h3><p>Pulls the same published Bicep/ARM template.</p></div>
+        </div>
+        <pre class="code"><span class="k">az deployment group create</span> \
+  <span class="k">--resource-group</span> <span class="s">omnigate-aks-rg</span> \
+  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.0/azuredeploy.json</span> \
+  <span class="k">--parameters</span> <span class="s">appPassword='&lt;plain-text-password&gt;' llmApiKey='&lt;anthropic-api-key&gt;'</span></pre>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px">
+      <b>Ask-app login:</b> just type a plain username and password in the wizard —
+      <code>appPassword</code> is hashed automatically during deployment, using the deployed
+      image's own hashing utility. No local Docker, no manual hash generation. Full details in
+      the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px">
+          <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+          <span>ThinkingSense</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The enterprise AI intelligence layer — ASK → ANALYZE → MONITOR → ACT across your enterprise, with governance built into every step.</p>
+      </div>
+      <div>
+        <h4>Get it</h4>
+        <ul>
+          <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.0">AKS Bicep/ARM stack</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Deploy</h4>
+        <ul>
+          <li><a href="#steps">Deploy steps</a></li>
+          <li><a href="#prereqs">Prerequisites</a></li>
+          <li><a href="#cli">CLI path</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index.html#architecture">Architecture</a></li>
+          <li><a href="index.html#docs">Local Docker setup</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Contact us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image and this Bicep/ARM stack are publicly available — see the Docker repo for terms.</div>
+  </div>
+</footer>
+
+</body>
+</html>
