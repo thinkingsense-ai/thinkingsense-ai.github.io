@@ -158,10 +158,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.3%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.3%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
+      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.4%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.4%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
         <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.3" target="_blank" rel="noopener">Download the template ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.4" target="_blank" rel="noopener">Download the template ↓</a>
     </div>
     <p class="hero-note">Opens the Azure Portal's Custom Deployment wizard, pre-loaded from our
       published Bicep/ARM template. You'll need your own Azure subscription — a
@@ -208,7 +208,7 @@
       </div>
       <div class="stepcard">
         <div class="n">3</div>
-        <div><h3>Fill in the wizard</h3><p>A guided form, not a raw parameters JSON — resource group and region, an Ask-app login, and an Anthropic API key. That key is technically optional (the stack deploys fine without one), but the Ask app can't answer any question until it's set, so grab a free key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> before you start.</p></div>
+        <div><h3>Fill in the wizard</h3><p>A guided form, not a raw parameters JSON — name a new resource group (the wizard requires "Create new," so this deployment can never end up sharing a resource group with anything else), pick a region, an Ask-app login, and an Anthropic API key. That key is technically optional (the stack deploys fine without one), but the Ask app can't answer any question until it's set, so grab a free key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> before you start.</p></div>
       </div>
       <div class="stepcard">
         <div class="n">4</div>
@@ -254,7 +254,7 @@
       defaults silently drifting from the template's defaults (the wizard populates from
       <code>createUiDefinition.json</code>'s own default, not the ARM template's, so a value-only
       fix in one place invisibly missed the other) — all already fixed. See the
-      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list.
+      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list. One more hardening, not yet independently Portal-verified: the wizard now forces "Create new" resource group, since a real deploy targeted a pre-existing shared one.
     </div>
   </div>
 </section>
@@ -285,7 +285,7 @@
         </div>
         <pre class="code"><span class="k">az deployment group create</span> \
   <span class="k">--resource-group</span> <span class="s">omnigate-aks-rg</span> \
-  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.3/azuredeploy.json</span> \
+  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.4/azuredeploy.json</span> \
   <span class="k">--parameters</span> <span class="s">appPassword='&lt;plain-text-password&gt;' llmApiKey='&lt;anthropic-api-key&gt;'</span></pre>
       </div>
     </div>
@@ -347,7 +347,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.3">AKS Bicep/ARM stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.4">AKS Bicep/ARM stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
