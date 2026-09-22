@@ -105,6 +105,10 @@
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
   @media (max-width:820px){ .grid2{grid-template-columns:1fr;} }
 
+  figure.diagram{ margin:0; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+  figure.diagram img{ width:100%; height:auto; display:block; }
+  figure.diagram figcaption{ font-size:13px; color:var(--ink-faint); margin-top:14px; text-align:center; }
+
   footer{ padding:50px 0 70px; border-top:1px solid var(--rule); }
   .footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px; margin-bottom:36px; }
   @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
@@ -127,6 +131,7 @@
     <div class="navlinks">
       <a href="index.html#docs">Local Docker setup</a>
       <a href="deploy-oci.html">Deploy to OCI</a>
+      <a href="#architecture">Architecture</a>
       <a href="#steps">Deploy steps</a>
       <a href="#prereqs">Prerequisites</a>
       <a href="#cli">CLI path</a>
@@ -158,6 +163,23 @@
       CloudFormation template. You'll need your own AWS account — <a href="https://aws.amazon.com/free/" target="_blank" rel="noopener">sign up</a> if you don't have one yet.</p>
   </div>
 </div>
+
+<section class="rule-top" id="architecture">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">What gets deployed</div>
+      <h2>One request, three hops</h2>
+    </div>
+    <p class="section-sub">An Ask App request hits a public AWS Network Load Balancer, which
+      routes into the EKS cluster to the <code>omnigate</code> pod. <code>omnigate</code> in turn
+      queries the seeded <code>postgres</code> pod over JDBC — that's the whole federated-query
+      path.</p>
+    <figure class="diagram">
+      <img src="aws-architecture.svg" alt="An Ask App user sends an HTTPS request to an AWS Network Load Balancer, which routes into the EKS cluster to the omnigate Deployment pod. The omnigate pod queries the postgres StatefulSet pod over JDBC on port 5432 across the suppliers, inventory, and procurement schemas. Both pods have their own persistent volume claim on the gp3 StorageClass.">
+      <figcaption>Both pods run in the same EKS node group (Graviton/arm64, matching the arm64-only omnigate image) and each mount their own PVC on the gp3 StorageClass (AWS EBS CSI driver).</figcaption>
+    </figure>
+  </div>
+</section>
 
 <section class="rule-top" id="steps">
   <div class="wrap">
@@ -282,6 +304,7 @@
         <h4>Deploy</h4>
         <ul>
           <li><a href="deploy-oci.html">Deploy to OCI</a></li>
+          <li><a href="#architecture">Architecture</a></li>
           <li><a href="#steps">Deploy steps</a></li>
           <li><a href="#prereqs">Prerequisites</a></li>
           <li><a href="#cli">CLI path</a></li>
