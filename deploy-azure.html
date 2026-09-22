@@ -130,6 +130,7 @@
       <a href="#steps">Deploy steps</a>
       <a href="#prereqs">Prerequisites</a>
       <a href="#cli">CLI path</a>
+      <a href="#manage">Check &amp; destroy</a>
     </div>
     <div class="navcta">
       <a class="btn small" href="https://github.com/thinkingsense-ai/Docker">Docker image</a>
@@ -270,6 +271,40 @@
   </div>
 </section>
 
+<section class="rule-top" id="manage">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">After it's deployed</div>
+      <h2>Check on it, or take it down</h2>
+    </div>
+    <p class="section-sub">There's no need to hunt for individual resources here — an ARM
+      deployment tracks everything it created as one resource group, the same way a
+      CloudFormation stack or an OCI Resource Manager stack does. Two guided scripts in the
+      stack's repo wrap the commands below; clone or download the
+      <a href="https://github.com/thinkingsense-ai/Docker/tree/main/resource-manager/omnigateaksstack" target="_blank" rel="noopener">omnigateaksstack</a>
+      directory to use them.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>Check on it</h3><p>Fetches credentials (installing <code>kubectl</code> first if it's missing — confirmed live that <code>az aks get-credentials</code> alone doesn't do that), checks the pods/Services, then actually <code>curl</code>s the Ask app to confirm it's serving, not just that Kubernetes reports it as <code>Running</code>.</p></div>
+        </div>
+        <pre class="code"><span class="k">./verify.sh</span> &lt;your-resource-group&gt;</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Or by hand: <code>az aks get-credentials --resource-group &lt;your-rg&gt; --name omnigate-aks</code>, then <code>kubectl get pods</code> / <code>kubectl get svc omnigate-omnigate-http</code> — if <code>EXTERNAL-IP</code> isn't <code>&lt;pending&gt;</code>, that's your Ask app on port 8080.</p>
+      </div>
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>Tear it down</h3><p>Lists what's in the resource group, asks you to type <code>destroy</code> to confirm, then deletes it — the entire teardown story, since everything the template created lives in that one resource group.</p></div>
+        </div>
+        <pre class="code"><span class="k">./destroy.sh</span> &lt;your-resource-group&gt;</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Or by hand: <code>az group delete --name &lt;your-rg&gt; --yes --no-wait</code>. Full details in the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md#cleanup" target="_blank" rel="noopener">README's Cleanup section</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="footer-grid">
@@ -294,6 +329,7 @@
           <li><a href="#steps">Deploy steps</a></li>
           <li><a href="#prereqs">Prerequisites</a></li>
           <li><a href="#cli">CLI path</a></li>
+          <li><a href="#manage">Check &amp; destroy</a></li>
         </ul>
       </div>
       <div>
