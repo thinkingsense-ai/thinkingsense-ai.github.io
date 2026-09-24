@@ -203,7 +203,7 @@
       </div>
       <div class="stepcard">
         <div class="n">3</div>
-        <div><h3>Fill in the wizard</h3><p>A guided form, not a raw variable dump — compartment and region, an Ask-app login, and an Anthropic API key. That key is technically optional (the stack deploys fine without one), but the Ask app can't answer any question until it's set, so grab a free key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> before you start.</p></div>
+        <div><h3>Fill in the wizard</h3><p>A guided form, not a raw variable dump — compartment and region, an Ask-app login, and an Anthropic API key. That key is required (a stack applied without one deploys fine but can't answer any question), so grab a free key from <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> before you start.</p></div>
       </div>
       <div class="stepcard">
         <div class="n">4</div>
@@ -215,7 +215,12 @@
       </div>
       <div class="stepcard">
         <div class="n">6</div>
-        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>ask_app_url</code> — open it, sign in with the login you set in step 3, and ask a real question.</p></div>
+        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>ask_app_url</code> — open it, sign in with the login you set in step 3, and ask a real question.</p>
+        <p>OCI's LoadBalancer IP assignment is asynchronous, so on a slow provision <code>ask_app_url</code> can still show <code>&lt;pending-lb-ip&gt;</code> a few minutes after Apply finishes. If so, open <b>Cloud Shell</b> (top-right of the Console) and run this, using the <code>cluster_id</code> and <code>region</code> from the same Outputs tab:</p>
+        <pre class="code"><span class="k">oci ce cluster create-kubeconfig</span> <span class="k">--cluster-id</span> <span class="s">&lt;cluster_id&gt;</span> <span class="k">--region</span> <span class="s">&lt;region&gt;</span> <span class="k">--file</span> <span class="s">$HOME/.kube/config</span> <span class="k">--token-version</span> <span class="s">2.0.0</span> &amp;&amp; \
+<span class="k">kubectl get svc</span> omnigate-omnigate-http -n default -o json | <span class="k">jq</span> -r <span class="s">'.status.loadBalancer.ingress[]?.ip'</span> | <span class="k">grep</span> -Ev <span class="s">'^(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.)'</span></pre>
+        <p>That prints the app's real public IP — your URL is <code>http://&lt;ip&gt;:8080/</code>. (Cloud Shell already has <code>oci</code>, <code>kubectl</code>, and <code>jq</code> preinstalled.)</p>
+        </div>
       </div>
     </div>
   </div>
@@ -264,7 +269,7 @@
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
   <span class="k">--config-source</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.4/omnigateokestack-v1.1.4.zip</span> \
   <span class="k">--display-name</span> <span class="s">omnigateokestack</span> \
-  <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_password":"&lt;plain-text-password&gt;"}'</span></pre>
+  <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_password":"&lt;plain-text-password&gt;","omnigate_llm_api_key":"&lt;anthropic-api-key&gt;"}'</span></pre>
       </div>
       <div>
         <div class="stepcard" style="border:none; padding:0;">
