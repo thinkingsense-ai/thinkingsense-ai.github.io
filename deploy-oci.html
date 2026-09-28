@@ -263,11 +263,14 @@
       <div>
         <div class="stepcard" style="border:none; padding:0;">
           <div class="n">1</div>
-          <div><h3>Create the stack</h3><p>Pulls the same published Terraform config.</p></div>
+          <div><h3>Create the stack</h3><p>The CLI's <code>--config-source</code> only accepts a local zip, not a URL directly (confirmed live: passing the release URL straight through fails with "Config source does not exist") — download it first.</p></div>
         </div>
-        <pre class="code"><span class="k">oci resource-manager stack create</span> \
+        <pre class="code"><span class="k">curl</span> -sL -o omnigateokestack.zip \
+  <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.5/omnigateokestack-v1.1.5.zip</span>
+
+<span class="k">oci resource-manager stack create</span> \
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
-  <span class="k">--config-source</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.5/omnigateokestack-v1.1.5.zip</span> \
+  <span class="k">--config-source</span> <span class="s">omnigateokestack.zip</span> \
   <span class="k">--display-name</span> <span class="s">omnigateokestack</span> \
   <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_password":"&lt;plain-text-password&gt;","omnigate_llm_api_key":"&lt;anthropic-api-key&gt;"}'</span></pre>
       </div>
@@ -287,6 +290,48 @@
       <code>omnigate_app_password</code> is hashed automatically during Apply, using the deployed
       image's own hashing utility. No local Docker, no manual hash generation. Full details in
       the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateokestack/README.md" target="_blank" rel="noopener">stack's README</a>.
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="manage">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">After it's deployed</div>
+      <h2>Check on it, or take it down</h2>
+    </div>
+    <p class="section-sub">There's no need to hunt for individual resources here — a Resource
+      Manager stack tracks everything it created (cluster, node pool, network, Helm release) the
+      same way a CloudFormation stack does on AWS. Both commands below need the stack's own
+      <code>cluster_id</code> and OCID from its <b>Outputs</b> tab.</p>
+
+    <div class="grid2">
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>Check on it</h3><p>Fetches credentials, then checks the pods/Services directly — useful if <code>ask_app_url</code> still shows <code>&lt;pending-lb-ip&gt;</code> (see the note above) or you want to confirm health before opening the app.</p></div>
+        </div>
+        <pre class="code"><span class="k">oci ce cluster create-kubeconfig</span> \
+  <span class="k">--cluster-id</span> <span class="s">&lt;cluster_id&gt;</span> <span class="k">--region</span> <span class="s">&lt;region&gt;</span> \
+  <span class="k">--file</span> <span class="s">$HOME/.kube/config</span> <span class="k">--token-version</span> <span class="s">2.0.0</span>
+
+<span class="k">kubectl get pods</span> -n default
+<span class="k">kubectl get svc</span> omnigate-omnigate-http -n default</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Both pods should read <code>1/1 Running</code>; the Service's <code>EXTERNAL-IP</code> column has the same public IP the Cloud Shell command above resolves.</p>
+      </div>
+      <div>
+        <div class="stepcard" style="border:none; padding:0;">
+          <div class="n">→</div>
+          <div><h3>Tear it down</h3><p>Destroys the Terraform-managed resources first, then removes the stack record itself — the Console's <b>Terraform Actions → Destroy</b> does the first step only, so the CLI is the complete two-step version of that.</p></div>
+        </div>
+        <pre class="code"><span class="k">oci resource-manager job create-destroy-job</span> \
+  <span class="k">--stack-id</span> <span class="s">&lt;stack-ocid&gt;</span> \
+  <span class="k">--execution-plan-strategy</span> AUTO_APPROVED
+
+<span class="k">oci resource-manager stack delete</span> \
+  <span class="k">--stack-id</span> <span class="s">&lt;stack-ocid&gt;</span> <span class="k">--force</span></pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Wait for the destroy job to reach <code>SUCCEEDED</code> before deleting the stack record — <code>oci resource-manager job get --job-id &lt;job-ocid&gt;</code> polls it.</p>
+      </div>
     </div>
   </div>
 </section>
