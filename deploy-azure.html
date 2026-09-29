@@ -243,18 +243,10 @@
     <p style="font-size:13px; color:var(--ink-faint); margin-top:14px">Node count and storage sizes are all adjustable in the wizard if your subscription has more headroom — or less.</p>
 
     <div class="callout" style="margin-top:24px">
-      <b>Clean-room validated end to end on a real Azure subscription</b> (<code>westus2</code>).
-      Getting there surfaced nine real, live-confirmed bugs — a Service CIDR overlap, a missing
-      <code>curl</code>/<code>openssl</code> in the deployment-script container, OCIR rejecting
-      image pulls from a Free Tier tenancy, a silently-disabled login from a malformed user-record
-      format, malformed deployment-script output JSON, <code>kubectl</code> never actually being
-      installed, a Portal CORS failure on the very first real click (GitHub release-asset URLs
-      don't send an <code>Access-Control-Allow-Origin</code> header, which the Portal's wizard
-      needs), and — on the very next real click after that — the Portal wizard's own field
-      defaults silently drifting from the template's defaults (the wizard populates from
-      <code>createUiDefinition.json</code>'s own default, not the ARM template's, so a value-only
-      fix in one place invisibly missed the other) — all already fixed. See the
-      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list. Two more hardenings since: the wizard now forces "Create new" resource group — confirmed live, a real user's attempt to target the pre-existing <code>NetworkWatcherRG</code> through the Portal wizard was refused — and <code>imageTag</code> is now pinned to a real release (<code>v0.8.0</code>) instead of <code>:latest</code> — the registry's <code>:latest</code> tag had silently frozen at old content for two releases and has since been deleted outright, which would have broken every fresh deploy using the old default.
+      <b>Clean-room validated end to end on a real Azure subscription</b> (<code>westus2</code>) —
+      live traffic in, real questions answered out. Full engineering changelog, including
+      everything found and fixed along the way, is in the
+      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>.
     </div>
   </div>
 </section>
