@@ -254,7 +254,7 @@
       defaults silently drifting from the template's defaults (the wizard populates from
       <code>createUiDefinition.json</code>'s own default, not the ARM template's, so a value-only
       fix in one place invisibly missed the other) — all already fixed. See the
-      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list. Two more hardenings since: the wizard now forces "Create new" resource group (a real deploy once targeted a pre-existing shared one), and <code>imageTag</code> is now pinned to a real release (<code>v0.8.0</code>) instead of <code>:latest</code> — the registry's <code>:latest</code> tag had silently frozen at old content for two releases and has since been deleted outright, which would have broken every fresh deploy using the old default.
+      <a href="https://github.com/thinkingsense-ai/Docker/blob/main/resource-manager/omnigateaksstack/README.md" target="_blank" rel="noopener">stack's README</a>'s "Clean-room validated" section for the full list. Two more hardenings since: the wizard now forces "Create new" resource group — confirmed live, a real user's attempt to target the pre-existing <code>NetworkWatcherRG</code> through the Portal wizard was refused — and <code>imageTag</code> is now pinned to a real release (<code>v0.8.0</code>) instead of <code>:latest</code> — the registry's <code>:latest</code> tag had silently frozen at old content for two releases and has since been deleted outright, which would have broken every fresh deploy using the old default.
     </div>
   </div>
 </section>
