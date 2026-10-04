@@ -294,6 +294,43 @@
  </ul>
  <figure class="g-fig"><img src="img/admin-users.jpg" alt="Users and access page with a business user set to single sign-on"><figcaption>Settings → Users &amp; access → Business users.</figcaption></figure>
 
+ <h3 id="sso-providers">Provider recipes</h3><p>Register both redirect URIs with the provider: <code>https://&lt;host&gt;/auth/oidc/callback</code> and <code>https://&lt;host&gt;/app/oidc/callback</code>. These were checked against ThinkingSense with a test provider, not live vendor tenants — confirm menu names in the vendor docs.</p>
+<h4>Okta</h4>
+<ol><li>Applications → Create App Integration → <strong>OIDC – Web Application</strong>. Add the two redirect URIs.</li><li>Assign the people or groups who may sign in.</li><li>To use groups: Security → API → your authorization server → Claims → add a <code>groups</code> claim (ID token, &quot;Matches regex&quot; <code>.*</code> or a filter for your admin groups).</li></ol>
+<pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://your-org.okta.com/oauth2/default
+OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;client id&gt;
+OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;client secret&gt;
+OMNIGATE_AUTH_OIDC_SCOPES=&quot;openid profile email groups&quot;
+OMNIGATE_AUTH_OIDC_ADMIN_GROUPS=ThinkingSense-Admins</code></pre>
+<h4>Microsoft Entra ID</h4>
+<ol><li>App registrations → New registration, platform <strong>Web</strong>, add the two redirect URIs. Create a client secret.</li><li>Token configuration → add optional claim <strong>email</strong> (ID token). For groups, add a <strong>groups</strong> claim. Entra sends group <strong>object IDs</strong>, not names, so list the object IDs in <code>ADMIN_GROUPS</code>. Tenants where users belong to many groups may need &quot;groups assigned to the application&quot; to avoid claim overage.</li><li>Enterprise applications → assign users/groups.</li></ol>
+<pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://login.microsoftonline.com/&lt;tenant-id&gt;/v2.0
+OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;application (client) id&gt;
+OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;secret value&gt;
+OMNIGATE_AUTH_OIDC_ADMIN_GROUPS=&lt;group object id&gt;</code></pre>
+<h4>AWS (Amazon Cognito)</h4>
+<p>AWS IAM Identity Center issues SAML assertions to applications, so put an Amazon Cognito user pool in front: add Identity Center (or your corporate IdP) to the pool as a federated provider, then register ThinkingSense as an app client.</p>
+<ol><li>Cognito → user pool → App clients → create a <strong>confidential</strong> client (with secret). Add the two callback URLs and the scopes <code>openid email profile</code>.</li><li>Create a group (for example <code>thinkingsense-admins</code>) and add admins; Cognito puts it in the <code>cognito:groups</code> claim.</li></ol>
+<pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://cognito-idp.&lt;region&gt;.amazonaws.com/&lt;user-pool-id&gt;
+OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;app client id&gt;
+OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;app client secret&gt;
+OMNIGATE_AUTH_OIDC_GROUPS_CLAIM=cognito:groups
+OMNIGATE_AUTH_OIDC_ADMIN_GROUPS=thinkingsense-admins</code></pre>
+<p>For machine access from AWS workloads, use <code>OMNIGATE_AUTH_API_TOKENS</code> rather than SSO.</p>
+<h4>Google Cloud (Google Workspace / Cloud Identity)</h4>
+<ol><li>APIs &amp; Services → Credentials → <strong>OAuth client ID</strong>, type Web application, add the two redirect URIs.</li><li>Consent screen: set it to <strong>Internal</strong> to limit sign-in to your Workspace domain.</li><li>Google&#x27;s ID token has no groups claim, so grant admin by email.</li></ol>
+<pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://accounts.google.com
+OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;client id&gt;.apps.googleusercontent.com
+OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;client secret&gt;
+OMNIGATE_AUTH_OIDC_ADMIN_USERS=alice@example.com,bob@example.com</code></pre>
+<p>If you need group-based roles on GCP, use Identity Platform or a Workspace SAML/OIDC bridge that emits a groups claim.</p>
+<h4>Oracle Cloud (OCI IAM identity domains)</h4>
+<ol><li>Identity &amp; Security → Domains → your domain → Integrated applications → Add application → <strong>Confidential application</strong>. Enable *Authorization code* as the grant type, add the two redirect URIs, and note the client ID and secret. Activate the application.</li><li>Use the domain URL as the issuer (it is shown on the domain page; the discovery document lives under it). Groups are sent when the <code>groups</code> scope or claim is enabled for the application.</li></ol>
+<pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://idcs-&lt;domain-id&gt;.identity.oraclecloud.com
+OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;client id&gt;
+OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;client secret&gt;
+OMNIGATE_AUTH_OIDC_ADMIN_USERS=alice@example.com</code></pre>
+<h4>Checking it worked</h4><p>Open <code>/admin/login</code>: there should be a &quot;Continue with &lt;provider&gt;&quot; button above the local form. If sign-in returns to the login page with an error, check that the issuer matches the provider&#x27;s <code>issuer</code> value exactly, both redirect URIs are registered, and the client secret is current.</p>
  <h3>The Ask app</h3>
  <p>Business users ask in plain English and watch each step: sources used, checks run, how sure the answer is. Answers cite the tables and documents they came from, and users only see what their group is allowed to.</p>
  <figure class="g-fig"><img src="img/ask-login.jpg" alt="Ask sign-in page with a single sign-on button"><figcaption>/login — the same provider button for business users.</figcaption></figure>
