@@ -294,7 +294,9 @@
  </ul>
  <figure class="g-fig"><img src="img/admin-users.jpg" alt="Users and access page with a business user set to single sign-on"><figcaption>Settings → Users &amp; access → Business users.</figcaption></figure>
 
- <h3 id="sso-providers">Provider recipes</h3><p>Register both redirect URIs with the provider: <code>https://&lt;host&gt;/auth/oidc/callback</code> and <code>https://&lt;host&gt;/app/oidc/callback</code>. These were checked against ThinkingSense with a test provider, not live vendor tenants — confirm menu names in the vendor docs.</p>
+ <h3 id="sso-workspaces">Workspaces from provider groups</h3>
+<p>The groups your provider sends in the ID token (the <code>groups</code> claim, or the claim named by <code>OMNIGATE_APP_OIDC_GROUPS_CLAIM</code>, for example <code>cognito:groups</code>) become the user's roles at sign-in. In Settings → Groups, a workspace can then admit everyone in a provider group with a role rule such as <code>access: { roles: ["Sales-Analysts"] }</code>. Member lists still work, and either is enough. The user must still be created as a single sign-on business user, and role changes in the provider apply the next time they sign in.</p>
+<h3 id="sso-providers">Provider recipes</h3><p>Register both redirect URIs with the provider: <code>https://&lt;host&gt;/auth/oidc/callback</code> and <code>https://&lt;host&gt;/app/oidc/callback</code>. These were checked against ThinkingSense with a test provider, not live vendor tenants — confirm menu names in the vendor docs.</p>
 <h4>Okta</h4>
 <ol><li>Applications → Create App Integration → <strong>OIDC – Web Application</strong>. Add the two redirect URIs.</li><li>Assign the people or groups who may sign in.</li><li>To use groups: Security → API → your authorization server → Claims → add a <code>groups</code> claim (ID token, &quot;Matches regex&quot; <code>.*</code> or a filter for your admin groups).</li></ol>
 <pre style="background:var(--code-bg);color:var(--code-ink);padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px"><code style="background:none;border:0">OMNIGATE_AUTH_OIDC_ISSUER=https://your-org.okta.com/oauth2/default
