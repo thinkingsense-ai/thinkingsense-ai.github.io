@@ -263,7 +263,7 @@
       <div>
         <div class="stepcard" style="border:none; padding:0;">
           <div class="n">1</div>
-          <div><h3>Create the stack</h3><p>The CLI's <code>--config-source</code> only accepts a local zip, not a URL directly (confirmed live: passing the release URL straight through fails with "Config source does not exist") — download it first.</p></div>
+          <div><h3>Create the stack</h3><p>The CLI's <code>--config-source</code> only accepts a local zip, not a URL directly (confirmed live: passing the release URL straight through fails with "Config source does not exist") — download it first. The zip unpacks to an <code>omnigateokestack/</code> folder, so <code>--working-directory</code> is needed (without it: "Terraform config file is missing in zip file").</p></div>
         </div>
         <pre class="code"><span class="k">curl</span> -sL -o omnigateokestack.zip \
   <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.6/omnigateokestack-v1.1.6.zip</span>
@@ -271,6 +271,7 @@
 <span class="k">oci resource-manager stack create</span> \
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
   <span class="k">--config-source</span> <span class="s">omnigateokestack.zip</span> \
+  <span class="k">--working-directory</span> <span class="s">omnigateokestack</span> \
   <span class="k">--display-name</span> <span class="s">omnigateokestack</span> \
   <span class="k">--variables</span> <span class="s">'{"compartment_ocid":"&lt;ocid&gt;","region":"&lt;region&gt;","omnigate_app_password":"&lt;plain-text-password&gt;","omnigate_llm_api_key":"&lt;anthropic-api-key&gt;"}'</span></pre>
       </div>
