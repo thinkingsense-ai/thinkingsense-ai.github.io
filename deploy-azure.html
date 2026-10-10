@@ -222,6 +222,20 @@
   </div>
 </section>
 
+<section class="rule-top" id="access">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Before you share the link</div>
+      <h2>Signing in, and who can reach it</h2>
+    </div>
+    <p class="section-sub">Two logins, both set at deploy time. Business users sign in to the Ask app with the login you chose. The
+      admin console (<code>/admin</code>) and the admin API need a separate <b>admin login</b> (user <code>admin</code>), so they are never open to the internet.
+      In the wizard, <b>Admin console password</b> is optional (blank = the Ask-app password) and <b>Restrict access to these addresses</b> takes a comma-separated list such as <code>203.0.113.7/32</code>.</p>
+    <p class="section-sub">Leave the address list blank for a first try-out and the app is reachable from anywhere. Once you connect real data, set it to your
+      own address or network (Search for your public IP and enter it followed by <code>/32</code>.): the Ask app's agent endpoint answers questions without a login using your Anthropic key, and we are fixing that in the app itself.</p>
+  </div>
+</section>
+
 <section class="rule-top" id="prereqs">
   <div class="wrap">
     <div class="section-head">
