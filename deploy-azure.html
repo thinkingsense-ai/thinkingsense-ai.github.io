@@ -158,10 +158,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.5%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.5%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
+      <a href="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.6%2Fresource-manager%2Fomnigateaksstack%2Fazuredeploy.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fthinkingsense-ai%2FDocker%2Faks-stack-v1.0.6%2Fresource-manager%2Fomnigateaksstack%2FcreateUiDefinition.json" target="_blank" rel="noopener">
         <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.5" target="_blank" rel="noopener">Download the template ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.6" target="_blank" rel="noopener">Download the template ↓</a>
     </div>
     <p class="hero-note">Opens the Azure Portal's Custom Deployment wizard, pre-loaded from our
       published Bicep/ARM template. You'll need your own Azure subscription — a
@@ -222,6 +222,20 @@
   </div>
 </section>
 
+<section class="rule-top" id="access">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Before you share the link</div>
+      <h2>Signing in, and who can reach it</h2>
+    </div>
+    <p class="section-sub">Two logins, both set at deploy time. Business users sign in to the Ask app with the login you chose. The
+      admin console (<code>/admin</code>) and the admin API need a separate <b>admin login</b> (user <code>admin</code>), so they are never open to the internet.
+      In the wizard, <b>Admin console password</b> is optional (blank = the Ask-app password) and <b>Restrict access to these addresses</b> takes a comma-separated list such as <code>203.0.113.7/32</code>.</p>
+    <p class="section-sub">Leave the address list blank for a first try-out and the app is reachable from anywhere. Once you connect real data, set it to your
+      own address or network (Search for your public IP and enter it followed by <code>/32</code>.): the Ask app's agent endpoint answers questions without a login using your Anthropic key, and we are fixing that in the app itself.</p>
+  </div>
+</section>
+
 <section class="rule-top" id="prereqs">
   <div class="wrap">
     <div class="section-head">
@@ -277,7 +291,7 @@
         </div>
         <pre class="code"><span class="k">az deployment group create</span> \
   <span class="k">--resource-group</span> <span class="s">omnigate-aks-rg</span> \
-  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.5/azuredeploy.json</span> \
+  <span class="k">--template-uri</span> <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/aks-stack-v1.0.6/azuredeploy.json</span> \
   <span class="k">--parameters</span> <span class="s">appPassword='&lt;plain-text-password&gt;' llmApiKey='&lt;anthropic-api-key&gt;'</span></pre>
       </div>
     </div>
@@ -339,7 +353,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.5">AKS Bicep/ARM stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/aks-stack-v1.0.6">AKS Bicep/ARM stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
