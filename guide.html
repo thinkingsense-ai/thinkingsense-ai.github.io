@@ -294,7 +294,13 @@
  </ul>
  <figure class="g-fig"><img src="img/admin-users.jpg" alt="Users and access page with a business user set to single sign-on"><figcaption>Settings → Users &amp; access → Business users.</figcaption></figure>
 
- <h3 id="sso-replicas">Running several replicas</h3>
+ <h3 id="licence">Licence for the free image</h3>
+<p>The free image can run as the commercial edition with a signed licence: set <code>OMNIGATE_LICENSE</code> to the token, or mount it at <code>/opt/omnigate/license</code>. It is verified offline and re-checked every minute. An expired or invalid licence never stops the server: it stays on the free edition, and the Overview page and <code>GET /api/config</code> show the customer, the expiry and the reason. Added in 0.10.5.</p>
+<h3 id="agent-mcp">Securing /mcp/agent</h3>
+<p>When admin sign-in is on and no end-user identity provider is configured, <code>/mcp/agent</code> requires an admin API token (<code>Authorization: Bearer ...</code>). Set <code>OMNIGATE_AGENT_MCP_ALLOW_ANONYMOUS=true</code> to restore anonymous access, or <code>OMNIGATE_AGENT_MCP_ENABLED=false</code> to switch the endpoint off. Changed in 0.10.5.</p>
+<h3 id="large-joins">Large joins and memory</h3>
+<p>Aggregates over a join are folded in as rows stream past, in memory and in disk-spill mode, so a join of millions of rows no longer holds the joined rows. A plain join stops reading once it has the rows that can be returned. The disk-spill threshold scales with the heap, and the heap guard now also stops a runaway <code>/api/query</code> statement. Set <code>OMNIGATE_PARALLEL_JOIN_STREAM_AGGREGATE=false</code> to restore the previous behaviour. Changed in 0.10.5.</p>
+<h3 id="sso-replicas">Running several replicas</h3>
 <p>An in-flight sign-in is carried in a signed browser cookie, so the provider's redirect can return to any replica and no sticky load balancing is needed. Set the <strong>same</strong> <code>OMNIGATE_OIDC_STATE_SECRET</code> (any long random string) on every replica; without it each replica signs with its own key and a login that returns to a different replica fails. A single node needs no setting. Fixed in 0.10.4.</p>
 <h3 id="sso-workspaces">Workspaces from provider groups</h3>
 <p>The groups your provider sends in the ID token (the <code>groups</code> claim, or the claim named by <code>OMNIGATE_APP_OIDC_GROUPS_CLAIM</code>, for example <code>cognito:groups</code>) become the user's roles at sign-in. In Settings → Groups, a workspace can then admit everyone in a provider group with a role rule such as <code>access: { roles: ["Sales-Analysts"] }</code>. Member lists still work, and either is enough. The user must still be created as a single sign-on business user, and role changes in the provider apply the next time they sign in.</p>
