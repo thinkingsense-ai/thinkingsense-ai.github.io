@@ -74,6 +74,9 @@
   .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
   .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
   .navdrop-menu a:hover{ background:var(--panel-2); }
+  .brandwrap{ display:flex; align-items:center; gap:10px; flex:none; }
+  .brand-docs{ font-size:12px; font-weight:650; color:var(--ink-dim); text-decoration:none; border:1px solid var(--rule-strong); border-radius:6px; padding:2px 8px; }
+  .brand-docs:hover{ color:var(--accent); border-color:var(--accent); }
   .navcta{ display:flex; gap:10px; flex:none; }
   @media (max-width:860px){
     .navlinks{ display:none; }
@@ -219,19 +222,31 @@
 
 <nav class="top">
   <div class="inner">
+    <div class="brandwrap">
+      <a class="brand" href="https://thinkingsense.ai" title="ThinkingSense home" style="text-decoration:none; color:var(--ink);">
+        <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+        <span>ThinkingSense</span>
+      </a>
+      <a class="brand-docs" href="index.html">Docs</a>
+    </div>
     <div class="navlinks">
-      <a href="#use-cases">Use cases</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#ontology-generation">Ontology</a>
-      <a href="#inside">What's inside</a>
-      <a href="#connectors">Connectors</a>
-      <a href="#capabilities">What's new</a>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Product <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="#use-cases">Use cases</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#ontology-generation">Ontology</a>
+          <a href="#inside">What's inside</a>
+          <a href="#connectors">Connectors</a>
+          <a href="#capabilities">What's new</a>
+        </div>
+      </div>
       <a href="#demo">Live demo</a>
-      <a href="#docs">Docs &amp; setup</a>
       <a href="guide.html">Admin &amp; Ask guide</a>
       <div class="navdrop">
-        <button class="navdrop-trigger" aria-haspopup="true">Deploy to Cloud <span class="caret">▾</span></button>
+        <button class="navdrop-trigger" aria-haspopup="true">Deploy <span class="caret">▾</span></button>
         <div class="navdrop-menu">
+          <a href="deploy-docker.html">Docker image</a>
           <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
           <a href="deploy-aws.html">AWS (EKS)</a>
           <a href="deploy-gcp.html">Google Cloud (GKE)</a>
@@ -241,8 +256,7 @@
       <a href="#editions">Pricing</a>
     </div>
     <div class="navcta">
-      <a class="btn small" href="https://github.com/thinkingsense-ai/Docker">Docker image</a>
-      <a class="btn small primary" href="#docs">Quick start</a>
+      <a class="btn small primary" href="deploy-docker.html">Quick start</a>
     </div>
   </div>
 </nav>
@@ -263,7 +277,7 @@
     <div class="hero-ctas">
       <a class="btn primary" href="#docs">Get started →</a>
       <a class="btn" href="#demo">Try the click-through demo</a>
-      <a class="btn" href="https://github.com/thinkingsense-ai/Docker">Get the Docker image</a>
+      <a class="btn" href="deploy-docker.html">Get the Docker image</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><div class="v">4</div><div class="l">wire protocols</div></div>
@@ -1318,7 +1332,7 @@ open http://localhost:8080/</pre>
       <div>
         <h4>Get it</h4>
         <ul>
-          <li><a href="https://github.com/thinkingsense-ai/Docker">Free-edition Docker image</a></li>
+          <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
           <li><a href="deploy-oci.html">Deploy to Oracle Cloud</a></li>
           <li><a href="deploy-aws.html">Deploy to AWS</a></li>
           <li><a href="deploy-azure.html">Deploy to Azure</a></li>
