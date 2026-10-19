@@ -245,7 +245,7 @@
       </div>
       <div class="stepcard">
         <div class="n">6</div>
-        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>AskAppUrl</code> — open it, sign in with the login you set in step 3, and ask a real question.</p></div>
+        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>AskAppUrl</code> — open it, sign in with the login you set in step 3, and ask a real question.</p><p>It opens on HTTPS. The first time, your browser will say the certificate is not trusted, because the stack makes its own: choose <b>Advanced</b>, then continue to the site. The connection is encrypted either way; to remove the warning, give the stack your own certificate in the deploy form (<b>Your own certificate</b>).</p></div>
       </div>
     </div>
   </div>
@@ -262,6 +262,7 @@
       In the parameters, <b>Admin console password</b> is optional (blank = the Ask-app password) and <b>Restrict access to these addresses</b> takes a comma-separated list such as <code>203.0.113.7/32</code>.</p>
     <p class="section-sub">Leave the address list blank for a first try-out and the app is reachable from anywhere. Once you connect real data, set it to your
       own address or network (Search for your public IP and enter it followed by <code>/32</code>.): the Ask app's agent endpoint answers questions without a login using your Anthropic key, and we are fixing that in the app itself.</p>
+    <p class="section-sub"><b>HTTPS is on by default</b> and plain HTTP is closed, so passwords and answers are encrypted in transit. With no certificate supplied the stack makes a self-signed one (hence the browser warning above); to use your own, paste a PKCS12 file (base64) and its password into the deploy form and the warning goes away, provided you open the site by the name the certificate is for.</p>
   </div>
 </section>
 

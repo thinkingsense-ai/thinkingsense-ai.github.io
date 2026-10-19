@@ -249,7 +249,7 @@
       </div>
       <div class="stepcard">
         <div class="n">6</div>
-        <div><h3>Open the Ask app</h3><p>The script prints the <code>kubectl</code> credentials command at the end. Run <code>kubectl get svc omnigate-omnigate-http</code>, open the LoadBalancer IP on port 8080, and sign in with the login you set in step 3.</p></div>
+        <div><h3>Open the Ask app</h3><p>The script prints the <code>kubectl</code> credentials command at the end. Run <code>kubectl get svc omnigate-omnigate-http</code>, open <code>https://&lt;that IP&gt;/</code>, and sign in with the login you set in step 3.</p><p>It opens on HTTPS. The first time, your browser will say the certificate is not trusted, because the stack makes its own: choose <b>Advanced</b>, then continue to the site. The connection is encrypted either way; to remove the warning, give the stack your own certificate in the deploy form (<b>Your own certificate</b>).</p></div>
       </div>
     </div>
   </div>
@@ -266,6 +266,7 @@
       In <code>terraform.tfvars</code>, <code>omnigate_admin_password</code> is optional (blank = the Ask-app password) and <code>allowed_client_cidrs = "203.0.113.7/32"</code> limits who can connect; run <code>terraform apply</code> again after changing it.</p>
     <p class="section-sub">Leave the address list blank for a first try-out and the app is reachable from anywhere. Once you connect real data, set it to your
       own address or network (Search for your public IP and enter it followed by <code>/32</code>.): the Ask app's agent endpoint answers questions without a login using your Anthropic key, and we are fixing that in the app itself.</p>
+    <p class="section-sub"><b>HTTPS is on by default</b> and plain HTTP is closed, so passwords and answers are encrypted in transit. With no certificate supplied the stack makes a self-signed one (hence the browser warning above); to use your own, paste a PKCS12 file (base64) and its password into the deploy form and the warning goes away, provided you open the site by the name the certificate is for.</p>
   </div>
 </section>
 
@@ -361,7 +362,7 @@
 
 <span class="k">kubectl get pods</span> -n default
 <span class="k">kubectl get svc</span> omnigate-omnigate-http -n default</pre>
-        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">If <code>EXTERNAL-IP</code> isn't <code>&lt;pending&gt;</code>, that's your Ask app on port 8080.</p>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">If <code>EXTERNAL-IP</code> isn't <code>&lt;pending&gt;</code>, that's your Ask app, at <code>https://&lt;that IP&gt;/</code>.</p>
       </div>
       <div>
         <div class="stepcard" style="border:none; padding:0;">
