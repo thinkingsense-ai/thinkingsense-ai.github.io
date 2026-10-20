@@ -188,10 +188,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.1.12%2Fomnigateokestack-v1.1.12.zip" target="_blank" rel="noopener">
+      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.1.13%2Fomnigateokestack-v1.1.13.zip" target="_blank" rel="noopener">
         <img src="https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg" alt="Deploy to Oracle Cloud">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.12" target="_blank" rel="noopener">Download the zip ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.13" target="_blank" rel="noopener">Download the zip ↓</a>
     </div>
     <p class="hero-note">Opens the OCI Console's Create Stack wizard, pre-loaded from our published
       Resource Manager stack. You'll need your own OCI tenancy — <a href="https://signup.oraclecloud.com/" target="_blank" rel="noopener">sign up for Always Free</a>
@@ -248,11 +248,11 @@
       </div>
       <div class="stepcard">
         <div class="n">6</div>
-        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>ask_app_url</code> — open it, sign in with the login you set in step 3, and ask a real question.</p>
+        <div><h3>Open the Ask app</h3><p>The stack's <b>Outputs</b> tab shows <code>ask_app_url</code> — open it, sign in with the login you set in step 3, and ask a real question.</p><p>It opens on HTTPS. The first time, your browser will say the certificate is not trusted, because the stack makes its own: choose <b>Advanced</b>, then continue to the site. The connection is encrypted either way; to remove the warning, give the stack your own certificate in the deploy form (<b>Your own certificate</b>).</p>
         <p>OCI's LoadBalancer IP assignment is asynchronous, so on a slow provision <code>ask_app_url</code> can still show <code>&lt;pending-lb-ip&gt;</code> a few minutes after Apply finishes. If so, open <b>Cloud Shell</b> (top-right of the Console) and run this, using the <code>cluster_id</code> and <code>region</code> from the same Outputs tab:</p>
         <pre class="code"><span class="k">oci ce cluster create-kubeconfig</span> <span class="k">--cluster-id</span> <span class="s">&lt;cluster_id&gt;</span> <span class="k">--region</span> <span class="s">&lt;region&gt;</span> <span class="k">--file</span> <span class="s">$HOME/.kube/config</span> <span class="k">--token-version</span> <span class="s">2.0.0</span> &amp;&amp; \
 <span class="k">kubectl get svc</span> omnigate-omnigate-http -n default -o json | <span class="k">jq</span> -r <span class="s">'.status.loadBalancer.ingress[]?.ip'</span> | <span class="k">grep</span> -Ev <span class="s">'^(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.)'</span></pre>
-        <p>That prints the app's real public IP — your URL is <code>http://&lt;ip&gt;:8080/</code>. (Cloud Shell already has <code>oci</code>, <code>kubectl</code>, and <code>jq</code> preinstalled.)</p>
+        <p>That prints the app's real public IP — your URL is <code>https://&lt;ip&gt;/</code>. (Cloud Shell already has <code>oci</code>, <code>kubectl</code>, and <code>jq</code> preinstalled.)</p>
         </div>
       </div>
     </div>
@@ -270,6 +270,7 @@
       In the wizard, <b>Admin console password</b> is optional (leave it blank to use the Ask-app password) and <b>Restrict access to these addresses</b> takes a comma-separated list such as <code>203.0.113.7/32</code>.</p>
     <p class="section-sub">Leave the address list blank for a first try-out and the app is reachable from anywhere. Once you connect real data, set it to your
       own address or network (Google your public IP and enter it followed by <code>/32</code>.): the Ask app's agent endpoint answers questions without a login using your Anthropic key, and we are fixing that in the app itself.</p>
+    <p class="section-sub"><b>HTTPS is on by default</b> and plain HTTP is closed, so passwords and answers are encrypted in transit. With no certificate supplied the stack makes a self-signed one (hence the browser warning above); to use your own, paste a PKCS12 file (base64) and its password into the deploy form and the warning goes away, provided you open the site by the name the certificate is for.</p>
   </div>
 </section>
 
@@ -313,7 +314,7 @@
           <div><h3>Create the stack</h3><p>The CLI's <code>--config-source</code> only accepts a local zip, not a URL directly (confirmed live: passing the release URL straight through fails with "Config source does not exist") — download it first. The zip unpacks to an <code>omnigateokestack/</code> folder, so <code>--working-directory</code> is needed (without it: "Terraform config file is missing in zip file").</p></div>
         </div>
         <pre class="code"><span class="k">curl</span> -sL -o omnigateokestack.zip \
-  <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.12/omnigateokestack-v1.1.12.zip</span>
+  <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.13/omnigateokestack-v1.1.13.zip</span>
 
 <span class="k">oci resource-manager stack create</span> \
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
@@ -398,7 +399,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.12">OKE Resource Manager stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.13">OKE Resource Manager stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
