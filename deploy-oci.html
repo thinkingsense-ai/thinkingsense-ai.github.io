@@ -188,10 +188,10 @@
       browser. Nothing to build, nothing to push: the stack pulls a pre-built image from our own
       public registry.</p>
     <div class="hero-ctas" id="deploy">
-      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.1.12%2Fomnigateokestack-v1.1.12.zip" target="_blank" rel="noopener">
+      <a href="https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https%3A%2F%2Fgithub.com%2Fthinkingsense-ai%2FDocker%2Freleases%2Fdownload%2Foke-stack-v1.1.13%2Fomnigateokestack-v1.1.13.zip" target="_blank" rel="noopener">
         <img src="https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg" alt="Deploy to Oracle Cloud">
       </a>
-      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.12" target="_blank" rel="noopener">Download the zip ↓</a>
+      <a class="btn large" href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.13" target="_blank" rel="noopener">Download the zip ↓</a>
     </div>
     <p class="hero-note">Opens the OCI Console's Create Stack wizard, pre-loaded from our published
       Resource Manager stack. You'll need your own OCI tenancy — <a href="https://signup.oraclecloud.com/" target="_blank" rel="noopener">sign up for Always Free</a>
@@ -314,7 +314,7 @@
           <div><h3>Create the stack</h3><p>The CLI's <code>--config-source</code> only accepts a local zip, not a URL directly (confirmed live: passing the release URL straight through fails with "Config source does not exist") — download it first. The zip unpacks to an <code>omnigateokestack/</code> folder, so <code>--working-directory</code> is needed (without it: "Terraform config file is missing in zip file").</p></div>
         </div>
         <pre class="code"><span class="k">curl</span> -sL -o omnigateokestack.zip \
-  <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.12/omnigateokestack-v1.1.12.zip</span>
+  <span class="s">https://github.com/thinkingsense-ai/Docker/releases/download/oke-stack-v1.1.13/omnigateokestack-v1.1.13.zip</span>
 
 <span class="k">oci resource-manager stack create</span> \
   <span class="k">--compartment-id</span> <span class="s">&lt;compartment-ocid&gt;</span> \
@@ -399,7 +399,7 @@
         <h4>Get it</h4>
         <ul>
           <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.12">OKE Resource Manager stack</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker/releases/tag/oke-stack-v1.1.13">OKE Resource Manager stack</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
