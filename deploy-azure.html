@@ -287,6 +287,7 @@
         </tbody>
       </table>
     </div>
+    <p style="font-size:14px; margin-top:14px"><b>New subscription?</b> A new Azure subscription often starts with <b>zero</b> quota for the Ampere (ARM) VM families, and the deployment then stops at Azure's pre-check with <code>InsufficientVCPUQuota</code> before anything is created. Before you deploy, check with <code>az vm list-usage --location &lt;region&gt; --query "[?name.value=='standardDPSv5Family']" -o table</code>. If the limit is under 4, request an increase for <i>Standard DPSv5 Family vCPUs</i> in your region (Portal: Subscriptions, Usage + quotas). It is free; approval can take longer if it goes through a support request.</p>
     <p style="font-size:13px; color:var(--ink-faint); margin-top:14px">Node count and storage sizes are all adjustable in the wizard if your subscription has more headroom — or less.</p>
 
     <div class="callout" style="margin-top:24px">
