@@ -306,6 +306,8 @@ column_grants:
       <tr><td><b>Keep tagged columns out of prompts</b></td><td><code>OMNIGATE_LLM_EGRESS_TAGS=pii,secret</code> withholds the values of tagged columns whatever the source.</td></tr>
       <tr><td><b>Redact personal data</b></td><td><code>OMNIGATE_LLM_REDACT_PII=true</code> replaces e-mail addresses, social security numbers, card numbers, IBANs and phone numbers in what is sent.</td></tr>
       <tr><td><b>Hostile text in data cannot give orders</b></td><td>Schema comments, sample values and result rows are framed as data, not instructions. An answer that appears to obey instructions found in the data, or that quotes the framing back, is cleaned or withheld before anyone reads it.</td></tr>
+      <tr><td><b>Documents follow permissions</b></td><td>Ask, Deep Analysis, embedded chat and tool resolution all retrieve documents through one search that drops what the caller may not read before a model or a report sees it. Content from systems with per-person permissions (mail, chat, SharePoint, Confluence, Teams, Google Drive) is quarantined, visible to nobody, until the source says who may read it, because ThinkingSense does not yet read those systems' own permission lists. Set <code>open: true</code> on a source that really is for everyone.</td></tr>
+      <tr><td><b>Investigations belong to their owner</b></td><td>Deep Analysis revise, approve and run need the person who proposed the investigation, in the workspace it was made in. Someone else's id answers "no investigation", and one approval starts exactly one run.</td></tr>
       <tr><td><b>Read-only by default</b></td><td>SQL written by a model, an agent or a question must be a single read-only query, runs in a read-only database session, and cannot call functions with side effects or file access.</td></tr>
     </tbody></table>
   </div>
@@ -323,7 +325,7 @@ column_grants:
       <tr><td><b>Snowflake</b></td><td>Yes</td><td>The session switches to the user's mapped role (<code>snowflake_role</code>), with session variables and a query tag naming the user</td></tr>
       <tr><td><b>Other SQL databases</b></td><td>Yes</td><td>Gateway rules only</td></tr>
       <tr><td><b>Files, lakehouse, storage, SaaS and REST</b></td><td>Yes, on the SQL the gateway runs over them</td><td>Not applicable: a shared service account reaches them</td></tr>
-      <tr><td><b>MCP tools</b></td><td>Allow-list and approval per tool</td><td>A signed identity assertion</td></tr>
+      <tr><td><b>MCP tools</b></td><td>Tool-level governance: allow-list and approval per tool, every call logged</td><td>The tool is told who is asking in a signed assertion, but whether it limits what it returns to that person is up to the tool. A shared upstream account cannot be assumed to respect each person's permissions, so treat an MCP connector as governed at the tool, not filtered by user, until it proves otherwise.</td></tr>
     </tbody></table>
     <p style="margin-top:14px; color:var(--ink-dim); font-size:14.5px">The database's rules run <em>in addition to</em> the gateway's, never instead. Give the account ThinkingSense uses <code>SELECT</code> only: at start-up, ThinkingSense warns when a PostgreSQL or MySQL service account can do more than read.</p>
   </div>
@@ -358,6 +360,7 @@ column_grants:
   <div class="wrap">
     <div class="section-head"><div class="kicker">Hardening</div><h2>Safe settings, together</h2></div>
     <p class="section-sub">Set <code>OMNIGATE_SECURITY_PROFILE=strict</code> to turn on the stricter choices at once. The Docker and Kubernetes stacks set it for you.</p>
+    <p class="section-sub" style="margin-top:10px"><b style="color:var(--ink)">See what is actually on.</b> Several protections are settings, not defaults, so a feature list does not say what your installation has. <b>Settings &gt; Security</b> in the console shows each control as On, Partly or Off, how to turn on what is not, and for every data source its classification, whether the database receives the end user, and what a model may be sent from it. The deployment check will not call an installation production ready while a critical control is missing: no sign-in (or only the generated administrator), the shared development login for SQL tools, or stored settings that are not encrypted.</p>
     <table class="sum"><thead><tr><th>In the strict profile</th><th>Effect</th></tr></thead><tbody>
       <tr><td><b>Deny unlisted tables</b></td><td>A table no policy rule covers is refused.</td></tr>
       <tr><td><b>Strict column check</b></td><td>A reference to a column the catalog does not know is refused.</td></tr>
