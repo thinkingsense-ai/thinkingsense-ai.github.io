@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Security posture — ThinkingSense</title>
-<meta name="description" content="What ThinkingSense enforces for data security today, the gaps that remain, and what closes them, with an SVG of where each control sits across every kind of data source.">
+<title>Security — ThinkingSense</title>
+<meta name="description" content="How ThinkingSense keeps data safe: sign-in, row and column rules that follow the person, what AI models may see, encryption, audit, and how to set each one up.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f1420'/%3E%3Cpolygon points='50,20 76,35 76,65 50,80 24,65 24,35' fill='none' stroke='%233d7fe8' stroke-width='6' stroke-linejoin='round'/%3E%3Cline x1='50' y1='20' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='76' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='24' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='20' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='76' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='24' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%232f5fd6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -197,7 +197,6 @@
       <a href="index.html#demo">Live demo</a>
       <a href="guide.html">Admin &amp; Ask guide</a>
       <a href="security.html" style="color:var(--accent)">Security</a>
-      <a href="security.html">Security</a>
       <div class="navdrop">
         <button class="navdrop-trigger" aria-haspopup="true">Deploy <span class="caret">▾</span></button>
         <div class="navdrop-menu">
@@ -210,172 +209,180 @@
       </div>
     </div>
     <div class="navcta">
-      <a class="btn small primary" href="#gaps">Read the gaps</a>
+      <a class="btn small primary" href="#demo">See it work</a>
     </div>
   </div>
 </nav>
 <section class="hero">
   <div class="wrap">
-    <div class="eyebrow">Security posture</div>
-    <h1>Data trust for questions, analytics and agents</h1>
-    <p class="lede">What ThinkingSense enforces today, what it does not yet, and what closes each gap. Written in October 2026 against app v0.10.11, from the code and from tests we ran against the real components.</p>
-    <div class="hero-ctas"><a class="btn primary large" href="#picture">See the picture</a><a class="btn large" href="#gaps">Jump to the gaps</a></div>
-    <div class="toc"><a href="#ask">The question</a><a href="#capabilities">Capabilities</a><a href="#gaps">Gaps</a><a href="#proof">Proof for G1</a><a href="#demo">See it work</a><a href="#plan">Plan</a><a href="#method">How this was checked</a></div>
+    <div class="eyebrow">Security</div>
+    <h1>Security for questions, analytics and agents</h1>
+    <p class="lede">Every question, API call, SQL tool and AI agent goes through one gateway. The same rules apply to all of them, whichever data source they reach, and they follow the person who is asking.</p>
+    <div class="hero-ctas"><a class="btn primary large" href="#how">How it works</a><a class="btn large" href="#demo">See it work</a></div>
+    <div class="toc"><a href="#how">How it works</a><a href="#identity">Sign-in</a><a href="#policy">Row and column rules</a><a href="#governance">Changing rules safely</a><a href="#ai">AI and your data</a><a href="#sources">Your databases</a><a href="#encryption">Encryption</a><a href="#audit">Audit</a><a href="#hardening">Hardening</a><a href="#demo">See it work</a><a href="#settings">Settings</a><a href="#report">Reporting</a></div>
   </div>
 </section>
 
-<section class="rule-top" id="picture">
+<section class="rule-top" id="how">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">The picture</div><h2>Where each control sits, source by source</h2></div>
-    <p class="section-sub">Every question, API call and agent tool call passes the same pipeline. The rules are enforced there for every source, and pushed into the database itself only for PostgreSQL and Oracle, and only when switched on.</p>
+    <div class="section-head"><div class="kicker">How it works</div><h2>One pipeline in front of every source</h2></div>
+    <p class="section-sub">A statement is checked as it passes through, not after the fact. Rules are written once and apply to people using the Ask app, SQL and BI tools, embedded apps and agents alike. Databases that can enforce security themselves also receive the end user, so the protection is in two places.</p>
     <figure class="diagram">
-      <img src="security-posture.svg" alt="ThinkingSense data security, from the people and agents who ask, through the gateway pipeline that authenticates, scopes, guards and applies row and column policy, to six kinds of data source. Row policy and the read-only guard are in place. Column policy covers SELECT star as well as named columns. Source-side identity is partial for PostgreSQL and Oracle and missing for other sources. Numbered gap badges G1 to G12 match the gap list on this page.">
-      <figcaption>Numbered badges match the gaps below. The picture is a summary of status, not of every control.</figcaption>
+      <img src="security-posture.svg" alt="How a question is protected: from the people and agents who ask, through the gateway pipeline that authenticates, scopes, guards and applies row and column policy, to six kinds of data source. Every statement passes the same checks whatever the source, and databases that can enforce security themselves also receive the end user.">
+      <figcaption>A question or statement passes sign-in, scoping, a read-only guard, row rules and column rules before it runs, and is logged afterwards.</figcaption>
     </figure>
-    <div class="legend-row"><span>Evidence for each row on this page:</span> <span class="tag tested">Tested</span> we ran it against the real component &nbsp; <span class="tag code">Code</span> read from the source &nbsp; <span class="tag docs">Docs</span> stated in the documentation, not re-checked</div>
+    <div class="grid3" style="margin-top:22px">
+      <div class="phase"><h3>Rules follow the person</h3><div class="when">Identity on every statement</div><ul><li>Who is asking, their roles and attributes (team, region, clearance) travel with each statement.</li><li>Policy is written against those attributes, not against logins.</li></ul></div>
+      <div class="phase"><h3>The model sees what the user may see</h3><div class="when">AI is not a side door</div><ul><li>Columns a user cannot read are left out of what the model is shown.</li><li>Whatever the model writes is checked again before it runs.</li></ul></div>
+      <div class="phase"><h3>Everything is on the record</h3><div class="when">Who asked, who changed what</div><ul><li>Access decisions and configuration changes are logged and can stream to your own tools.</li></ul></div>
+    </div>
   </div>
 </section>
 
-<section class="rule-top" id="ask">
+<section class="rule-top" id="identity">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">The question</div><h2>Deep data security, data semantics and NL2SQL, across all sources</h2></div>
-    <blockquote class="note">
-      <p>I just watched Juan's presentation at AIWorld on data trust (security). He talks about some new features for deep data security (formerly real application security), data semantics, and nl2sql. Hopefully you can provide these capabilities across all data sources.</p>
-      <cite>Andy</cite>
-    </blockquote>
-    <p class="section-sub" style="margin-bottom:20px">We have not seen the talk, so this is our reading of the note: access rules tied to the end user, enforced for people and for AI agents; shared business meaning that policy and AI can rely on; and natural-language questions that obey the rules. The honest summary: row rules and the AI-specific checks are strong and work on any source; column rules, identity at the source, and meaning-based policy are the work that remains.</p>
-    <div class="table-scroll"><table class="sum map">
-      <thead><tr><th>What the note asks for</th><th>What ThinkingSense does today</th><th>Across all sources?</th><th>What closes the gap</th></tr></thead>
-      <tbody>
-        <tr><td><b>Deep data security</b>: access rules tied to the end user, enforced for people and AI agents</td>
-            <td>Policy on user attributes, applied to every question, API call and agent tool: parser-based row filters that fail closed, column deny and mask. Optional PostgreSQL row-level security and Oracle VPD context.</td>
-            <td>Rows: yes, for any source the gateway can query. Columns: yes, including <code>SELECT *</code> (<a href="#g1">G1</a>, fixed). Inside the database: PostgreSQL and Oracle only, opt-in (<a href="#g3">G3</a>). Wire-protocol tools: logins carry a user's attributes (<a href="#g5">G5</a>).</td>
-            <td>Native identity now reaches PostgreSQL, Oracle, SQL Server, MySQL and Snowflake (<a href="#g3">G3</a>). Native identity for Databricks and BigQuery, and Oracle Deep Data Security grants.</td></tr>
-        <tr><td><b>Data semantics</b>: shared meaning policy and AI can use</td>
-            <td>A business catalog (ontology, glossary, metrics, trusted questions). Source-level classification gates dashboard publishing. Profiling suggests personal-data columns for review.</td>
-            <td>The semantic layer is the same for every source. Policy still names physical tables and columns, not terms or tags (<a href="#g11">G11</a>).</td>
-            <td>Column classification with suggest-and-approve; policy written against tags; masking and model-egress rules that inherit from them.</td></tr>
-        <tr><td><b>NL2SQL</b> that respects the rules</td>
-            <td>Generated SQL is never trusted: it is checked after generation (read-only guard and transaction, row and column rules, table-existence check), and the prompt leaves out columns the user may not see.</td>
-            <td>The checks apply to every source. The prompt filter covers the standard schema listing.</td>
-            <td>Sample values and result rows of classified sources, and of tagged columns, no longer go to the model (<a href="#g4">G4</a>); add an adversarial question suite (<a href="#g13">G13</a>).</td></tr>
-        <tr><td><b>All data sources</b></td>
-            <td>One policy and one audit trail for SQL databases, files, lakehouse formats, SaaS APIs and agent tools.</td>
-            <td>Coverage differs by connector (see the source tiles in the picture). We tested the policy rewrite on SQL text, not end to end on every connector.</td>
-            <td>Per-connector enforcement tests, and an enforcement mode per source: gateway only, native, or both.</td></tr>
-      </tbody></table></div>
-    <div class="callout" style="margin-top:20px"><b>Where ThinkingSense is different.</b> Enforcement inside one database covers that database. A gateway can apply one rule set to a PostgreSQL table, a Parquet file and a SaaS API alike. The strongest design uses both: the gateway for uniform rules and one audit trail, and each database's own row and column security as a second lock, so that neither a gateway bug nor a direct connection is the only line of defence.</div>
+    <div class="section-head"><div class="kicker">Sign-in</div><h2>Who is asking</h2></div>
+    <p class="section-sub">People and tools identify themselves in the way your organisation already uses. The result is the same for all of them: a user, roles and attributes.</p>
+    <table class="sum"><thead><tr><th>Way in</th><th>How it identifies the person</th></tr></thead><tbody>
+      <tr><td><b>Single sign-on (OIDC)</b></td><td>Okta, Microsoft Entra ID, Auth0, Google Workspace, Keycloak and other OpenID Connect providers, for the admin console and the Ask app. Groups can map to the admin role.</td></tr>
+      <tr><td><b>Local accounts and API tokens</b></td><td>Salted password hashes for the console and Ask app; named API tokens with an admin or reader role for scripts.</td></tr>
+      <tr><td><b>SCIM</b></td><td>Your directory provisions users, roles and attributes (for example <code>clearance=finance</code>); deactivating a user removes their access.</td></tr>
+      <tr><td><b>End-user tokens</b></td><td>An application that calls the API for its own users passes a signed token (JWT); its claims become the user's attributes.</td></tr>
+      <tr><td><b>SQL and BI tools</b></td><td>Each person logs in to the PostgreSQL, MySQL, Oracle or gRPC listener with their own name and password (<code>OMNIGATE_WIRE_USERS</code>), and their statements run with the roles and attributes provisioned for them.</td></tr>
+      <tr><td><b>Embedded apps and agents</b></td><td>Signed embed tokens for apps; allow-listed, approval-gated tools for AI agents over MCP.</td></tr>
+    </tbody></table>
+    <p style="margin-top:14px; color:var(--ink-dim); font-size:14.5px"><b style="color:var(--ink)">Secure from the first start.</b> If no sign-in is configured, ThinkingSense does not run open: it creates an <code>admin</code> account with a random password, shows it once in the log, and keeps only a salted hash. The console shows a banner for as long as anyone is allowed in without signing in, which you can choose for a local trial with <code>OMNIGATE_INSECURE=true</code>.</p>
   </div>
 </section>
 
-<section class="rule-top" id="capabilities">
+<section class="rule-top" id="policy">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">What is in place</div><h2>Capabilities</h2></div>
-    <p class="section-sub">Each row says how we know. Rows marked Tested were run against the real component for this review or in the 0.10.11 test suite.</p>
-    <h3 style="font-family:'Inter'; font-size:16px; font-weight:750; margin:26px 0 10px;">Identity and access</h3>
-<div class="table-scroll"><table class="sum"><thead><tr><th>Control</th><th>What it does</th><th>Evidence</th></tr></thead><tbody><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Admin sign-in</td><td>Local accounts with salted PBKDF2-HMAC-SHA256 hashes (210,000 iterations), API tokens, and OIDC single sign-on (Okta, Entra ID, Auth0, Google, Keycloak) with group-to-role mapping. Roles are admin and reader; an admin can be confined to one tenancy.</td><td><span class="tag docs">Docs</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Business users</td><td>The Ask app has its own sign-in and its own permission model, separate from the console. It supports SSO, roles taken from provider groups, and SCIM provisioning and deprovisioning.</td><td><span class="tag docs">Docs</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">End-user identity for APIs</td><td>A bearer JWT is resolved to an access context (user, roles, attributes) that travels with every statement. Tokens can be revoked; sign-in attempts are rate-limited.</td><td><span class="tag code">Code</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Group-scoped agent endpoint</td><td><code>/mcp/groups</code> refuses anonymous callers, checks group membership on every call, and limits tools and data to the caller's own groups.</td><td><span class="tag code">Code</span></td></tr></tbody></table></div>
-<h3 style="font-family:'Inter'; font-size:16px; font-weight:750; margin:26px 0 10px;">Data-level policy</h3>
-<div class="table-scroll"><table class="sum"><thead><tr><th>Control</th><th>What it does</th><th>Evidence</th></tr></thead><tbody><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Row filters</td><td>A filter is wrapped around every reference to a restricted table, using a SQL parser: qualified, quoted or aliased names, subqueries, CTEs, <code>UNION</code> and joins were all filtered, a statement that cannot be parsed is refused, and a user with no attribute is refused. Admin roles can bypass by rule.</td><td><span class="tag tested">Tested</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Column deny and mask</td><td>A grant can deny a column or null it unless the user holds an attribute. Applies to named columns, <code>SELECT *</code>, <code>t.*</code> and whole-row references (G1, fixed); a star under a mask grant returns NULL for the column.</td><td><span class="tag tested">Tested</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Policy options</td><td>Allow-list mode (deny tables no rule covers), strict column verification, scoping through a join path to a tenant column, native PostgreSQL row-level security and Oracle VPD context (opt-in), live reload, and a "test as user" dry run.</td><td><span class="tag code">Code</span></td></tr></tbody></table></div>
-<h3 style="font-family:'Inter'; font-size:16px; font-weight:750; margin:26px 0 10px;">Controls specific to AI</h3>
-<div class="table-scroll"><table class="sum"><thead><tr><th>Control</th><th>What it does</th><th>Evidence</th></tr></thead><tbody><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Read-only questions</td><td>Question, agent and playground SQL must be a single read-only query (no data-modifying CTE, <code>SELECT INTO</code>, row locks or side-effect functions) and runs in a read-only transaction. A data-modifying CTE was refused and, when forced past the text check, rejected by the database.</td><td><span class="tag tested">Tested</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Prompt hides denied columns</td><td>Columns a user's grants deny are left out of the schema sent to the model, with their comments, samples, foreign keys and glossary lines. A masked column stays visible.</td><td><span class="tag tested">Tested</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Approved answers</td><td>Answers can be served from approved questions; the embed endpoint answers only approved questions; a table the model invents is refused; data-changing requests are refused.</td><td><span class="tag code">Code</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Agent tool governance</td><td>A per-tool allow-list and approval, gating on a tool's read-only hint, a signed identity assertion sent to tool servers, tool descriptions treated as untrusted text, time and concurrency limits, and lineage and provenance on every federated answer.</td><td><span class="tag code">Code</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Keep the model local</td><td>A local-only model mode keeps prompts and rows inside your network.</td><td><span class="tag code">Code</span></td></tr></tbody></table></div>
-<h3 style="font-family:'Inter'; font-size:16px; font-weight:750; margin:26px 0 10px;">Governance, audit and platform</h3>
-<div class="table-scroll"><table class="sum"><thead><tr><th>Control</th><th>What it does</th><th>Evidence</th></tr></thead><tbody><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Approvals</td><td>A dashboard that touches a source above public sensitivity needs an administrator's approval before it can be shared; the answer review and feedback loop shows where answers are wrong.</td><td><span class="tag code">Code</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Audit</td><td>Events for sign-in, access decisions (row filter applied, column masked, denied), SCIM changes, questions, and governed actions. A hash-chained durable store is available when configured.</td><td><span class="tag code">Code</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">HTTP hardening</td><td><code>nosniff</code>, no referrer, <code>frame-ancestors 'none'</code>, no-store on data responses, a report-only content policy, opt-in HSTS, and <code>HttpOnly</code>, <code>SameSite</code> and <code>Secure</code> cookies.</td><td><span class="tag tested">Tested</span></td></tr><tr><td style="white-space:nowrap; font-family:'Inter'; color:var(--ink); font-weight:650; font-size:13.5px;">Deployment</td><td>HTTPS and Oracle TCPS listeners; a non-root, read-only-filesystem image on ghcr; a read-only Kubernetes role for the Infrastructure page; and, in the demo stack, a <code>SELECT</code>-only database account, a generated superuser password and a network policy around the database.</td><td><span class="tag tested">Tested</span></td></tr></tbody></table></div>
+    <div class="section-head"><div class="kicker">Row and column rules</div><h2>Who can see which rows and which columns</h2></div>
+    <p class="section-sub">One policy file, applied to every statement. A rule that cannot be applied safely refuses the statement; it never lets it through unfiltered.</p>
+    <div class="grid3">
+      <div class="phase"><h3>Row filters</h3><div class="when">By attribute, fails closed</div><ul><li>"Every query on <code>orders</code> sees only the caller's <code>tenant</code>."</li><li>Applied with a SQL parser around every reference to the table, including aliases, subqueries, CTEs, UNION and joins.</li><li>A caller with no matching attribute is refused, not shown everything.</li></ul></div>
+      <div class="phase"><h3>Column rules</h3><div class="when">Deny, or mask</div><ul><li>Deny a column, or mask it unless the caller's attribute allows it.</li><li><b>Covers <code>SELECT *</code></b> and whole-row references such as <code>row_to_json(e)</code>: a starred table with a restricted column is refused (deny) or the column comes back masked.</li></ul></div>
+      <div class="phase"><h3>Masks</h3><div class="when">Choose how a value is hidden</div><ul><li><code>null</code>, <code>redact</code> (<code>***</code>), <code>partial:N</code> (<code>***6789</code>), <code>bucket:N</code> (a salary shown as a band).</li><li>A masked column keeps its name, so charts and exports still work.</li></ul></div>
+    </div>
+    <h3 style="margin:28px 0 8px">Rules by tag, not by column name</h3>
+    <p class="section-sub">Tag a column once (<code>pii.email</code>, <code>financial</code>, <code>secret</code>) and write the rule against the tag. ThinkingSense suggests tags from column names and sample values; nothing is enforced until an administrator approves it. A new column that is tagged is covered without editing the policy, and a rule on <code>pii</code> covers <code>pii.email</code> and everything else below it. Review and approve tags in the console under <b>Settings &gt; Security</b>.</p>
+<pre class="code"><span class="c"># deny anything tagged pii unless the caller's clearance is finance</span>
+column_grants:
+  - tag: pii
+    required_attribute: clearance
+    allowed_values: [finance]
+    on_violation: deny
+  <span class="c"># salary: finance sees the value, everyone else sees a band of 10,000</span>
+  - table_pattern: employees
+    columns: [salary]
+    required_attribute: clearance
+    allowed_values: [finance]
+    on_violation: mask
+    mask: bucket:10000</pre>
+    <p style="margin-top:14px; color:var(--ink-dim); font-size:14.5px">For a stricter default, <code>unlisted_tables: deny</code> refuses any table no rule covers, and <code>verify_columns: strict</code> refuses a reference to a column the catalog does not know. Both come on together with the <a href="#hardening">strict profile</a>.</p>
   </div>
 </section>
 
-<section class="rule-top" id="gaps">
+<section class="rule-top" id="governance">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">What is not</div><h2>Gaps to address</h2></div>
-    <p class="section-sub">Ranked by how much harm they allow and how likely they are to be hit. Effort: S is days, M is weeks, L is a quarter.</p>
-    <div class="callout" style="margin-bottom:24px"><b>Where this stands.</b> Ten of the fifteen gaps are fixed in the Server repository, and the other five are built with what is left listed in each entry. G10 is in a Docker-repository pull request. None of it is in a tagged release yet, so a deployment on 0.10.11 still has every gap. Several of these changes alter defaults (an open server now creates an administrator instead of running open; wire logins and encryption are opt-in with settings), so the release notes will say so.</div>
-    <div class="table-scroll"><table class="sum"><thead><tr><th>ID</th><th>Gap</th><th>Severity</th><th>Effort</th><th>Evidence</th></tr></thead><tbody><tr><td><a class="gid" href="#g1">G1</a></td><td><b>Column deny and mask grants were bypassed by <code>SELECT *</code> (fixed in main)</b></td><td><span class="sev fixed">Fixed</span></td><td>S</td><td><span class="tag tested">Tested</span></td></tr><tr><td><a class="gid" href="#g2">G2</a></td><td><b>Open by default: with no sign-in configured, the console, API and MCP are open</b></td><td><span class="sev fixed">Fixed</span></td><td>S</td><td><span class="tag docs">Docs</span></td></tr><tr><td><a class="gid" href="#g3">G3</a></td><td><b>Sources see one shared account, not the end user</b></td><td><span class="sev part">Partly fixed</span></td><td>M-L</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g4">G4</a></td><td><b>Data goes to the language model in the default mode</b></td><td><span class="sev fixed">Fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g5">G5</a></td><td><b>SQL and BI tools on the wire protocols have no end-user identity</b></td><td><span class="sev fixed">Fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g6">G6</a></td><td><b>Configuration changes are not audited, and the audit log is not durable by default</b></td><td><span class="sev fixed">Fixed</span></td><td>S-M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g7">G7</a></td><td><b>Secrets are stored as plain values</b></td><td><span class="sev fixed">Fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g8">G8</a></td><td><b>Safe settings are opt-in</b></td><td><span class="sev fixed">Fixed</span></td><td>S</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g9">G9</a></td><td><b>Internal channels are not all encrypted</b></td><td><span class="sev fixed">Fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g10">G10</a></td><td><b>The images the stacks deploy still run as root</b></td><td><span class="sev part">Partly fixed</span></td><td>S</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g11">G11</a></td><td><b>Classification stops at the source</b></td><td><span class="sev part">Partly fixed</span></td><td>M-L</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g12">G12</a></td><td><b>Policy authoring and masking are basic</b></td><td><span class="sev part">Partly fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g13">G13</a></td><td><b>Prompt injection is only contained for MCP content</b></td><td><span class="sev fixed">Fixed</span></td><td>S-M</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g14">G14</a></td><td><b>No anti-CSRF token</b></td><td><span class="sev fixed">Fixed</span></td><td>S</td><td><span class="tag code">Code</span></td></tr><tr><td><a class="gid" href="#g15">G15</a></td><td><b>No supply-chain or assurance evidence in the repositories</b></td><td><span class="sev part">Partly fixed</span></td><td>M</td><td><span class="tag code">Code</span></td></tr></tbody></table></div>
-    <div style="height:28px"></div>
-    <article class="gapcard" id="g1">
-  <div class="top"><span class="gid">G1</span><span class="sev fixed">Fixed</span><span class="tag tested">Tested</span><h3>Column deny and mask grants were bypassed by <code>SELECT *</code> (fixed in main)</h3></div>
-  <dl><dt>What happens</dt><dd>A grant on <code>salary</code> rejected <code>SELECT salary</code>, but <code>SELECT *</code>, <code>e.*</code>, <code>row_to_json(e)</code> and a star inside a subquery or CTE were allowed and returned the column, because the check looked for the column's name in the SQL text.</dd><dt>Why it matters</dt><dd>Anyone who could send SQL (<code>/api/query</code>, the MCP <code>run_sql</code> tool), or whose question led a model to write a star, could read a column they were denied.</dd><dt>Close it by</dt><dd>Fixed in the Server repository: a SQL parser now finds every select-list star and whole-row reference and the table each one reaches. A star that reaches a table with a grant the caller does not satisfy is rejected for a deny grant (SQLSTATE 42501, with a message to list the columns needed), and for a mask grant the column comes back as NULL; a star inside <code>INSERT ... SELECT</code> or <code>CREATE TABLE AS</code> is rejected either way. A statement the parser cannot read is rejected if it contains a star. Quoted table names are now matched too. Table names after a comma (<code>FROM a, employees</code>) are matched too. <i>(effort S)</i></dd></dl>
-</article>
-<article class="gapcard" id="g2">
-  <div class="top"><span class="gid">G2</span><span class="sev fixed">Fixed</span><span class="tag docs">Docs</span><h3>Open by default: with no sign-in configured, the console, API and MCP are open</h3></div>
-  <dl><dt>What happens</dt><dd>If none of local accounts, API tokens or OIDC is set, the admin console, <code>/api/*</code> and <code>/mcp</code> accept anyone. The server logs a warning; nothing stops it.</dd><dt>Why it matters</dt><dd>A quick-start deployment that is later reachable from a network is fully exposed, including the SQL endpoints and every configured data source.</dd><dt>Close it by</dt><dd>Refuse a public bind without sign-in unless an explicit <code>OMNIGATE_INSECURE=true</code> is set; generate a first-boot admin password and print it once (the stacks already do this for the demo database); show a persistent banner while open. <b>Done in the Server repository:</b> with no sign-in configured, the server creates an <code>admin</code> account with a random password, logs it once and keeps only a hash in the data directory; <code>OMNIGATE_INSECURE=true</code> runs open on purpose, and the console shows a banner while it does. The strict profile never runs open. <b>Done in the Server repository:</b> with no sign-in configured, the server creates an <code>admin</code> account with a random password, logs it once and keeps only a hash in the data directory; <code>OMNIGATE_INSECURE=true</code> runs open on purpose, and the console shows a banner while it does. The strict profile never runs open. <i>(effort S)</i></dd></dl>
-</article>
-<article class="gapcard" id="g3">
-  <div class="top"><span class="gid">G3</span><span class="sev part">Partly fixed</span><span class="tag code">Code</span><h3>Sources see one shared account, not the end user</h3></div>
-  <dl><dt>What happens</dt><dd>ThinkingSense connects to each source with a configured service account. The user's identity reaches the source only for PostgreSQL (row-level security settings) and Oracle (VPD context), both opt-in. Every other source relies on the gateway alone.</dd><dt>Why it matters</dt><dd>A policy mistake or a compromised gateway exposes whatever the service account can read, and the source's own audit shows one account, not the person. This is the main difference from enforcement that lives inside the database.</dd><dt>Close it by</dt><dd>Per-source enforcement mode: gateway only, native, or both. Add end-user delegation: Oracle end-user or proxy authentication and Deep Data Security grants, SQL Server row-level security, Snowflake row access and masking policies, Databricks Unity Catalog row filters and column masks, BigQuery row access policies. Make every service account <code>SELECT</code>-only and scoped to what the policy allows. <b>Done:</b> native identity for SQL Server (<code>sp_set_session_context</code>), MySQL and MariaDB (<code>@omnigate_*</code> variables for filtering views) and Snowflake (<code>USE ROLE</code> from the user's <code>snowflake_role</code> attribute, session variables, query tag), next to PostgreSQL and Oracle; <code>OMNIGATE_ACCESS_NATIVE_RLS_DIALECT=auto</code> picks the dialect from each connection; a start-up check warns when a PostgreSQL or MySQL service account can do more than read. Native checks run <em>with</em> the gateway's, never instead of them. <b>Not done:</b> Oracle Deep Data Security grants, Databricks Unity Catalog and BigQuery. The new initializers are tested against recorded SQL, not against a live SQL Server, MySQL or Snowflake. <b>Done:</b> native identity for SQL Server (<code>sp_set_session_context</code>), MySQL and MariaDB (<code>@omnigate_*</code> variables for filtering views) and Snowflake (<code>USE ROLE</code> from the user's <code>snowflake_role</code> attribute, session variables, query tag), next to PostgreSQL and Oracle; <code>OMNIGATE_ACCESS_NATIVE_RLS_DIALECT=auto</code> picks the dialect from each connection; a start-up check warns when a PostgreSQL or MySQL service account can do more than read. Native checks run <em>with</em> the gateway's, never instead of them. <b>Not done:</b> Oracle Deep Data Security grants, Databricks Unity Catalog and BigQuery. The new initializers are tested against recorded SQL, not against a live SQL Server, MySQL or Snowflake. <i>(effort M-L)</i></dd></dl>
-</article>
-<article class="gapcard" id="g4">
-  <div class="top"><span class="gid">G4</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Data goes to the language model in the default mode</h3></div>
-  <dl><dt>What happens</dt><dd>In the default cloud-first mode the model receives the schema, up to 8 sample values for up to 4 columns per table, the question, and (to phrase an answer) the result rows. There is no redaction and no rule that depends on how sensitive a source is.</dd><dt>Why it matters</dt><dd>Row data and sample values leave your network for any source, including ones you would classify as restricted. Row filters and column grants apply to what the user may see, not to what the model is sent.</dd><dt>Close it by</dt><dd>A source-level egress rule keyed on classification: for restricted sources send no sample values or rows, answer from a local model, or return a table without narration. Redact detected personal data from prompts. Document the data flow for customers' privacy reviews. <b>Done:</b> <code>OMNIGATE_LLM_EGRESS_NO_SAMPLES_FROM</code> and <code>OMNIGATE_LLM_EGRESS_NO_ROWS_FROM</code> keep sample values and result rows of classified sources out of the model (the answer then comes from the deterministic summary); <code>OMNIGATE_LLM_EGRESS_TAGS</code> does the same per column tag; <code>OMNIGATE_LLM_REDACT_PII=true</code> redacts e-mail, social security, card, IBAN and phone patterns; the user guide lists what is sent. <b>Not done:</b> routing a restricted question to a local model. <b>Done:</b> <code>OMNIGATE_LLM_EGRESS_NO_SAMPLES_FROM</code> and <code>OMNIGATE_LLM_EGRESS_NO_ROWS_FROM</code> keep sample values and result rows of classified sources out of the model (the answer then comes from the deterministic summary); <code>OMNIGATE_LLM_EGRESS_TAGS</code> does the same per column tag; <code>OMNIGATE_LLM_REDACT_PII=true</code> redacts e-mail, social security, card, IBAN and phone patterns; the user guide lists what is sent. <b>Not done:</b> routing a restricted question to a local model. <i>(effort M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g5">
-  <div class="top"><span class="gid">G5</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>SQL and BI tools on the wire protocols have no end-user identity</h3></div>
-  <dl><dt>What happens</dt><dd>The PostgreSQL, MySQL, Oracle and gRPC listeners do not set an end-user identity. When a policy covers a table, those clients are refused (fail-closed); on tables with no policy they are not filtered.</dd><dt>Why it matters</dt><dd>BI tools and scripts cannot get per-user row and column policy. Teams either keep them away from governed tables or leave them unfiltered.</dd><dt>Close it by</dt><dd>Map a wire login to an identity and attributes from the user store or SCIM, then run the same pipeline stages. Add TLS to these listeners (G9). <b>Done:</b> <code>OMNIGATE_WIRE_USERS</code> gives each wire user its own password (read through the secret settings, so it can be encrypted or a reference); PostgreSQL, MySQL, Oracle and gRPC logins run as that user with its provisioned roles and attributes; the shared development credential is off when real users exist and under the strict profile. These protocols need the password on the server to verify the login, so they cannot use one-way hashes. <b>Done:</b> <code>OMNIGATE_WIRE_USERS</code> gives each wire user its own password (read through the secret settings, so it can be encrypted or a reference); PostgreSQL, MySQL, Oracle and gRPC logins run as that user with its provisioned roles and attributes; the shared development credential is off when real users exist and under the strict profile. These protocols need the password on the server to verify the login, so they cannot use one-way hashes. <i>(effort M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g6">
-  <div class="top"><span class="gid">G6</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Configuration changes are not audited, and the audit log is not durable by default</h3></div>
-  <dl><dt>What happens</dt><dd>Audit events cover sign-in, access decisions, SCIM, questions and governed actions. There is no event for changing the access policy, a data source, a user, the model settings or an OAuth connection. The log is in memory unless <code>OMNIGATE_AUDIT_LOG_DB</code> is set, and there is no built-in export to a SIEM.</dd><dt>Why it matters</dt><dd>You cannot answer who changed a policy, or when. A restart loses the evidence by default.</dd><dt>Close it by</dt><dd>Add a configuration-change event (actor, object, before and after digest) to every admin write; make the durable hash-chained store the default; stream events to syslog, OTLP or a webhook. <b>Done:</b> every successful administrative write records a <code>CONFIG_CHANGED</code> event, and a changed stored value records digests before and after; the durable hash-chained log is kept under the data directory by default; events can stream to a webhook, syslog (UDP) or OTLP/HTTP. <b>Done:</b> every successful administrative write records a <code>CONFIG_CHANGED</code> event, and a changed stored value records digests before and after; the durable hash-chained log is kept under the data directory by default; events can stream to a webhook, syslog (UDP) or OTLP/HTTP. <i>(effort S-M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g7">
-  <div class="top"><span class="gid">G7</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Secrets are stored as plain values</h3></div>
-  <dl><dt>What happens</dt><dd>Source credentials, OAuth tokens and model keys sit as plain values in the environment or the config store. No encryption at rest was found in the config store. Vault, CyberArk and cloud IAM database tokens are supported for sources, but are not the default.</dd><dt>Why it matters</dt><dd>A copy of the config database, a backup or a support bundle reveals credentials.</dd><dt>Close it by</dt><dd>Envelope-encrypt sensitive values with a key held in a KMS or Vault; make secret references the documented default; add rotation and a startup check that warns on plain values. <b>Done:</b> <code>OMNIGATE_CONFIG_ENCRYPTION_KEY</code> encrypts every configuration-store value with AES-GCM and re-keys at start for rotation (<code>..._PREVIOUS</code>); the key can be a <code>vault://</code> or <code>cyberark://</code> reference or a mounted file; secret settings can be a file, an encrypted value or a reference; a warning is logged while no key is set. The configuration store is the only place the server persists secrets. <b>Not done:</b> wrapping the key directly with a cloud key-management service. <b>Done:</b> <code>OMNIGATE_CONFIG_ENCRYPTION_KEY</code> encrypts every configuration-store value with AES-GCM and re-keys at start for rotation (<code>..._PREVIOUS</code>); the key can be a <code>vault://</code> or <code>cyberark://</code> reference or a mounted file; secret settings can be a file, an encrypted value or a reference; a warning is logged while no key is set. The configuration store is the only place the server persists secrets. <b>Not done:</b> wrapping the key directly with a cloud key-management service. <i>(effort M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g8">
-  <div class="top"><span class="gid">G8</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Safe settings are opt-in</h3></div>
-  <dl><dt>What happens</dt><dd>Tables with no policy rule are allowed (the allow-list mode is opt-in), strict column verification is off, the script and style policy is report-only, and HSTS is off.</dd><dt>Why it matters</dt><dd>A new table is readable by anyone who can reach the source until someone writes a rule for it.</dd><dt>Close it by</dt><dd>Ship a strict profile (deny unlisted tables, strict verification) and recommend it; move the style and script policy to enforced after a browser pass; document turning HSTS on once your own certificate is in place. <b>Done:</b> <code>OMNIGATE_SECURITY_PROFILE=strict</code> turns on deny-unlisted-tables, strict column verification, an enforced content security policy (checked against the built console and Ask app in a browser, which found and fixed two blocked resources) and a no-open-access rule. The four stack charts set it, and set HSTS when the operator supplies a certificate. In the app it stays opt-in, because each setting can stop a deployment that works today. <b>Done:</b> <code>OMNIGATE_SECURITY_PROFILE=strict</code> turns on deny-unlisted-tables, strict column verification, an enforced content security policy (checked against the built console and Ask app in a browser, which found and fixed two blocked resources) and a no-open-access rule. The four stack charts set it, and set HSTS when the operator supplies a certificate. In the app it stays opt-in, because each setting can stop a deployment that works today. <i>(effort S)</i></dd></dl>
-</article>
-<article class="gapcard" id="g9">
-  <div class="top"><span class="gid">G9</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Internal channels are not all encrypted</h3></div>
-  <dl><dt>What happens</dt><dd>HTTPS and Oracle TCPS can be enabled. No TLS was found on the PostgreSQL and MySQL wire listeners or on the cluster channel between replicas. The stacks start with a self-signed certificate.</dd><dt>Why it matters</dt><dd>Credentials and rows cross the network in clear text on those channels unless the network itself is trusted.</dd><dt>Close it by</dt><dd>TLS for the wire listeners; encrypted, authenticated replica traffic; a documented path to a real certificate on every stack. <b>Done:</b> TLS on the PostgreSQL and MySQL wire listeners (<code>OMNIGATE_WIRE_REQUIRE_TLS=true</code> refuses plaintext) and between replicas (<code>OMNIGATE_CLUSTER_TLS_*</code>, mutually authenticated), next to HTTPS and Oracle TCPS. The stacks still start with a self-signed certificate until the operator supplies one. <b>Done:</b> TLS on the PostgreSQL and MySQL wire listeners (<code>OMNIGATE_WIRE_REQUIRE_TLS=true</code> refuses plaintext) and between replicas (<code>OMNIGATE_CLUSTER_TLS_*</code>, mutually authenticated), next to HTTPS and Oracle TCPS. The stacks still start with a self-signed certificate until the operator supplies one. <i>(effort M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g10">
-  <div class="top"><span class="gid">G10</span><span class="sev part">Partly fixed</span><span class="tag code">Code</span><h3>The images the stacks deploy still run as root</h3></div>
-  <dl><dt>What happens</dt><dd>The 0.10.11 images from <code>ghcr.io</code> run as a fixed non-root user. The OCIR and Artifact Registry images the stacks pull are built from a different Dockerfile with no <code>USER</code>.</dd><dt>Why it matters</dt><dd>Code execution in the process starts as root inside the container, and the charts cannot require <code>runAsNonRoot</code> yet.</dd><dt>Close it by</dt><dd>Give those Dockerfiles the same user and directory ownership; then add <code>runAsNonRoot</code>, a read-only root filesystem, dropped capabilities and a default seccomp profile to the charts. The charts already set <code>fsGroup</code> for the volume. <b>Done in a Docker-repository pull request (not yet merged or released):</b> the Dockerfile runs as uid 10001; the app container in all four charts sets <code>runAsNonRoot</code>, no privilege escalation, a read-only root filesystem with a <code>/tmp</code> scratch volume, dropped capabilities and the default seccomp profile. The image was run locally with a read-only root, dropped capabilities and no-new-privileges. <b>Not done:</b> a run on a real cluster. <b>Done in a Docker-repository pull request (not yet merged or released):</b> the Dockerfile runs as uid 10001; the app container in all four charts sets <code>runAsNonRoot</code>, no privilege escalation, a read-only root filesystem with a <code>/tmp</code> scratch volume, dropped capabilities and the default seccomp profile. The image was run locally with a read-only root, dropped capabilities and no-new-privileges. <b>Not done:</b> a run on a real cluster. <i>(effort S)</i></dd></dl>
-</article>
-<article class="gapcard" id="g11">
-  <div class="top"><span class="gid">G11</span><span class="sev part">Partly fixed</span><span class="tag code">Code</span><h3>Classification stops at the source</h3></div>
-  <dl><dt>What happens</dt><dd>Sources can be labelled public to confidential, and the label gates dashboard publishing. There are no column tags. Profiling can suggest personal-data columns for review, but a suggestion does not enforce anything.</dd><dt>Why it matters</dt><dd>Policy refers to physical table and column names. It cannot say "mask everything tagged personal data", and the model-egress rule in G4 has nothing to key on below the source level.</dd><dt>Close it by</dt><dd>Column-level classification with suggest-and-approve; policy written against tags and business terms; masking and model-egress rules that inherit from the tags. <b>Done:</b> column tags with suggest-and-approve (from column names and sample values), policy written against a tag (<code>tag: pii</code>, covering <code>pii.email</code> and the like, including through <code>SELECT *</code>), and model-egress rules that follow the tags. <b>Not done:</b> a console page for it (the API is there), tags on business terms, and inheritance from a glossary. <b>Done:</b> column tags with suggest-and-approve (from column names and sample values), policy written against a tag (<code>tag: pii</code>, covering <code>pii.email</code> and the like, including through <code>SELECT *</code>), and model-egress rules that follow the tags. <b>Not done:</b> a console page for it (the API is there), tags on business terms, and inheritance from a glossary. <i>(effort M-L)</i></dd></dl>
-</article>
-<article class="gapcard" id="g12">
-  <div class="top"><span class="gid">G12</span><span class="sev part">Partly fixed</span><span class="tag code">Code</span><h3>Policy authoring and masking are basic</h3></div>
-  <dl><dt>What happens</dt><dd>Policy is a YAML file with regular-expression table patterns, edited live. Masking replaces a value with <code>NULL</code>; there is no partial, hashed or format-preserving mask. There is no review step or version history for a policy change.</dd><dt>Why it matters</dt><dd>A broad pattern can scope a rule to the wrong tables unnoticed, and a mask that nulls a value can change an aggregate.</dd><dt>Close it by</dt><dd>Policy versions with review and approval, a before-and-after diff using the existing "test as user" dry run, tests as code, and mask functions (partial, hash, bucket). <b>Done:</b> mask functions (<code>redact</code>, <code>partial:N</code>, <code>bucket:N</code>) in SQL and after the query; policy versions with author, reviewer and digest; <code>OMNIGATE_POLICY_REVIEW=required</code> so a second administrator must approve; a diff against the live version; rollback; and tests kept in the policy file that must pass before a version can go live. <b>Not done:</b> a console page for review (the API is there), and a hash mask (no hash function is shared by every database). <b>Done:</b> mask functions (<code>redact</code>, <code>partial:N</code>, <code>bucket:N</code>) in SQL and after the query; policy versions with author, reviewer and digest; <code>OMNIGATE_POLICY_REVIEW=required</code> so a second administrator must approve; a diff against the live version; rollback; and tests kept in the policy file that must pass before a version can go live. <b>Not done:</b> a console page for review (the API is there), and a hash mask (no hash function is shared by every database). <i>(effort M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g13">
-  <div class="top"><span class="gid">G13</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>Prompt injection is only contained for MCP content</h3></div>
-  <dl><dt>What happens</dt><dd>Tool descriptions and tool output are wrapped as untrusted text. Retrieved documents and data values that flow into prompts are not framed the same way.</dd><dt>Why it matters</dt><dd>A document or a cell value that carries instructions can steer a model. The read-only guard and the row and column checks limit the damage but do not prevent it.</dd><dt>Close it by</dt><dd>Frame all retrieved content as data in every prompt, add an adversarial question suite to CI, and filter outputs that echo instructions. <b>Done:</b> the schema block and every result-row block sent to a model are framed as data, not instructions; an answer that obeys the data, or quotes the isolation markers, is cleaned or withheld before a reader sees it; an adversarial suite runs with every build. <b>Done:</b> the schema block and every result-row block sent to a model are framed as data, not instructions; an answer that obeys the data, or quotes the isolation markers, is cleaned or withheld before a reader sees it; an adversarial suite runs with every build. <i>(effort S-M)</i></dd></dl>
-</article>
-<article class="gapcard" id="g14">
-  <div class="top"><span class="gid">G14</span><span class="sev fixed">Fixed</span><span class="tag code">Code</span><h3>No anti-CSRF token</h3></div>
-  <dl><dt>What happens</dt><dd>State-changing admin routes rely on <code>SameSite=Lax</code> cookies.</dd><dt>Why it matters</dt><dd>Protection depends on the browser, and a same-site subdomain with a script bug weakens it.</dd><dt>Close it by</dt><dd>Require a custom header or a per-session token on state-changing requests. <b>Done:</b> a cookie-authenticated <code>POST</code>, <code>PUT</code>, <code>PATCH</code> or <code>DELETE</code> to <code>/api/</code> or <code>/app/</code> must carry <code>X-Requested-With</code>, which the web app sends. Checked in a browser: the page's own request passes and a bare request gets 403. <b>Done:</b> a cookie-authenticated <code>POST</code>, <code>PUT</code>, <code>PATCH</code> or <code>DELETE</code> to <code>/api/</code> or <code>/app/</code> must carry <code>X-Requested-With</code>, which the web app sends. Checked in a browser: the page's own request passes and a bare request gets 403. <i>(effort S)</i></dd></dl>
-</article>
-<article class="gapcard" id="g15">
-  <div class="top"><span class="gid">G15</span><span class="sev part">Partly fixed</span><span class="tag code">Code</span><h3>No supply-chain or assurance evidence in the repositories</h3></div>
-  <dl><dt>What happens</dt><dd>The only workflow found builds and pushes images. There is no SBOM, image signing, dependency or image vulnerability scan, security contact file, or certification evidence (SOC 2, ISO 27001) in the repositories reviewed.</dd><dt>Why it matters</dt><dd>Customer security reviews will ask. It may exist elsewhere; this review did not find it.</dd><dt>Close it by</dt><dd>Scan dependencies and images in CI, publish an SBOM, sign images, add <code>SECURITY.md</code> with a disclosure address, and start a SOC 2 readiness assessment. <b>Done:</b> <code>SECURITY.md</code> in both repositories (private reporting through GitHub), a dependency scan and CycloneDX SBOM workflow for the Server, a weekly image scan, and in the image build a per-release SBOM attached to the release and cosign signing by digest. <b>Not done:</b> the signing key secret (<code>COSIGN_PRIVATE_KEY</code>) is not set, none of the workflows has run yet, and SOC 2 or ISO 27001 readiness is an organisational project, not code. <b>Done:</b> <code>SECURITY.md</code> in both repositories (private reporting through GitHub), a dependency scan and CycloneDX SBOM workflow for the Server, a weekly image scan, and in the image build a per-release SBOM attached to the release and cosign signing by digest. <b>Not done:</b> the signing key secret (<code>COSIGN_PRIVATE_KEY</code>) is not set, none of the workflows has run yet, and SOC 2 or ISO 27001 readiness is an organisational project, not code. <i>(effort M)</i></dd></dl>
-</article>
+    <div class="section-head"><div class="kicker">Changing rules safely</div><h2>History, review and tests for the policy itself</h2></div>
+    <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
+      <li><b style="color:var(--ink)">Every change is a version</b> with its author, time and checksum. In the console (<b>Settings &gt; Security</b>) compare any version with the policy in force, see whether its tests pass, approve or reject it, and roll back.</li>
+      <li><b style="color:var(--ink)">A second person approves.</b> With <code>OMNIGATE_POLICY_REVIEW=required</code> a saved policy waits until a different administrator approves it, and an author cannot approve their own change.</li>
+      <li><b style="color:var(--ink)">The policy tests itself.</b> Put <code>tests:</code> in the policy file (a user, a statement, and whether it should be allowed, denied or rewritten). A change that breaks its own tests cannot be saved or approved.</li>
+      <li><b style="color:var(--ink)">Try before you trust.</b> "Test as user" runs a statement as a synthetic person and shows the rewritten SQL or the reason it was refused, without touching a database.</li>
+    </ul>
   </div>
 </section>
 
-<section class="rule-top" id="proof">
+<section class="rule-top" id="ai">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">Proof for G1</div><h2>What the test shows after the fix</h2></div>
-    <p class="section-sub">Before the fix, the real access-control stage let <code>SELECT *</code> return a column that a deny grant on <code>employees.salary</code> withheld from a user whose <code>role</code> is not <code>hr</code>. After the fix, the same stage gives these results. Row filters, tried the same way, were applied on every shape we tried (see How this was checked).</p>
-<pre class="code"><span class="c">-- column grant: deny employees.salary unless role = hr; the caller's role is analyst</span>
-SELECT salary FROM employees                          <span class="good">REJECTED  caller is not entitled to column "salary"</span>
-SELECT name FROM employees                            ALLOWED
-SELECT * FROM employees                               <span class="good">REJECTED  list the columns you need</span>
-SELECT e.* FROM employees e                           <span class="good">REJECTED</span>
-SELECT * FROM (SELECT * FROM employees) t             <span class="good">REJECTED</span>
-WITH x AS (SELECT * FROM employees) SELECT * FROM x   <span class="good">REJECTED</span>
-SELECT row_to_json(e) FROM employees e                <span class="good">REJECTED</span>
-SELECT * FROM "employees"                             <span class="good">REJECTED  (quoted name now matched)</span>
-SELECT count(*) FROM employees                        ALLOWED   (not a select-list star)</pre>
-    <p style="margin-top:14px; color:var(--ink-dim); font-size:14px">With a mask grant the same statements run and the <code>salary</code> column is NULL in the result; <code>INSERT ... SELECT *</code> over the table is rejected so the real values cannot be copied. An entitled caller (<code>role = hr</code>) gets the column. The checks are in <code>AccessControlStageStarTest</code> in the Server repository. A table named only after a comma (<code>FROM a, employees</code>) is matched as well.</p>
+    <div class="section-head"><div class="kicker">AI and your data</div><h2>What a language model is shown, and what it is not</h2></div>
+    <p class="section-sub">A model can be a local one that never leaves your network, or a cloud service. In both cases the model is not trusted to follow the rules: the gateway checks every statement it writes.</p>
+    <table class="sum"><thead><tr><th>Control</th><th>What it does</th></tr></thead><tbody>
+      <tr><td><b>Columns a user cannot read are not shown</b></td><td>The schema sent to the model leaves out denied columns, their comments and their sample values, so it writes SQL without them instead of SQL that is refused. Masked columns stay visible, because the user sees them masked.</td></tr>
+      <tr><td><b>Local, cloud, or local first</b></td><td><code>OMNIGATE_LLM_MODE=local-only</code> keeps every prompt and result inside your network; <code>local-first</code> goes to a cloud model only when the local one cannot ground a question.</td></tr>
+      <tr><td><b>Keep sensitive sources out of prompts</b></td><td>Classify a source (sensitive to confidential) and set <code>OMNIGATE_LLM_EGRESS_NO_SAMPLES_FROM</code> and <code>OMNIGATE_LLM_EGRESS_NO_ROWS_FROM</code>: sample values and result rows from those sources are not sent, and the answer is built from a deterministic summary.</td></tr>
+      <tr><td><b>Keep tagged columns out of prompts</b></td><td><code>OMNIGATE_LLM_EGRESS_TAGS=pii,secret</code> withholds the values of tagged columns whatever the source.</td></tr>
+      <tr><td><b>Redact personal data</b></td><td><code>OMNIGATE_LLM_REDACT_PII=true</code> replaces e-mail addresses, social security numbers, card numbers, IBANs and phone numbers in what is sent.</td></tr>
+      <tr><td><b>Hostile text in data cannot give orders</b></td><td>Schema comments, sample values and result rows are framed as data, not instructions. An answer that appears to obey instructions found in the data, or that quotes the framing back, is cleaned or withheld before anyone reads it.</td></tr>
+      <tr><td><b>Read-only by default</b></td><td>SQL written by a model, an agent or a question must be a single read-only query, runs in a read-only database session, and cannot call functions with side effects or file access.</td></tr>
+    </tbody></table>
   </div>
 </section>
 
+<section class="rule-top" id="sources">
+  <div class="wrap">
+    <div class="section-head"><div class="kicker">Your databases</div><h2>The gateway's rules, and the database's own</h2></div>
+    <p class="section-sub">Row and column rules are applied to the SQL the gateway runs, so they cover every source it can query. For databases that have their own row-level security, ThinkingSense can also pass the end user in, so a policy owned by your DBA applies as well. Turn it on with <code>OMNIGATE_ACCESS_NATIVE_RLS_DIALECT=auto</code> (or a list such as <code>postgres,sqlserver</code>); the database type is read from each connection.</p>
+    <table class="sum"><thead><tr><th>Source</th><th>Gateway rules</th><th>The user inside the database</th></tr></thead><tbody>
+      <tr><td><b>PostgreSQL</b></td><td>Yes</td><td>Session settings <code>omnigate.*</code>, read by <code>CREATE POLICY</code> row-level security</td></tr>
+      <tr><td><b>Oracle</b></td><td>Yes</td><td>Application context for Virtual Private Database</td></tr>
+      <tr><td><b>SQL Server</b></td><td>Yes</td><td><code>sp_set_session_context</code>, read by a security policy's predicate</td></tr>
+      <tr><td><b>MySQL, MariaDB</b></td><td>Yes</td><td>Session variables <code>@omnigate_*</code> for filtering views</td></tr>
+      <tr><td><b>Snowflake</b></td><td>Yes</td><td>The session switches to the user's mapped role (<code>snowflake_role</code>), with session variables and a query tag naming the user</td></tr>
+      <tr><td><b>Other SQL databases</b></td><td>Yes</td><td>Gateway rules only</td></tr>
+      <tr><td><b>Files, lakehouse, storage, SaaS and REST</b></td><td>Yes, on the SQL the gateway runs over them</td><td>Not applicable: a shared service account reaches them</td></tr>
+      <tr><td><b>MCP tools</b></td><td>Allow-list and approval per tool</td><td>A signed identity assertion</td></tr>
+    </tbody></table>
+    <p style="margin-top:14px; color:var(--ink-dim); font-size:14.5px">The database's rules run <em>in addition to</em> the gateway's, never instead. Give the account ThinkingSense uses <code>SELECT</code> only: at start-up, ThinkingSense warns when a PostgreSQL or MySQL service account can do more than read.</p>
+  </div>
+</section>
+
+<section class="rule-top" id="encryption">
+  <div class="wrap">
+    <div class="section-head"><div class="kicker">Encryption</div><h2>In transit and at rest</h2></div>
+    <table class="sum"><thead><tr><th>What</th><th>How</th></tr></thead><tbody>
+      <tr><td><b>Console, API and MCP</b></td><td>HTTPS with your certificate. With a certificate you supply, HSTS can be switched on (<code>OMNIGATE_HSTS_MAX_AGE_SECONDS</code>); the Docker charts do it for you.</td></tr>
+      <tr><td><b>SQL tools</b></td><td>The PostgreSQL and MySQL listeners upgrade a client that asks for TLS, and <code>OMNIGATE_WIRE_REQUIRE_TLS=true</code> refuses everyone else. Oracle clients use TCPS.</td></tr>
+      <tr><td><b>Between replicas</b></td><td>Cluster traffic is encrypted and mutually authenticated when you give each replica a keystore and truststore (<code>OMNIGATE_CLUSTER_TLS_*</code>).</td></tr>
+      <tr><td><b>Stored settings</b></td><td>With <code>OMNIGATE_CONFIG_ENCRYPTION_KEY</code>, source passwords, tokens and model keys in the configuration store are encrypted with AES-GCM. The key can come from Vault or CyberArk, or a mounted file, and can be rotated by listing the old one in <code>..._PREVIOUS</code>.</td></tr>
+      <tr><td><b>Secret settings</b></td><td>API keys, tokens and connection strings can be given as a file (<code>NAME_FILE</code>), as an encrypted value, or as a <code>vault://</code> or <code>cyberark://</code> reference, so they need not sit in the environment as plain text.</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<section class="rule-top" id="audit">
+  <div class="wrap">
+    <div class="section-head"><div class="kicker">Audit</div><h2>Who asked, who changed what</h2></div>
+    <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
+      <li><b style="color:var(--ink)">Access decisions:</b> sign-ins, statements allowed or refused, row filters applied, columns masked, questions and governed actions.</li>
+      <li><b style="color:var(--ink)">Configuration changes:</b> every administrative change records who made it, which route, and a checksum of the request (never the request itself, which can hold a credential). A changed setting also records checksums before and after.</li>
+      <li><b style="color:var(--ink)">Tamper-evident and durable:</b> the log is hash-chained and kept in the data directory by default, with a verify endpoint.</li>
+      <li><b style="color:var(--ink)">Into your tools:</b> stream events to a webhook, syslog or OpenTelemetry (<code>OMNIGATE_AUDIT_LOG_WEBHOOK</code>, <code>_SYSLOG</code>, <code>_OTLP_ENDPOINT</code>), or append them to a JSON file.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="rule-top" id="hardening">
+  <div class="wrap">
+    <div class="section-head"><div class="kicker">Hardening</div><h2>Safe settings, together</h2></div>
+    <p class="section-sub">Set <code>OMNIGATE_SECURITY_PROFILE=strict</code> to turn on the stricter choices at once. The Docker and Kubernetes stacks set it for you.</p>
+    <table class="sum"><thead><tr><th>In the strict profile</th><th>Effect</th></tr></thead><tbody>
+      <tr><td><b>Deny unlisted tables</b></td><td>A table no policy rule covers is refused.</td></tr>
+      <tr><td><b>Strict column check</b></td><td>A reference to a column the catalog does not know is refused.</td></tr>
+      <tr><td><b>Content security policy</b></td><td>Enforced for the console and Ask app, not only reported.</td></tr>
+      <tr><td><b>Never open</b></td><td>The server will not run without sign-in, even with <code>OMNIGATE_INSECURE=true</code>.</td></tr>
+      <tr><td><b>No shared wire login</b></td><td>The shared development login for SQL tools is switched off.</td></tr>
+    </tbody></table>
+    <h3 style="margin:26px 0 8px">Always on</h3>
+    <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
+      <li>Security headers on every response, and no framing by other sites (<code>OMNIGATE_FRAME_ANCESTORS</code> to allow your own portal).</li>
+      <li>A cookie-signed request that changes something must also carry a header that other websites cannot add, so a forged page cannot act as a signed-in administrator.</li>
+      <li>The container runs as a non-root user; the Kubernetes charts also use a read-only root filesystem, no privilege escalation, no extra capabilities and the default seccomp profile.</li>
+    </ul>
+    <h3 style="margin:26px 0 8px">Supply chain</h3>
+    <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
+      <li>Dependencies and images are scanned for known vulnerabilities, and a software bill of materials (CycloneDX) is attached to every release for your security review.</li>
+      <li>Images can be signed with cosign so you can verify what you pull.</li>
+    </ul>
+  </div>
+</section>
 
 <section class="rule-top" id="demo">
   <div class="wrap">
     <div class="section-head"><div class="kicker">See it work</div><h2>A restricted user and a cleared user, same question</h2></div>
-    <p class="section-sub">Recorded against a running gateway (the Server build with these fixes) in front of a PostgreSQL database with three employees, a SELECT-only service account, and a 1.5-billion-parameter local model answering natural-language questions. Two people are provisioned: <b>alice</b> (<code>clearance=engineering</code>) and <b>bob</b> (<code>clearance=finance</code>). Nothing here is mocked.</p>
+    <p class="section-sub">Recorded against a running gateway in front of a PostgreSQL database with three employees, a SELECT-only service account, and a 1.5-billion-parameter local model answering natural-language questions. Two people are provisioned: <b>alice</b> (<code>clearance=engineering</code>) and <b>bob</b> (<code>clearance=finance</code>). Nothing here is mocked.</p>
 
     <h3 style="margin:26px 0 8px">The policy that produced everything below</h3>
 <pre class="code"><span class="c"># strict profile: a table no row filter covers is refused, so say that employees needs none</span>
@@ -495,41 +502,38 @@ $ curl -o /dev/null -w '%{http_code}' http://gateway:8080/api/config
 <span class="good">401</span>
 $ ls -l data/bootstrap-admin
 <span class="good">-rw-------  bootstrap-admin</span>        <span class="c"># a salted hash, not the password</span></pre>
-    <p style="margin-top:14px; color:var(--ink-dim); font-size:14px">Two limits of this recording: the model is a small local one, so its phrasing is plain, and the controls shown do not depend on it (the gateway checks the SQL, not the model). Other things the same run showed: a request that carries a session cookie but no <code>X-Requested-With</code> header gets 403, and the console and Ask app load with the enforced content security policy under the strict profile.</p>
+    <p style="margin-top:14px; color:var(--ink-dim); font-size:14px">The model here is a small local one, so its phrasing is plain; the controls shown do not depend on it, because the gateway checks the SQL, not the model.</p>
   </div>
 </section>
 
-
-<section class="rule-top" id="plan">
+<section class="rule-top" id="settings">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">Plan</div><h2>Closing the gaps in order</h2></div>
-    <div class="grid3">
-      <div class="phase"><h3>In main</h3><div class="when">Server repository, tested, not released</div><ul>
-        <li><a href="#g1">G1</a>, <a href="#g2">G2</a>, <a href="#g4">G4</a>, <a href="#g5">G5</a>, <a href="#g6">G6</a> fixed</li>
-        <li><a href="#g7">G7</a>, <a href="#g8">G8</a>, <a href="#g9">G9</a>, <a href="#g13">G13</a>, <a href="#g14">G14</a> fixed</li>
-        <li><a href="#g3">G3</a>, <a href="#g11">G11</a>, <a href="#g12">G12</a> built; each lists what is left</li></ul></div>
-      <div class="phase"><h3>In review</h3><div class="when">Docker repository, open pull request</div><ul>
-        <li><a href="#g10">G10</a> non-root image, read-only filesystem, hardened chart container</li>
-        <li><a href="#g15">G15</a> image scan, SBOM and signing in the image build</li>
-        <li>The charts turn on the strict profile and HSTS</li></ul></div>
-      <div class="phase"><h3>Before it counts</h3><div class="when">What a release still needs</div><ul>
-        <li>A Server release, so the stacks can pin it</li>
-        <li>A run of the charts on a real cluster</li>
-        <li>A signing key and a first run of the workflows</li>
-        <li>Console pages for <a href="#g11">G11</a> and <a href="#g12">G12</a>; live-database checks for <a href="#g3">G3</a></li></ul></div>
-    </div>
-    <div class="callout" style="margin-top:22px"><b>To decide with Andy.</b> Which of the end-user data-grant capabilities he saw matter most to his customers, and which sources come first (Oracle seems the natural start, given the talk). The slides would let us compare feature by feature instead of working from the note.</div>
+    <div class="section-head"><div class="kicker">Settings</div><h2>The settings that matter most</h2></div>
+    <p class="section-sub">Set these as environment variables. The <a href="guide.html">admin and Ask guide</a> and the user guide that ships with the product list every one.</p>
+    <div class="table-scroll"><table class="sum"><thead><tr><th>Setting</th><th>What it does</th></tr></thead><tbody>
+      <tr><td><code>OMNIGATE_AUTH_USERS</code>, <code>OMNIGATE_AUTH_API_TOKENS</code>, <code>OMNIGATE_AUTH_OIDC_*</code></td><td>Sign-in for the admin console and API. With none set, a first-boot administrator is created.</td></tr>
+      <tr><td><code>OMNIGATE_INSECURE=true</code></td><td>Run without sign-in on purpose, for a local trial.</td></tr>
+      <tr><td><code>OMNIGATE_SECURITY_PROFILE=strict</code></td><td>The stricter defaults together (see Hardening).</td></tr>
+      <tr><td><code>OMNIGATE_ACCESS_POLICY_CONFIG</code></td><td>Path to the policy file; it can also be edited live in the console.</td></tr>
+      <tr><td><code>OMNIGATE_POLICY_REVIEW=required</code></td><td>A second administrator must approve every policy change.</td></tr>
+      <tr><td><code>OMNIGATE_WIRE_USERS</code>, <code>OMNIGATE_WIRE_REQUIRE_TLS</code></td><td>Separate logins for SQL tools, and TLS required on the PostgreSQL and MySQL listeners.</td></tr>
+      <tr><td><code>OMNIGATE_ACCESS_NATIVE_RLS_DIALECT</code></td><td><code>auto</code> or a list of database types that should also receive the end user.</td></tr>
+      <tr><td><code>OMNIGATE_LLM_MODE</code></td><td><code>local-only</code>, <code>local-first</code> or cloud.</td></tr>
+      <tr><td><code>OMNIGATE_LLM_EGRESS_NO_SAMPLES_FROM</code>, <code>_NO_ROWS_FROM</code>, <code>_TAGS</code>, <code>OMNIGATE_LLM_REDACT_PII</code></td><td>What may be sent to a model.</td></tr>
+      <tr><td><code>OMNIGATE_CONFIG_ENCRYPTION_KEY</code></td><td>Encrypt stored settings; key from a value, a file or a secret reference.</td></tr>
+      <tr><td><code>OMNIGATE_AUDIT_LOG_WEBHOOK</code>, <code>_SYSLOG</code>, <code>_OTLP_ENDPOINT</code></td><td>Stream audit events to your tools.</td></tr>
+      <tr><td><code>OMNIGATE_CLUSTER_TLS_KEYSTORE</code>, <code>_TRUSTSTORE</code></td><td>Encrypt traffic between replicas.</td></tr>
+    </tbody></table></div>
   </div>
 </section>
 
-<section class="rule-top" id="method">
+<section class="rule-top" id="report">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">How this was checked</div><h2>Method and limits</h2></div>
-    <p class="section-sub">A point-in-time review, not a penetration test and not a certification.</p>
-    <ul style="color:var(--ink-dim); font-size:14.5px; max-width:760px; padding-left:20px">
-      <li><b style="color:var(--ink)">Run:</b> the real access-control stage with a row filter against 11 SQL shapes (qualified, quoted, upper-case, aliased, subquery, CTE, <code>UNION</code>, left join, trailing comment, a stacked second statement, no attribute) and with a column grant against 6 shapes; the 0.10.11 tests for the read-only guard, the prompt column filter and the security headers; the 0.10.11 image started with a read-only filesystem, as a non-root user, with headers present.</li>
-      <li><b style="color:var(--ink)">Read:</b> the source for authentication, the policy classes, audit event types, secrets handling, TLS usage, model modes, what is sent to the model, and the build workflows.</li>
-      <li><b style="color:var(--ink)">Not done:</b> a penetration test, a review of any cloud account or network setup, end-to-end policy tests on each non-SQL connector, a check of anything outside the two repositories (so G15 may exist elsewhere), and anything about the AIWorld talk itself.</li>
+    <div class="section-head"><div class="kicker">Reporting and assurance</div><h2>Found a problem, or need documents for a review</h2></div>
+    <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
+      <li><b style="color:var(--ink)">Report a vulnerability privately</b> through GitHub's "Report a vulnerability" on the <a href="https://github.com/thinkingsense-ai/Server/security/advisories/new">Server</a> or <a href="https://github.com/thinkingsense-ai/Docker/security/advisories/new">Docker</a> repository. We acknowledge within three working days and tell you our plan within ten.</li>
+      <li><b style="color:var(--ink)">For your security review:</b> a software bill of materials is attached to each release, and the data flow to a language model is described under <a href="#ai">AI and your data</a>.</li>
+      <li><b style="color:var(--ink)">Certifications:</b> ThinkingSense does not currently publish a SOC 2 or ISO 27001 report. Ask us what we can share for a review.</li>
     </ul>
   </div>
 </section>
@@ -555,7 +559,7 @@ $ ls -l data/bootstrap-admin
         <h4>Docs</h4>
         <ul>
           <li><a href="guide.html">Admin &amp; Ask guide</a></li>
-          <li><a href="security.html">Security posture</a></li>
+          <li><a href="security.html">Security</a></li>
           <li><a href="deploy-docker.html">Deploy with Docker</a></li>
           <li><a href="deploy-oci.html">Deploy to OCI</a></li>
         </ul>
