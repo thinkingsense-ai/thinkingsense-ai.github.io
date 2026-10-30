@@ -220,7 +220,7 @@
     <h1>Data trust for questions, analytics and agents</h1>
     <p class="lede">What ThinkingSense enforces today, what it does not yet, and what closes each gap. Written in October 2026 against app v0.10.11, from the code and from tests we ran against the real components.</p>
     <div class="hero-ctas"><a class="btn primary large" href="#picture">See the picture</a><a class="btn large" href="#gaps">Jump to the gaps</a></div>
-    <div class="toc"><a href="#ask">The question</a><a href="#capabilities">Capabilities</a><a href="#gaps">Gaps</a><a href="#proof">Proof for G1</a><a href="#plan">Plan</a><a href="#method">How this was checked</a></div>
+    <div class="toc"><a href="#ask">The question</a><a href="#capabilities">Capabilities</a><a href="#gaps">Gaps</a><a href="#proof">Proof for G1</a><a href="#demo">See it work</a><a href="#plan">Plan</a><a href="#method">How this was checked</a></div>
   </div>
 </section>
 
@@ -370,6 +370,135 @@ SELECT count(*) FROM employees                        ALLOWED   (not a select-li
     <p style="margin-top:14px; color:var(--ink-dim); font-size:14px">With a mask grant the same statements run and the <code>salary</code> column is NULL in the result; <code>INSERT ... SELECT *</code> over the table is rejected so the real values cannot be copied. An entitled caller (<code>role = hr</code>) gets the column. The checks are in <code>AccessControlStageStarTest</code> in the Server repository. A table named only after a comma (<code>FROM a, employees</code>) is matched as well.</p>
   </div>
 </section>
+
+
+<section class="rule-top" id="demo">
+  <div class="wrap">
+    <div class="section-head"><div class="kicker">See it work</div><h2>A restricted user and a cleared user, same question</h2></div>
+    <p class="section-sub">Recorded against a running gateway (the Server build with these fixes) in front of a PostgreSQL database with three employees, a SELECT-only service account, and a 1.5-billion-parameter local model answering natural-language questions. Two people are provisioned: <b>alice</b> (<code>clearance=engineering</code>) and <b>bob</b> (<code>clearance=finance</code>). Nothing here is mocked.</p>
+
+    <h3 style="margin:26px 0 8px">The policy that produced everything below</h3>
+<pre class="code"><span class="c"># strict profile: a table no row filter covers is refused, so say that employees needs none</span>
+shared_tables: ["employees"]
+column_grants:
+  <span class="c"># salary is shown to finance only; everyone else sees a band of 10,000</span>
+  - table_pattern: employees
+    columns: [salary]
+    required_attribute: clearance
+    allowed_values: [finance]
+    on_violation: mask
+    mask: bucket:10000
+  <span class="c"># anything tagged pii (ssn, once an administrator approves the tag) is refused to everyone else</span>
+  - tag: pii
+    required_attribute: clearance
+    allowed_values: [finance]
+    on_violation: deny
+tests:
+  - name: an engineer cannot read ssn through a star
+    sql: SELECT * FROM employees
+    user: {id: alice, attributes: {clearance: engineering}}
+    expect: denied</pre>
+
+    <h3 style="margin:30px 0 8px">Natural-language questions in the Ask app</h3>
+    <figure class="diagram">
+      <img src="img/security-demo-alice-salary.jpg" alt="The Ask app answering 'List each employee's name and salary' for alice: a bar chart and a table showing 90,000 for Ann Lee, 120,000 for Ben Ortiz and 80,000 for Cara Wu">
+      <figcaption><b>alice</b> asks "List each employee's name and salary". The real salaries are 98,000, 120,500 and 87,250; she gets 90,000, 120,000 and 80,000, because her grant masks salary to a band of 10,000. The mask is applied inside the gateway, so the chart and the table are consistent.</figcaption>
+    </figure>
+    <figure class="diagram">
+      <img src="img/security-demo-alice-ssn.jpg" alt="The Ask app answering 'What is Ann Lee's ssn?' for alice with 'The SSN of Ann Lee is not provided in the given data.'">
+      <figcaption><b>alice</b> asks "What is Ann Lee's ssn?". The column is left out of the schema the model is shown, so it cannot write SQL for it, and the answer says the data is not provided. Had the model written SQL for it anyway, the gateway would have refused the statement.</figcaption>
+    </figure>
+    <figure class="diagram">
+      <img src="img/security-demo-bob-all.jpg" alt="The Ask app answering 'List each employee's name, salary and ssn' for bob with exact salaries and social security numbers">
+      <figcaption><b>bob</b> (finance) asks for names, salaries and SSNs and gets exact values. Same app, same question shape, different person.</figcaption>
+    </figure>
+
+    <h3 style="margin:30px 0 8px">SQL tools over the PostgreSQL wire, with TLS</h3>
+    <p class="section-sub">The same rules apply to <code>psql</code>, JDBC and BI tools. The login name is the identity; its attributes come from SCIM.</p>
+<pre class="code"><span class="c"># plaintext is refused when OMNIGATE_WIRE_REQUIRE_TLS=true</span>
+$ psql "host=gateway port=5433 user=alice sslmode=disable"
+<span class="good">ERROR:  TLS is required: connect with sslmode=require</span>
+
+<span class="c"># alice: salary is banded, ssn is refused by its tag, a star cannot get round it</span>
+alice=> select name, salary from public.employees order by id;
+   name    |  salary
+-----------+----------
+ Ann Lee   |  90000.0
+ Ben Ortiz | 120000.0
+ Cara Wu   |  80000.0
+
+alice=> select ssn from public.employees;
+<span class="good">ERROR:  statement rejected: caller is not entitled to column "ssn"</span>
+alice=> select * from public.employees;
+<span class="good">ERROR:  statement rejected: SELECT * (or a whole-row reference) on a table with column
+        restrictions would return column(s) ssn that the caller is not entitled to;
+        list the columns you need instead</span>
+alice=> select salary from public.departments_x, public.employees;
+<span class="good">ERROR:  statement rejected: table "public.departments_x" is not covered by any row
+        filter or shared_tables entry</span>        <span class="c">-- the strict profile fails closed</span>
+
+<span class="c"># bob (finance) sees everything</span>
+bob=> select name, salary, ssn from public.employees order by id;
+   name    | salary |     ssn
+-----------+--------+-------------
+ Ann Lee   |  98000 | 123-45-6789
+ Ben Ortiz | 120500 | 987-65-4321
+ Cara Wu   |  87250 | 555-12-3456</pre>
+
+    <h3 style="margin:30px 0 8px">Changing the policy takes two people, and the policy tests itself</h3>
+<pre class="code"><span class="c"># the author proposes a change (salary mask: bucket:10000 -> partial:3); with OMNIGATE_POLICY_REVIEW=required it waits</span>
+PUT /api/config/access-policy
+<span class="good">202  saved as version 2; a second administrator must approve it before it applies</span>
+
+<span class="c"># the author cannot approve their own change</span>
+POST /api/access-policy/versions/approve {"id": 2}
+<span class="good">403  review is required: the author of a policy version cannot approve it</span>
+
+<span class="c"># a change that breaks the policy's own tests is refused outright</span>
+PUT /api/config/access-policy   <span class="c">(allowed_values: [finance, engineering])</span>
+<span class="good">422  the tests in the policy do not pass, so it was not saved</span>
+     FAILED: an engineer cannot read ssn directly (expected denied, got allowed)
+     FAILED: an engineer cannot read ssn through a star (expected denied, got allowed)
+
+<span class="c"># the reviewer sees exactly what changes, then approves; it is live without a restart</span>
+GET /api/access-policy/versions?id=2
+  -     mask: bucket:10000
+  +     mask: partial:3
+POST /api/access-policy/versions/approve {"id": 2}   <span class="c"># as a different administrator</span>
+<span class="good">200  version 2 LIVE, reviewer api-token-51054e2f</span>
+
+alice=> select name, salary from public.employees order by id;
+   name    | salary
+-----------+--------
+ Ann Lee   | ***000
+ Ben Ortiz | ***500
+ Cara Wu   | ***250</pre>
+
+    <h3 style="margin:30px 0 8px">Who changed what, and what is stored</h3>
+<pre class="code">GET /api/audit-log?type=CONFIG_CHANGED
+  api-token-51054e2f | POST /api/access-policy/versions/approve | body sha256 9e7e65453739
+  api-token-159b4251 | PUT  /api/config/access-policy           | body sha256 45b0cc02355a
+  api-token-159b4251 | POST /api/config/column-tags             | body sha256 434c16b9a051
+
+<span class="c"># OMNIGATE_CONFIG_ENCRYPTION_KEY is set: the tag setting in the config database is ciphertext</span>
+$ grep -c 'pii.id' data/omnigate-config.script
+<span class="good">0</span></pre>
+
+    <h3 style="margin:30px 0 8px">No sign-in configured: the first-boot administrator</h3>
+<pre class="code"><span class="c"># started with no OMNIGATE_AUTH_* and no OMNIGATE_INSECURE</span>
+ No sign-in was configured, so a first-boot administrator was created.
+   user:     admin
+   password: <span class="c">(shown once, in the log)</span>
+ This password is shown once; only its hash is kept in /var/lib/omnigate/data/bootstrap-admin.
+
+$ curl -o /dev/null -w '%{http_code}' http://gateway:8080/api/config
+<span class="good">401</span>
+$ ls -l data/bootstrap-admin
+<span class="good">-rw-------  bootstrap-admin</span>        <span class="c"># a salted hash, not the password</span></pre>
+    <p style="margin-top:14px; color:var(--ink-dim); font-size:14px">Two limits of this recording: the model is a small local one, so its phrasing is plain, and the controls shown do not depend on it (the gateway checks the SQL, not the model). Other things the same run showed: a request that carries a session cookie but no <code>X-Requested-With</code> header gets 403, and the console and Ask app load with the enforced content security policy under the strict profile.</p>
+  </div>
+</section>
+
 
 <section class="rule-top" id="plan">
   <div class="wrap">
