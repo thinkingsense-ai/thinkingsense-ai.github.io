@@ -118,14 +118,13 @@
 <use href="#s-ok" x="719" y="296"/>
 <text x="735" y="306" class="body" text-anchor="start">In place</text>
 <path d="M831,266 L842,266" class="arrow"/>
-<rect x="842" y="218" width="122" height="96" rx="9" class="box-part"/>
+<rect x="842" y="218" width="122" height="96" rx="9" class="box-ok"/>
 <text x="852" y="238" class="h" text-anchor="start">7  Run and audit</text>
 <text x="852" y="258" class="body" text-anchor="start">Federated engine;</text>
-<text x="852" y="272" class="body" text-anchor="start">access events logged;</text>
-<text x="852" y="286" class="body" text-anchor="start">config changes not</text>
-<use href="#s-part" x="852" y="296"/>
-<text x="868" y="306" class="body" text-anchor="start">Partial</text>
-<g><circle cx="948" cy="300" r="10" class="gapbadge"/><text x="948" y="303.2" class="gaptext" text-anchor="middle">G6</text></g>
+<text x="852" y="272" class="body" text-anchor="start">access and config</text>
+<text x="852" y="286" class="body" text-anchor="start">changes logged</text>
+<use href="#s-ok" x="852" y="296"/>
+<text x="868" y="306" class="body" text-anchor="start">In place</text>
 <rect x="44" y="334" width="215" height="112" rx="9" class="box-gap"/>
 <text x="56" y="354" class="h" text-anchor="start">Cloud language model</text>
 <text x="56" y="369" class="body" text-anchor="start">Default mode</text>
