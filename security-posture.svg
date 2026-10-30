@@ -213,15 +213,15 @@
 <text x="684" y="660" class="body" text-anchor="start">OAuth service account</text>
 <rect x="834" y="532" width="150" height="138" rx="9" class="box"/>
 <text x="846" y="552" class="h" text-anchor="start">MCP tools</text>
-<use href="#s-na" x="846" y="561"/>
-<text x="864" y="570" class="body" text-anchor="start">Rows and columns</text>
+<use href="#s-ok" x="846" y="561"/>
+<text x="864" y="570" class="body" text-anchor="start">Tool allow-list</text>
 <use href="#s-ok" x="846" y="579"/>
-<text x="864" y="588" class="body" text-anchor="start">Allow-list, approval</text>
+<text x="864" y="588" class="body" text-anchor="start">Approval per tool</text>
 <use href="#s-na" x="846" y="597"/>
-<text x="864" y="606" class="body" text-anchor="start">In the source</text>
-<use href="#s-ok" x="846" y="615"/>
+<text x="864" y="606" class="body" text-anchor="start">Rows and columns</text>
+<use href="#s-na" x="846" y="615"/>
 <text x="864" y="624" class="body" text-anchor="start">Identity at source</text>
-<text x="846" y="660" class="body" text-anchor="start">Signed identity assertion</text>
+<text x="846" y="660" class="body" text-anchor="start">Tool-level governance</text>
 <text x="24" y="690" class="note" text-anchor="start">Rows and columns are enforced on the SQL the gateway runs, so they apply to any source it can query. In the source means the database's own security, which receives the end user.</text>
 <rect x="24" y="706" width="960" height="30" rx="8" class="box"/>
 <use href="#s-ok" x="40" y="715"/>

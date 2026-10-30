@@ -258,12 +258,13 @@ open http://localhost:8080/admin</pre>
   <div class="wrap">
     <div class="section-head">
       <div class="kicker">Before you share it</div>
-      <h2>This quick start has no admin login</h2>
+      <h2>This quick start has no admin login, on purpose</h2>
     </div>
-    <p class="section-sub">The Compose file is a try-it-on-your-laptop configuration: the admin console at <code>/admin</code> opens without a login.
+    <p class="section-sub">The Compose file is a try-it-on-your-laptop configuration: it sets <code>OMNIGATE_INSECURE=true</code>, so the admin console at <code>/admin</code> opens without a login.
       That is fine on your own machine. <b>Do not expose the port to a network or the internet</b> until you set admin logins with
-      <code>OMNIGATE_AUTH_USERS</code> (see the repository README). The one-click cloud stacks are secure by default and can also limit which addresses can reach them,
-      so they are the better choice for anything shared.</p>
+      <code>OMNIGATE_AUTH_USERS</code> (see the repository README) and remove that line. Without it, ThinkingSense does not run open: on first start it creates an <code>admin</code> account
+      with a random password and shows it once in the container log (<code>docker compose logs</code>). The one-click cloud stacks are secure by default and can also limit which addresses can reach them,
+      so they are the better choice for anything shared. See <a href="security.html">Security</a> for everything that can be switched on.</p>
   </div>
 </section>
 
@@ -287,7 +288,7 @@ open http://localhost:8080/admin</pre>
     </div>
     <p class="section-sub">If you only want the application itself (for example on an ARM server or an Apple-silicon Mac) and will bring your own database,
       a pre-built <b>arm64-only</b> image is published in our public Oracle registry. It does not include the demo database or the local models, and it is not built for Intel/AMD machines.</p>
-    <pre class="code">docker pull ocir.us-phoenix-1.oci.oraclecloud.com/ax8tpjdxhykk/omnigate:v0.10.10</pre>
+    <pre class="code">docker pull ocir.us-phoenix-1.oci.oraclecloud.com/ax8tpjdxhykk/omnigate:v0.10.12</pre>
     <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">Most people should use the Compose route above, which works on both architectures and wires everything together for you.</p>
   </div>
 </section>
