@@ -1,0 +1,250 @@
+<svg viewBox="0 0 1008 756" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ThinkingSense data security, from the people and agents who ask, through the gateway pipeline that authenticates, scopes, guards and applies row and column policy, to six kinds of data source. Row policy and the read-only guard are in place. Column policy covers SELECT star as well as named columns. Source-side identity is partial for PostgreSQL and Oracle and missing for other sources. Numbered gap badges G1 to G12 match the gap list on the page.">
+<defs>
+  <style>
+    :root { --bg:#ffffff; --panel:#fbfbf9; --panel2:#f5f6f4; --ink:#191d24; --dim:#565f6e; --faint:#6b7483; --rule:#c9cbc6; --rule2:#8992a1;
+            --accent:#3457d5; --accent-soft:#e7ecfc; --navy:#1c2b4a; --navy-soft:#e8ecf4;
+            --ok:#2f6f63; --ok-soft:#e2f0ec; --part:#b5751f; --part-soft:#f7ecdb; --gap:#b4372f; --gap-soft:#f8e4e1; --gap-ink:#ffffff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#12141a; --panel:#1b1e26; --panel2:#1f222b; --ink:#ecedf1; --dim:#a7adba; --faint:#8f96a4; --rule:#3a3e4a; --rule2:#4c515e;
+              --accent:#7f9cd6; --accent-soft:#1c2740; --navy:#7f9cd6; --navy-soft:#212b40;
+              --ok:#7cbfae; --ok-soft:#182b26; --part:#d9a251; --part-soft:#2c2417; --gap:#e0857b; --gap-soft:#33201e; --gap-ink:#12141a; }
+    }
+    text { font-family: 'Inter', -apple-system, Helvetica, Arial, sans-serif; fill: var(--ink); }
+    .title { font-size: 16px; font-weight: 700; }
+    .band { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; fill: var(--faint); text-transform: uppercase; }
+    .h { font-size: 12px; font-weight: 700; }
+    .body { font-size: 10px; fill: var(--dim); }
+    .note { font-size: 10.5px; fill: var(--dim); }
+    .strip { font-size: 11px; fill: var(--ink); }
+    .legend { font-size: 10.5px; fill: var(--dim); }
+    .gaptext { font-size: 8.4px; font-weight: 700; fill: var(--gap-ink); }
+    .gapbadge { fill: var(--gap); }
+    .box { fill: var(--panel); stroke: var(--rule); stroke-width: 1; }
+    .box-ok { fill: var(--ok-soft); stroke: var(--ok); stroke-width: 1; }
+    .box-part { fill: var(--part-soft); stroke: var(--part); stroke-width: 1; }
+    .box-gap { fill: var(--gap-soft); stroke: var(--gap); stroke-width: 1; }
+    .gateway { fill: var(--navy-soft); stroke: var(--navy); stroke-width: 1.2; }
+    .arrow { stroke: var(--rule2); stroke-width: 1.4; fill: none; marker-end: url(#ah); }
+    .sok { fill: var(--ok); } .spartring { fill: none; stroke: var(--part); stroke-width: 1.6; } .spartfill { fill: var(--part); }
+    .sgap { fill: none; stroke: var(--gap); stroke-width: 1.8; } .sna { stroke: var(--faint); stroke-width: 1.6; }
+  </style>
+  <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8992a1"/></marker>
+  <g id="s-ok"><circle cx="6" cy="6" r="5" class="sok"/></g>
+  <g id="s-part"><circle cx="6" cy="6" r="4.6" class="spartring"/><path d="M6,1.4 A4.6,4.6 0 0 0 6,10.6 z" class="spartfill"/></g>
+  <g id="s-gap"><circle cx="6" cy="6" r="4.6" class="sgap"/></g>
+  <g id="s-na"><line x1="2" y1="6" x2="10" y2="6" class="sna"/></g>
+</defs>
+<rect width="1008" height="756" fill="var(--bg)"/>
+<text x="504.0" y="28" class="title" text-anchor="middle">Where ThinkingSense enforces data security, and where it does not yet</text>
+<text x="24" y="52" class="band" text-anchor="start">Who asks</text>
+<rect x="24" y="60" width="176" height="50" rx="9" class="box"/>
+<text x="36" y="80" class="h" text-anchor="start">Ask app users</text>
+<text x="36" y="96" class="body" text-anchor="start">Business questions</text>
+<path d="M112.0,110 L112.0,128" class="arrow"/>
+<rect x="220" y="60" width="176" height="50" rx="9" class="box"/>
+<text x="232" y="80" class="h" text-anchor="start">Admin console</text>
+<text x="232" y="96" class="body" text-anchor="start">Setup and review</text>
+<path d="M308.0,110 L308.0,128" class="arrow"/>
+<rect x="416" y="60" width="176" height="50" rx="9" class="box"/>
+<text x="428" y="80" class="h" text-anchor="start">AI agents</text>
+<text x="428" y="96" class="body" text-anchor="start">MCP tools</text>
+<path d="M504.0,110 L504.0,128" class="arrow"/>
+<rect x="612" y="60" width="176" height="50" rx="9" class="box"/>
+<text x="624" y="80" class="h" text-anchor="start">Embedded apps</text>
+<text x="624" y="96" class="body" text-anchor="start">Signed embed tokens</text>
+<path d="M700.0,110 L700.0,128" class="arrow"/>
+<rect x="808" y="60" width="176" height="50" rx="9" class="box"/>
+<text x="820" y="80" class="h" text-anchor="start">SQL and BI tools</text>
+<text x="820" y="96" class="body" text-anchor="start">Postgres, MySQL, Oracle wire</text>
+<path d="M896.0,110 L896.0,128" class="arrow"/>
+<g><circle cx="970" cy="72" r="10" class="gapbadge"/><text x="970" y="75.2" class="gaptext" text-anchor="middle">G5</text></g>
+<g><circle cx="946" cy="72" r="10" class="gapbadge"/><text x="946" y="75.2" class="gaptext" text-anchor="middle">G9</text></g>
+<rect x="24" y="130" width="960" height="34" rx="9" class="box-part"/>
+<use href="#s-part" x="38" y="141"/>
+<text x="58" y="151" class="strip" text-anchor="start">Identity: local accounts · API tokens · OIDC SSO · SCIM · end-user JWT  →  AccessContext (user, roles, attributes)</text>
+<text x="944" y="151" class="note" text-anchor="end">Open if no sign-in is set up</text>
+<g><circle cx="962" cy="147" r="10" class="gapbadge"/><text x="962" y="150.2" class="gaptext" text-anchor="middle">G2</text></g>
+<path d="M504,164 L504,182" class="arrow"/>
+<text x="516" y="177" class="note" text-anchor="start">AccessContext travels with every statement</text>
+<rect x="24" y="184" width="960" height="284" rx="14" class="gateway"/>
+<text x="40" y="205" class="h" text-anchor="start">ThinkingSense gateway: one pipeline for every source</text>
+<g><circle cx="962" cy="200" r="10" class="gapbadge"/><text x="962" y="203.2" class="gaptext" text-anchor="middle">G10</text></g>
+<text x="944" y="204" class="note" text-anchor="end">Stack images still run as root</text>
+<rect x="44" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="54" y="238" class="h" text-anchor="start">1  Authenticate</text>
+<text x="54" y="258" class="body" text-anchor="start">Token, SSO or login</text>
+<text x="54" y="272" class="body" text-anchor="start">gives user, roles,</text>
+<text x="54" y="286" class="body" text-anchor="start">attributes</text>
+<use href="#s-ok" x="54" y="296"/>
+<text x="70" y="306" class="body" text-anchor="start">In place</text>
+<path d="M166,266 L177,266" class="arrow"/>
+<rect x="177" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="187" y="238" class="h" text-anchor="start">2  Scope</text>
+<text x="187" y="258" class="body" text-anchor="start">Workspace and group</text>
+<text x="187" y="272" class="body" text-anchor="start">allow-list of sources</text>
+<text x="187" y="286" class="body" text-anchor="start">and members</text>
+<use href="#s-ok" x="187" y="296"/>
+<text x="203" y="306" class="body" text-anchor="start">In place</text>
+<path d="M299,266 L310,266" class="arrow"/>
+<rect x="310" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="320" y="238" class="h" text-anchor="start">3  Understand</text>
+<text x="320" y="258" class="body" text-anchor="start">Prompt leaves out</text>
+<text x="320" y="272" class="body" text-anchor="start">columns you may not</text>
+<text x="320" y="286" class="body" text-anchor="start">see (NL2SQL)</text>
+<use href="#s-ok" x="320" y="296"/>
+<text x="336" y="306" class="body" text-anchor="start">In place</text>
+<path d="M432,266 L443,266" class="arrow"/>
+<rect x="443" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="453" y="238" class="h" text-anchor="start">4  Guard</text>
+<text x="453" y="258" class="body" text-anchor="start">One read-only query;</text>
+<text x="453" y="272" class="body" text-anchor="start">blocked functions;</text>
+<text x="453" y="286" class="body" text-anchor="start">read-only session</text>
+<use href="#s-ok" x="453" y="296"/>
+<text x="469" y="306" class="body" text-anchor="start">In place</text>
+<path d="M565,266 L576,266" class="arrow"/>
+<rect x="576" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="586" y="238" class="h" text-anchor="start">5  Row policy</text>
+<text x="586" y="258" class="body" text-anchor="start">Parser-based filter</text>
+<text x="586" y="272" class="body" text-anchor="start">around every table;</text>
+<text x="586" y="286" class="body" text-anchor="start">fails closed</text>
+<use href="#s-ok" x="586" y="296"/>
+<text x="602" y="306" class="body" text-anchor="start">In place</text>
+<path d="M698,266 L709,266" class="arrow"/>
+<rect x="709" y="218" width="122" height="96" rx="9" class="box-ok"/>
+<text x="719" y="238" class="h" text-anchor="start">6  Column policy</text>
+<text x="719" y="258" class="body" text-anchor="start">Deny or mask by</text>
+<text x="719" y="272" class="body" text-anchor="start">column; stars read</text>
+<text x="719" y="286" class="body" text-anchor="start">with a SQL parser</text>
+<use href="#s-ok" x="719" y="296"/>
+<text x="735" y="306" class="body" text-anchor="start">In place</text>
+<path d="M831,266 L842,266" class="arrow"/>
+<rect x="842" y="218" width="122" height="96" rx="9" class="box-part"/>
+<text x="852" y="238" class="h" text-anchor="start">7  Run and audit</text>
+<text x="852" y="258" class="body" text-anchor="start">Federated engine;</text>
+<text x="852" y="272" class="body" text-anchor="start">access events logged;</text>
+<text x="852" y="286" class="body" text-anchor="start">config changes not</text>
+<use href="#s-part" x="852" y="296"/>
+<text x="868" y="306" class="body" text-anchor="start">Partial</text>
+<g><circle cx="948" cy="300" r="10" class="gapbadge"/><text x="948" y="303.2" class="gaptext" text-anchor="middle">G6</text></g>
+<rect x="44" y="334" width="215" height="112" rx="9" class="box-gap"/>
+<text x="56" y="354" class="h" text-anchor="start">Cloud language model</text>
+<text x="56" y="369" class="body" text-anchor="start">Default mode</text>
+<text x="56" y="389" class="body" text-anchor="start">Receives schema, sample values</text>
+<text x="56" y="403" class="body" text-anchor="start">and result rows; no redaction yet</text>
+<use href="#s-gap" x="56" y="426"/>
+<text x="72" y="436" class="body" text-anchor="start">Gap</text>
+<g><circle cx="241" cy="430" r="10" class="gapbadge"/><text x="241" y="433.2" class="gaptext" text-anchor="middle">G4</text></g>
+<rect x="279" y="334" width="215" height="112" rx="9" class="box-ok"/>
+<text x="291" y="354" class="h" text-anchor="start">Local language model</text>
+<text x="291" y="369" class="body" text-anchor="start">Optional mode</text>
+<text x="291" y="389" class="body" text-anchor="start">Keeps prompts and result rows</text>
+<text x="291" y="403" class="body" text-anchor="start">inside your own network</text>
+<use href="#s-ok" x="291" y="426"/>
+<text x="307" y="436" class="body" text-anchor="start">In place</text>
+<rect x="514" y="334" width="215" height="112" rx="9" class="box-part"/>
+<text x="526" y="354" class="h" text-anchor="start">Audit log</text>
+<text x="526" y="369" class="body" text-anchor="start">Always on</text>
+<text x="526" y="389" class="body" text-anchor="start">Logins, access decisions, SCIM, questions;</text>
+<text x="526" y="403" class="body" text-anchor="start">durable only if configured</text>
+<use href="#s-part" x="526" y="426"/>
+<text x="542" y="436" class="body" text-anchor="start">Partial</text>
+<g><circle cx="711" cy="430" r="10" class="gapbadge"/><text x="711" y="433.2" class="gaptext" text-anchor="middle">G6</text></g>
+<rect x="749" y="334" width="215" height="112" rx="9" class="box-part"/>
+<text x="761" y="354" class="h" text-anchor="start">Secrets and settings</text>
+<text x="761" y="369" class="body" text-anchor="start">Config store and env</text>
+<text x="761" y="389" class="body" text-anchor="start">Vault, CyberArk, IAM tokens supported;</text>
+<text x="761" y="403" class="body" text-anchor="start">stored values are not encrypted</text>
+<use href="#s-part" x="761" y="426"/>
+<text x="777" y="436" class="body" text-anchor="start">Partial</text>
+<g><circle cx="946" cy="430" r="10" class="gapbadge"/><text x="946" y="433.2" class="gaptext" text-anchor="middle">G7</text></g>
+<path d="M99.0,468 L99.0,510" class="arrow"/>
+<path d="M261.0,468 L261.0,510" class="arrow"/>
+<path d="M423.0,468 L423.0,510" class="arrow"/>
+<path d="M585.0,468 L585.0,510" class="arrow"/>
+<path d="M747.0,468 L747.0,510" class="arrow"/>
+<path d="M909.0,468 L909.0,510" class="arrow"/>
+<rect x="262" y="478" width="484" height="22" rx="11" class="box"/>
+<text x="504" y="493" class="note" text-anchor="middle">Statements run with the gateway's own credentials: one shared account per source</text>
+<g><circle cx="756" cy="489" r="10" class="gapbadge"/><text x="756" y="492.2" class="gaptext" text-anchor="middle">G3</text></g>
+<text x="24" y="524" class="band" text-anchor="start">Data sources</text>
+<rect x="24" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="36" y="552" class="h" text-anchor="start">PostgreSQL</text>
+<use href="#s-ok" x="36" y="561"/>
+<text x="54" y="570" class="body" text-anchor="start">Rows (gateway)</text>
+<use href="#s-part" x="36" y="579"/>
+<text x="54" y="588" class="body" text-anchor="start">Columns (gateway)</text>
+<use href="#s-part" x="36" y="597"/>
+<text x="54" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-part" x="36" y="615"/>
+<text x="54" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="36" y="660" class="body" text-anchor="start">RLS is opt-in</text>
+<rect x="186" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="198" y="552" class="h" text-anchor="start">Oracle</text>
+<use href="#s-ok" x="198" y="561"/>
+<text x="216" y="570" class="body" text-anchor="start">Rows (gateway)</text>
+<use href="#s-part" x="198" y="579"/>
+<text x="216" y="588" class="body" text-anchor="start">Columns (gateway)</text>
+<use href="#s-part" x="198" y="597"/>
+<text x="216" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-part" x="198" y="615"/>
+<text x="216" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="198" y="660" class="body" text-anchor="start">VPD is opt-in</text>
+<rect x="348" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="360" y="552" class="h" text-anchor="start">Other SQL</text>
+<use href="#s-ok" x="360" y="561"/>
+<text x="378" y="570" class="body" text-anchor="start">Rows (gateway)</text>
+<use href="#s-part" x="360" y="579"/>
+<text x="378" y="588" class="body" text-anchor="start">Columns (gateway)</text>
+<use href="#s-gap" x="360" y="597"/>
+<text x="378" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-gap" x="360" y="615"/>
+<text x="378" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="360" y="660" class="body" text-anchor="start">MySQL, SQL Server, Snowflake</text>
+<rect x="510" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="522" y="552" class="h" text-anchor="start">Files and storage</text>
+<use href="#s-ok" x="522" y="561"/>
+<text x="540" y="570" class="body" text-anchor="start">Rows (gateway)</text>
+<use href="#s-part" x="522" y="579"/>
+<text x="540" y="588" class="body" text-anchor="start">Columns (gateway)</text>
+<use href="#s-na" x="522" y="597"/>
+<text x="540" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-gap" x="522" y="615"/>
+<text x="540" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="522" y="660" class="body" text-anchor="start">S3, CSV, Parquet, lakehouse</text>
+<rect x="672" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="684" y="552" class="h" text-anchor="start">SaaS and REST</text>
+<use href="#s-ok" x="684" y="561"/>
+<text x="702" y="570" class="body" text-anchor="start">Rows (gateway)</text>
+<use href="#s-part" x="684" y="579"/>
+<text x="702" y="588" class="body" text-anchor="start">Columns (gateway)</text>
+<use href="#s-na" x="684" y="597"/>
+<text x="702" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-gap" x="684" y="615"/>
+<text x="702" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="684" y="660" class="body" text-anchor="start">OAuth service account</text>
+<rect x="834" y="532" width="150" height="138" rx="9" class="box"/>
+<text x="846" y="552" class="h" text-anchor="start">MCP tools</text>
+<use href="#s-na" x="846" y="561"/>
+<text x="864" y="570" class="body" text-anchor="start">Rows and columns</text>
+<use href="#s-ok" x="846" y="579"/>
+<text x="864" y="588" class="body" text-anchor="start">Allow-list, approval</text>
+<use href="#s-na" x="846" y="597"/>
+<text x="864" y="606" class="body" text-anchor="start">In the source</text>
+<use href="#s-part" x="846" y="615"/>
+<text x="864" y="624" class="body" text-anchor="start">Identity at source</text>
+<text x="846" y="660" class="body" text-anchor="start">Signed identity assertion</text>
+<g><circle cx="482" cy="546" r="10" class="gapbadge"/><text x="482" y="549.2" class="gaptext" text-anchor="middle">G3</text></g>
+<g><circle cx="644" cy="546" r="10" class="gapbadge"/><text x="644" y="549.2" class="gaptext" text-anchor="middle">G11</text></g>
+<text x="24" y="690" class="note" text-anchor="start">Rows and columns are enforced on the SQL the gateway runs, so they apply to any source it can query. In the source means native row security that the database itself enforces.</text>
+<rect x="24" y="706" width="960" height="30" rx="8" class="box"/>
+<use href="#s-ok" x="40" y="715"/>
+<text x="58" y="725" class="legend" text-anchor="start">In place</text>
+<use href="#s-part" x="136" y="715"/>
+<text x="154" y="725" class="legend" text-anchor="start">Partial or opt-in</text>
+<use href="#s-gap" x="286" y="715"/>
+<text x="304" y="725" class="legend" text-anchor="start">Gap</text>
+<use href="#s-na" x="352" y="715"/>
+<text x="370" y="725" class="legend" text-anchor="start">Not applicable</text>
+<g><circle cx="490" cy="721" r="10" class="gapbadge"/><text x="490" y="724.2" class="gaptext" text-anchor="middle">Gn</text></g>
+<text x="506" y="725" class="legend" text-anchor="start">Numbered gap, described on this page (G13 to G15 are not drawn)</text>
+</svg>
