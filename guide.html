@@ -275,6 +275,9 @@
  <div class="section-head"><span class="eyebrow">Guide</span><h2>The admin console and the Ask app</h2></div>
  <p class="section-sub">ThinkingSense has two front doors on the same gateway: the <strong>admin console</strong> (<code>/admin</code>) where you connect data and curate meaning, and the <strong>Ask app</strong> (<code>/</code>) where business users ask questions in plain English. Every screenshot below is from a running build.</p>
 
+ <h3 id="first-signin">Signing in for the first time</h3>
+ <p>The first time ThinkingSense starts with no sign-in configured, it does not run open. It creates an <code>admin</code> account with a random password and prints it once in the log, for example <code>docker logs &lt;container&gt;</code> or <code>kubectl logs deploy/&lt;name&gt;</code>. Only a salted hash is kept, in <code>bootstrap-admin</code> in the data directory, so the password is not shown again. Open <code>/admin</code>, sign in as <code>admin</code>, and set up your own sign-in (<code>OMNIGATE_AUTH_USERS</code>, API tokens or single sign-on); the generated account stops being used as soon as you do. The one-click cloud stacks ask for the admin password while you deploy, so they never use it. For a local trial only, <code>OMNIGATE_INSECURE=true</code> runs without a login, and the console shows a banner for as long as it does.</p>
+
  <h3>Admin console areas</h3>
  <figure class="g-fig"><img src="img/admin-overview.jpg" alt="Admin overview with a getting-started checklist and deployment checks"><figcaption>Overview — a five-step checklist to your first trusted answer, plus any deployment checks that need attention.</figcaption></figure>
  <table class="g-table"><thead><tr><th>Area</th><th>What it is for</th></tr></thead><tbody>
@@ -283,7 +286,7 @@
   <tr><td>Answer Quality</td><td>Review, question activity, the answer quality loop, trusted questions, signals, Explore and dashboards.</td></tr>
   <tr><td>Automation</td><td>Skills, agent registry, actions and proactive insights.</td></tr>
   <tr><td>Operations</td><td>Health, needs attention, cost &amp; usage, rollups and the audit log.</td></tr>
-  <tr><td>Settings</td><td>Models, groups, users &amp; access, and the API &amp; MCP surfaces.</td></tr>
+  <tr><td>Settings</td><td>Models, groups, users &amp; access, security (column tags and the access-policy history), and the API &amp; MCP surfaces.</td></tr>
  </tbody></table>
 
  <h3>MCP servers: approve what a question may call</h3>
@@ -355,8 +358,12 @@ OMNIGATE_AUTH_OIDC_CLIENT_ID=&lt;client id&gt;
 OMNIGATE_AUTH_OIDC_CLIENT_SECRET=&lt;client secret&gt;
 OMNIGATE_AUTH_OIDC_ADMIN_USERS=alice@example.com</code></pre>
 <h4>Checking it worked</h4><p>Open <code>/admin/login</code>: there should be a &quot;Continue with &lt;provider&gt;&quot; button above the local form. If sign-in returns to the login page with an error, check that the issuer matches the provider&#x27;s <code>issuer</code> value exactly, both redirect URIs are registered, and the client secret is current.</p>
+
+ <h3 id="security-page">Security: column tags and policy history</h3>
+ <p>Settings &rarr; <strong>Security</strong> has two parts. <strong>Column tags</strong> classify columns (<code>pii.email</code>, <code>financial</code>, <code>secret</code>): choose <em>Suggest tags</em> and ThinkingSense proposes tags from column names and sample values; nothing is enforced until you <em>Approve</em> a tag, and you can add one by hand. A policy rule written against a tag (<code>tag: pii</code>) then covers every approved column with that tag, so a newly tagged column is protected without editing the policy. <strong>Policy history</strong> lists every version of the access policy with its author and reviewer; <em>Review</em> shows what a change alters and whether the tests kept in the policy file pass, and <em>Approve</em>, <em>Reject</em> and <em>Roll back to this</em> do what they say. With <code>OMNIGATE_POLICY_REVIEW=required</code> a second administrator must approve a change. The <a href="security.html">Security page</a> describes every control and setting.</p>
+
  <h3>The Ask app</h3>
- <p>Business users ask in plain English and watch each step: sources used, checks run, how sure the answer is. Answers cite the tables and documents they came from, and users only see what their group is allowed to.</p>
+ <p>Business users ask in plain English and watch each step: sources used, checks run, how sure the answer is. Answers cite the tables and documents they came from, and users only see what their group and attributes allow: a column they may not read is left out, and a masked one shows as <code>***</code>, a partial value or a band such as $90,000 instead of the exact number.</p>
  <figure class="g-fig"><img src="img/ask-login.jpg" alt="Ask sign-in page with a single sign-on button"><figcaption>/login — the same provider button for business users.</figcaption></figure>
  <figure class="g-fig"><img src="img/ask-app.jpg" alt="Ask workspace after signing in"><figcaption>The Ask workspace. Quick answer for a direct query; Deep analysis for a planned, multi-step investigation.</figcaption></figure>
 </div></section>
