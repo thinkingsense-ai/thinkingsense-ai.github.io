@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1008 756" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ThinkingSense data security, from the people and agents who ask, through the gateway pipeline that authenticates, scopes, guards and applies row and column policy, to six kinds of data source. Row policy and the read-only guard are in place. Column policy is partial because SELECT star bypasses it. Source-side identity is partial for PostgreSQL and Oracle and missing for other sources. Numbered gap badges G1 to G12 match the gap list on the page.">
+<svg viewBox="0 0 1008 756" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ThinkingSense data security, from the people and agents who ask, through the gateway pipeline that authenticates, scopes, guards and applies row and column policy, to six kinds of data source. Row policy and the read-only guard are in place. Column policy covers SELECT star as well as named columns. Source-side identity is partial for PostgreSQL and Oracle and missing for other sources. Numbered gap badges G1 to G12 match the gap list on the page.">
 <defs>
   <style>
     :root { --bg:#ffffff; --panel:#fbfbf9; --panel2:#f5f6f4; --ink:#191d24; --dim:#565f6e; --faint:#6b7483; --rule:#c9cbc6; --rule2:#8992a1;
@@ -110,14 +110,13 @@
 <use href="#s-ok" x="586" y="296"/>
 <text x="602" y="306" class="body" text-anchor="start">In place</text>
 <path d="M698,266 L709,266" class="arrow"/>
-<rect x="709" y="218" width="122" height="96" rx="9" class="box-part"/>
+<rect x="709" y="218" width="122" height="96" rx="9" class="box-ok"/>
 <text x="719" y="238" class="h" text-anchor="start">6  Column policy</text>
 <text x="719" y="258" class="body" text-anchor="start">Deny or mask by</text>
-<text x="719" y="272" class="body" text-anchor="start">column name only;</text>
-<text x="719" y="286" class="body" text-anchor="start">SELECT * slips by</text>
-<use href="#s-part" x="719" y="296"/>
-<text x="735" y="306" class="body" text-anchor="start">Partial</text>
-<g><circle cx="815" cy="300" r="10" class="gapbadge"/><text x="815" y="303.2" class="gaptext" text-anchor="middle">G1</text></g>
+<text x="719" y="272" class="body" text-anchor="start">column; stars read</text>
+<text x="719" y="286" class="body" text-anchor="start">with a SQL parser</text>
+<use href="#s-ok" x="719" y="296"/>
+<text x="735" y="306" class="body" text-anchor="start">In place</text>
 <path d="M831,266 L842,266" class="arrow"/>
 <rect x="842" y="218" width="122" height="96" rx="9" class="box-part"/>
 <text x="852" y="238" class="h" text-anchor="start">7  Run and audit</text>
