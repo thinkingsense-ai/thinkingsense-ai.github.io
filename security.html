@@ -265,7 +265,7 @@
       <div class="phase"><h3>Masks</h3><div class="when">Choose how a value is hidden</div><ul><li><code>null</code>, <code>redact</code> (<code>***</code>), <code>partial:N</code> (<code>***6789</code>), <code>bucket:N</code> (a salary shown as a band).</li><li>A masked column keeps its name, so charts and exports still work.</li></ul></div>
     </div>
     <h3 style="margin:28px 0 8px">Rules by tag, not by column name</h3>
-    <p class="section-sub">Tag a column once (<code>pii.email</code>, <code>financial</code>, <code>secret</code>) and write the rule against the tag. ThinkingSense suggests tags from column names and sample values; nothing is enforced until an administrator approves it. A new column that is tagged is covered without editing the policy, and a rule on <code>pii</code> covers <code>pii.email</code> and everything else below it.</p>
+    <p class="section-sub">Tag a column once (<code>pii.email</code>, <code>financial</code>, <code>secret</code>) and write the rule against the tag. ThinkingSense suggests tags from column names and sample values; nothing is enforced until an administrator approves it. A new column that is tagged is covered without editing the policy, and a rule on <code>pii</code> covers <code>pii.email</code> and everything else below it. Review and approve tags in the console under <b>Settings &gt; Security</b>.</p>
 <pre class="code"><span class="c"># deny anything tagged pii unless the caller's clearance is finance</span>
 column_grants:
   - tag: pii
@@ -287,7 +287,7 @@ column_grants:
   <div class="wrap">
     <div class="section-head"><div class="kicker">Changing rules safely</div><h2>History, review and tests for the policy itself</h2></div>
     <ul style="color:var(--ink-dim); font-size:15px; max-width:820px; padding-left:20px">
-      <li><b style="color:var(--ink)">Every change is a version</b> with its author, time and checksum. Compare any version with the live one and roll back.</li>
+      <li><b style="color:var(--ink)">Every change is a version</b> with its author, time and checksum. In the console (<b>Settings &gt; Security</b>) compare any version with the policy in force, see whether its tests pass, approve or reject it, and roll back.</li>
       <li><b style="color:var(--ink)">A second person approves.</b> With <code>OMNIGATE_POLICY_REVIEW=required</code> a saved policy waits until a different administrator approves it, and an author cannot approve their own change.</li>
       <li><b style="color:var(--ink)">The policy tests itself.</b> Put <code>tests:</code> in the policy file (a user, a statement, and whether it should be allowed, denied or rewritten). A change that breaks its own tests cannot be saved or approved.</li>
       <li><b style="color:var(--ink)">Try before you trust.</b> "Test as user" runs a statement as a synthetic person and shows the rewritten SQL or the reason it was refused, without touching a database.</li>
