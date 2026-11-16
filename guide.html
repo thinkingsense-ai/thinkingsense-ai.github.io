@@ -285,7 +285,7 @@
   <tr><td>Business Catalog</td><td>Terms &amp; ontology, context builder, metrics, rules, column search — what your data means.</td></tr>
   <tr><td>Answer Quality</td><td>Review, question activity, the answer quality loop, trusted questions, signals, Explore and dashboards.</td></tr>
   <tr><td>Automation</td><td>Skills, agent registry, actions and proactive insights.</td></tr>
-  <tr><td>Operations</td><td>Health, needs attention, cost &amp; usage, rollups and the audit log.</td></tr>
+  <tr><td>Operations</td><td>Health, needs attention, <a href="#infrastructure">infrastructure</a>, cost &amp; usage, rollups and the audit log.</td></tr>
   <tr><td>Settings</td><td>Models, groups, users &amp; access, security (column tags and the access-policy history), and the API &amp; MCP surfaces.</td></tr>
  </tbody></table>
 
@@ -300,6 +300,26 @@
  <h3>Models and the semantic router</h3>
  <p>Each question is classified Fast, Agentic or Predictive, and low-confidence SQL escalates to a stronger tier. Escalation thresholds apply immediately; model paths and ports apply on restart. A calibration suite (YAML, against your own backends) checks each tier.</p>
  <figure class="g-fig"><img src="img/admin-models.jpg" alt="LLM settings page with the semantic router card"><figcaption>Settings → Models.</figcaption></figure>
+
+ <h3 id="infrastructure">Infrastructure: is this deployment healthy?</h3>
+ <p><strong>Operations → Infrastructure</strong> (app v0.10.10 and later) answers one question on one page: is this deployment healthy, and if not, why? It refreshes every five seconds, is read-only and is for admins only. At the top, a status line reads <em>Healthy</em>, <em>Needs attention</em> or <em>Problem</em> and lists the reasons in plain words, for example &ldquo;1 of 2 replicas have joined the cluster&rdquo;, &ldquo;Pod omnigate-1 is not ready: ErrImagePull (image tag v9.9.9)&rdquo;, &ldquo;AI model: key rejected (HTTP 401)&rdquo;, a licence in its grace period, a certificate close to expiry or a data source that does not answer.</p>
+ <figure class="g-fig"><img src="img/admin-infrastructure.jpg" alt="Infrastructure page showing a healthy status, the deployment's version, licence and certificate, and the replica"><figcaption>Operations → Infrastructure on a healthy deployment: status, version and uptime, licence, certificate, the replica with its last five minutes.</figcaption></figure>
+ <table class="g-table"><thead><tr><th>Section</th><th>What it shows</th></tr></thead><tbody>
+  <tr><td>Deployment</td><td>App version and uptime, edition and licence (with days left), the HTTPS certificate (self-signed or your own, and when it expires), where settings are stored, and replicas joined out of replicas expected.</td></tr>
+  <tr><td>Replicas</td><td>One row per replica: version, uptime, memory, CPU, questions in flight, statements per second, free space on its data volume and the last five minutes as a small line. A replica that has joined the cluster but cannot answer is listed with the reason.</td></tr>
+  <tr><td>Data sources</td><td>Whether each source is reachable, how fast it answers and how full its connection pool is, from every replica.</td></tr>
+  <tr><td>Query engine</td><td>Statements and errors per second, average latency and requests turned away for capacity.</td></tr>
+  <tr><td>AI model</td><td>When the model last answered and when and why it last failed, so a rejected API key shows up as exactly that instead of an Ask app that just fails.</td></tr>
+  <tr><td>Recent events</td><td>What changed, newest first and merged across replicas: a replica started, joined or left; the licence changed state; the AI model's key was rejected or recovered; the certificate is close to expiry; a data source became unreachable or came back.</td></tr>
+  <tr><td>Kubernetes</td><td>What the cluster says about this deployment's own pods: the rollout, each pod with the cluster's own reason when it is not running (an image that cannot be pulled and the tag it tried, an init step, no node with room, a memory kill), which nodes and zones the replicas run on, what a node drain may do (the disruption budget), the data volume, the load balancer address and the warnings of the last hour.</td></tr>
+ </tbody></table>
+ <figure class="g-fig"><img src="img/admin-infrastructure-attention.jpg" alt="Infrastructure page with a Needs attention status listing two warnings"><figcaption>The same page when something is off: the status turns to <em>Needs attention</em> and lists each reason in plain words (here a pod that restarted and two replicas on one node).</figcaption></figure>
+ <figure class="g-fig"><img src="img/admin-infrastructure-kubernetes.jpg" alt="Kubernetes section with the workload, load balancer, volume and a table of pods"><figcaption>The Kubernetes section: the workload and its rollout, the load balancer address, the data volume, and each pod with its node, zone, image tag and restarts.</figcaption></figure>
+ <ul>
+  <li><strong>During an upgrade.</strong> It is served by a replica that is up, so it can say what is wrong with the others: the second replica starting, a bad image tag on one replica while the other keeps serving, a node being drained. The measured walk-through is in the <a href="https://github.com/thinkingsense-ai/Docker/blob/main/UPGRADING.md#watching-it-happen-the-infrastructure-page-app-v01010-and-later" target="_blank" rel="noopener">upgrading guide</a>. If every replica is down there is no page to open: use your cloud console or <code>kubectl get pods</code>.</li>
+  <li><strong>Kubernetes access.</strong> The cloud stacks give the app a read-only role for its own namespace (pods, events, volume claims, services, workloads and disruption budgets) and a read of node state. No secrets, logs, exec or write access of any kind. Turn the whole view off with <code>observability.kubernetes.enabled=false</code>, or only the node read with <code>observability.kubernetes.nodes=false</code>, in the Helm values. Stack releases before <code>oke-stack-v1.1.16</code>, <code>eks-stack-v1.0.19</code>, <code>aks-stack-v1.0.14</code> and <code>gke-stack-v1.0.2</code> do not set this up; the page then works without the Kubernetes section.</li>
+  <li><strong>What it is not.</strong> It shows the current state and the last few minutes, kept in memory; they start again when a replica restarts. It is not saved history, an alerting system or a replacement for your cloud's own monitoring. Prometheus metrics at <code>/metrics</code> remain the way to feed those.</li>
+ </ul>
 
  <h3 id="sso">Sign in with your identity provider (OIDC)</h3>
  <p>Admins and business users can both use single sign-on — Microsoft Entra ID, Okta, Auth0, Google Workspace, Keycloak or any standard OIDC provider — alongside local accounts.</p>
