@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo data — ThinkingSense</title>
+<meta name="description" content="The ready-made demo data you can choose when you deploy OmniGate: supply chain, IT and operational risk, BOM and sourcing, treasury, or all of them at once, with example questions for each.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f1420'/%3E%3Cpolygon points='50,20 76,35 76,65 50,80 24,65 24,35' fill='none' stroke='%233d7fe8' stroke-width='6' stroke-linejoin='round'/%3E%3Cline x1='50' y1='20' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='76' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='24' y1='65' x2='50' y2='50' stroke='%235b9ef5' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='20' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='76' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='24' cy='65' r='8' fill='%235b9ef5'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%232f5fd6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f6f4; --panel:#ffffff; --panel-2:#fbfbf9; --ink:#191d24; --ink-dim:#565f6e; --ink-faint:#8992a1;
+    --rule:#e3e4e1; --rule-strong:#c9cbc6;
+    --navy:#1c2b4a; --navy-soft:#e8ecf4; --accent:#3457d5; --accent-soft:#e7ecfc; --accent-strong:#22398f;
+    --teal:#2f6f63; --teal-soft:#e2f0ec; --amber:#b5751f; --amber-soft:#f7ecdb; --purple:#6a4aa8; --purple-soft:#ede7f7;
+    --code-bg:#12172a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+    --shadow:0 1px 2px rgba(20,22,30,.05), 0 12px 28px -14px rgba(20,22,30,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12141a; --panel:#1b1e26; --panel-2:#1f222b; --ink:#ecedf1; --ink-dim:#a7adba; --ink-faint:#757c8a;
+      --rule:#2b2e38; --rule-strong:#3a3e4a;
+      --navy:#7f9cd6; --navy-soft:#212b40; --accent:#7f9cd6; --accent-soft:#1c2740; --accent-strong:#a9c2ea;
+      --teal:#7cbfae; --teal-soft:#182b26; --amber:#d9a251; --amber-soft:#2c2417; --purple:#a993d6; --purple-soft:#241d33;
+      --code-bg:#0c0f1a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12141a; --panel:#1b1e26; --panel-2:#1f222b; --ink:#ecedf1; --ink-dim:#a7adba; --ink-faint:#757c8a;
+    --rule:#2b2e38; --rule-strong:#3a3e4a;
+    --navy:#7f9cd6; --navy-soft:#212b40; --accent:#7f9cd6; --accent-soft:#1c2740; --accent-strong:#a9c2ea;
+    --teal:#7cbfae; --teal-soft:#182b26; --amber:#d9a251; --amber-soft:#2c2417; --purple:#a993d6; --purple-soft:#241d33;
+    --code-bg:#0c0f1a; --code-ink:#d7dbea; --code-accent:#8fb8ff; --code-string:#c9dd8f; --code-comment:#6d7590;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',-apple-system,sans-serif; font-size:16px; line-height:1.6; overflow-x:hidden; }
+  code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif; font-weight:600; margin:0; text-wrap:balance;}
+  p{margin:0 0 1em;}
+  a{color:var(--accent);}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+  section{padding:56px 0;}
+  .rule-top{border-top:1px solid var(--rule);}
+
+  nav.top{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); }
+  nav.top .inner{ max-width:1080px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:750; font-size:15px; }
+  .brand .mark{ width:28px; height:28px; border-radius:8px; background:#0f1420; display:grid; place-items:center; flex:none; }
+  .brand .mark svg{ width:20px; height:20px; }
+  .hero-brand{ display:flex; align-items:center; gap:14px; font-weight:800; font-size:28px; letter-spacing:-.01em; margin-bottom:24px; }
+  .hero-brand .mark{ width:48px; height:48px; border-radius:13px; background:#0f1420; display:grid; place-items:center; flex:none; }
+  .hero-brand .mark svg{ width:34px; height:34px; }
+  @media (max-width:560px){ .hero-brand{ font-size:22px; } .hero-brand .mark{ width:40px; height:40px; } .hero-brand .mark svg{ width:28px; height:28px; } }
+  .navlinks{ display:flex; gap:22px; font-size:13.5px; font-weight:600; color:var(--ink-dim); }
+  .navlinks a{ color:var(--ink-dim); text-decoration:none; white-space:nowrap; }
+  .navlinks a:hover{ color:var(--accent); }
+  .navdrop{ position:relative; flex:none; }
+  .navdrop-trigger{ display:flex; align-items:center; gap:5px; font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; white-space:nowrap; }
+  .navdrop-trigger:hover{ color:var(--accent); }
+  .navdrop-trigger .caret{ font-size:9px; transition:transform .15s; }
+  .navdrop:hover .navdrop-trigger .caret, .navdrop:focus-within .navdrop-trigger .caret{ transform:rotate(180deg); }
+  .navdrop-menu{ display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); min-width:168px; z-index:30; }
+  .navdrop-menu::before{ content:""; position:absolute; top:-14px; left:0; right:0; height:14px; }
+  .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
+  .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
+  .navdrop-menu a:hover{ background:var(--panel-2); }
+  .brandwrap{ display:flex; align-items:center; gap:10px; flex:none; }
+  .brand-docs{ font-size:12px; font-weight:650; color:var(--ink-dim); text-decoration:none; border:1px solid var(--rule-strong); border-radius:6px; padding:2px 8px; }
+  .brand-docs:hover{ color:var(--accent); border-color:var(--accent); }
+  .navcta{ display:flex; gap:10px; flex:none; }
+  @media (max-width:860px){ .navlinks{ display:none; } nav.top .inner{ gap:12px; } }
+  @media (max-width:520px){ .navcta .btn:not(.primary){ display:none; } }
+
+  .btn{ display:inline-flex; align-items:center; gap:7px; font-size:13.5px; font-weight:650; padding:9px 16px; border-radius:9px; border:1px solid var(--rule-strong); background:var(--panel); color:var(--ink); text-decoration:none; }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.primary:hover{ opacity:.92; color:#fff; }
+  .btn.large{ padding:13px 22px; font-size:15px; border-radius:11px; }
+
+  .hero{ padding:72px 0 48px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); background:var(--accent-soft); padding:5px 12px; border-radius:999px; margin-bottom:22px; }
+  .hero h1{ font-size:46px; line-height:1.1; max-width:760px; margin-bottom:18px; }
+  .hero p.lede{ color:var(--ink-dim); font-size:18px; max-width:640px; margin-bottom:32px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .hero-ctas img{ display:block; height:44px; }
+  .hero-note{ font-size:12.8px; color:var(--ink-faint); max-width:520px; }
+
+  .section-head{ margin-bottom:8px; }
+  .kicker{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin-bottom:10px; }
+  .section-head h2{ font-size:30px; margin-bottom:14px; }
+  .section-sub{ color:var(--ink-dim); font-size:16px; max-width:680px; margin-bottom:36px; }
+
+  .steplist{ counter-reset:step; }
+  .stepcard{ display:flex; gap:18px; padding:22px 0; border-top:1px solid var(--rule); }
+  .stepcard:first-child{ border-top:none; padding-top:0; }
+  .stepcard .n{ flex:none; width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent); font-family:'Source Serif 4',serif; font-weight:700; font-size:15px; display:grid; place-items:center; }
+  .stepcard h3{ font-family:'Inter'; font-size:16.5px; font-weight:750; margin-bottom:6px; }
+  .stepcard p{ font-size:14.5px; color:var(--ink-dim); margin:0; max-width:640px; }
+  .stepcard code{ font-size:12.8px; background:var(--panel-2); border:1px solid var(--rule); border-radius:5px; padding:1px 6px; }
+
+  pre.code{ background:var(--code-bg); color:var(--code-ink); border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:13px; line-height:1.65; margin:8px 0 0; box-shadow:var(--shadow); }
+  pre.code .c{color:var(--code-comment);} pre.code .k{color:var(--code-accent);} pre.code .s{color:var(--code-string);}
+
+  .cfg-table{ width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border:1px solid var(--rule); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .cfg-table th{ text-align:left; background:var(--panel-2); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:10px 14px; font-weight:700; }
+  .cfg-table td{ padding:10px 14px; border-top:1px solid var(--rule); vertical-align:top; font-size:13.5px; color:var(--ink-dim); }
+  .cfg-table td:first-child{ font-family:'JetBrains Mono',monospace; font-size:12px; white-space:nowrap; color:var(--accent-strong); }
+  .table-scroll{ overflow-x:auto; border-radius:12px; }
+
+  .callout{ border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--panel); padding:16px 18px; font-size:13.8px; color:var(--ink-dim); box-shadow:var(--shadow); }
+  .callout b{ color:var(--ink); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  @media (max-width:820px){ .grid2{grid-template-columns:1fr;} }
+
+  figure.diagram{ margin:0; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+  figure.diagram img{ width:100%; height:auto; display:block; }
+  figure.diagram figcaption{ font-size:13px; color:var(--ink-faint); margin-top:14px; text-align:center; }
+
+  footer{ padding:50px 0 70px; border-top:1px solid var(--rule); }
+  .footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px; margin-bottom:36px; }
+  @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  .footer-grid h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; margin-bottom:12px; }
+  .footer-grid ul{ list-style:none; margin:0; padding:0; }
+  .footer-grid li{ margin-bottom:8px; }
+  .footer-grid a{ color:var(--ink-dim); text-decoration:none; font-size:13.5px; }
+  .footer-grid a:hover{ color:var(--accent); }
+  .footer-bottom{ font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:20px; }
+  .pack{ border:1px solid var(--rule); border-radius:14px; background:var(--panel); padding:22px 24px; margin:0 0 22px; box-shadow:var(--shadow); }
+  .pack h3{ font-family:'Inter'; font-size:19px; font-weight:750; margin:0 0 4px; }
+  .pack .tag{ font-size:12.5px; color:var(--ink-faint); margin:0 0 12px; }
+  .pack p{ font-size:14.5px; color:var(--ink-dim); margin:0 0 10px; max-width:760px; }
+  .pack ul.qs{ margin:6px 0 12px 20px; padding:0; }
+  .pack ul.qs li{ font-size:14.5px; color:var(--ink); margin:5px 0; max-width:760px; }
+  .pack ul.qs li small{ color:var(--ink-faint); font-size:12.5px; }
+  .pack .shows{ font-size:13.8px; color:var(--ink-dim); border-top:1px solid var(--rule); padding-top:10px; margin:0; }
+  .pack code, .section-sub code{ font-size:12.8px; background:var(--panel-2); border:1px solid var(--rule); border-radius:5px; padding:1px 6px; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <div class="brandwrap">
+      <a class="brand" href="https://thinkingsense.ai" title="ThinkingSense home" style="text-decoration:none; color:var(--ink);">
+        <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+        <span>ThinkingSense</span>
+      </a>
+      <a class="brand-docs" href="index.html">Docs</a>
+    </div>
+    <div class="navlinks">
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Product <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="index.html#use-cases">Use cases</a>
+          <a href="index.html#architecture">Architecture</a>
+          <a href="index.html#ontology-generation">Ontology</a>
+          <a href="index.html#inside">What's inside</a>
+          <a href="index.html#connectors">Connectors</a>
+          <a href="index.html#capabilities">What's new</a>
+        </div>
+      </div>
+      <a href="index.html#demo">Live demo</a>
+      <a href="guide.html">Admin &amp; Ask guide</a>
+      <a href="demo-data.html" style="color:var(--accent)">Demo data</a>
+      <a href="security.html">Security</a>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Deploy <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
+          <a href="deploy-aws.html">AWS (EKS)</a>
+          <a href="deploy-gcp.html">Google Cloud (GKE)</a>
+          <a href="deploy-azure.html">Microsoft Azure (AKS)</a>
+        </div>
+      </div>
+    </div>
+    <div class="navcta">
+      <a class="btn small primary" href="#deploy">Deploy now</a>
+    </div>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-brand">
+      <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+      <span>ThinkingSense</span>
+    </div>
+    <span class="eyebrow">● Every record is invented</span>
+    <h1>Try OmniGate on <span style="color:var(--accent)">ready-made data</span></h1>
+    <p class="lede">A new deployment comes with demo data and approved questions, so you can ask a real question in the first minute.
+      Pick one of five sets when you deploy. Each is a small, made-up business spread over more than one system, so the questions show how OmniGate reads across them.</p>
+  </div>
+</div>
+
+<section class="rule-top" id="choose">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Choosing one</div>
+      <h2>Five sets, one choice at deploy time</h2>
+    </div>
+    <p class="section-sub">The choice is the <b>Demo data</b> setting on the AWS, Oracle Cloud and Azure forms, and <code>demo_dataset</code> on Google Cloud.
+      The sets replace each other (the free edition allows three data sources), and the choice is read on a fresh install only, so changing it later does not reseed.
+      <b>Supply chain</b> is the default.</p>
+    <div class="table-scroll">
+      <table class="cfg-table">
+        <tr><th>Setting</th><th>What it is</th><th>Where the data lives</th><th>Questions</th></tr>
+        <tr><td>supply-chain</td><td>Suppliers, stock, purchase orders and shipments</td><td>Three sources: suppliers, inventory, procurement</td><td>5 to start with</td></tr>
+        <tr><td>it-risk</td><td>IT and operational risk at a financial firm</td><td>Postgres (<code>risk</code>) and MariaDB (<code>security</code>)</td><td>12 approved</td></tr>
+        <tr><td>bom</td><td>Manufacturing bill of materials and sourcing</td><td>One Postgres source, 22 tables</td><td>24 approved</td></tr>
+        <tr><td>treasury</td><td>Cash, payables, hedges and debt</td><td>Postgres (<code>treasury</code>, 13 tables) and the ERP in MariaDB (<code>erp</code>, 4 tables)</td><td>24 approved</td></tr>
+        <tr><td>all-packs</td><td>All of the above plus manufacturing and a Smithsonian Open Access sample, with a pack picker in the Ask app</td><td>Three sources: one Postgres with five schemas, one MariaDB, and a museum directory file</td><td>76 approved</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="packs">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The packs</div>
+      <h2>What is in each, and what to ask</h2>
+    </div>
+    <p class="section-sub">The questions below are word for word from each set's approved list.</p>
+
+    <div class="pack">
+      <h3>Supply chain</h3>
+      <p class="tag">The default · suppliers, inventory and procurement as three separate sources</p>
+      <p>A small manufacturer's suppliers, warehouse stock, purchase orders and shipments. Three of these five questions read across two or three of the sources; the other two stay in one.</p>
+      <ul class="qs"><li>Which suppliers do we hold the most stock from?</li><li>How many units are on order from suppliers in each region?</li><li>Which in-transit purchase orders arrive first, and from which supplier and carrier?</li><li>How many shipments does each carrier have?</li><li>How much stock is in each warehouse?</li></ul>
+      <p class="shows"><b>Shows:</b> a plain-English question answered across several sources, with the sources and checks listed under the answer.</p>
+    </div>
+
+    <div class="pack">
+      <h3>IT and operational risk</h3>
+      <p class="tag"><code>it-risk</code> · a mid-size financial firm · Postgres and MariaDB</p>
+      <p>Business services, outages, risks and controls, key risk indicators, third-party assessments and audit issues in one database, and the vendors and their vulnerabilities in another.</p>
+      <ul class="qs"><li>Which business services had an outage longer than their recovery time objective in the last 12 months?</li><li>What are the leading root causes of outages, by total downtime?</li><li>Which risks are above the board&#x27;s risk appetite for their category?</li><li>Which critical vulnerabilities are past their patch deadline, and which business service does each affect? <small>reads both systems</small></li><li>Which tier-1 services have both an open critical vulnerability and an outage in the last 90 days? <small>reads both systems</small></li></ul>
+      <p class="shows"><b>Shows:</b> a question that needs a join across two different database products, which a single-database tool cannot answer.</p>
+    </div>
+
+    <div class="pack">
+      <h3>BOM and sourcing</h3>
+      <p class="tag"><code>bom</code> · manufacturing · one Postgres source with 22 tables</p>
+      <p>Products, assemblies and parts, suppliers and quotes, facilities and their certificates and machines, purchase orders, work orders, quality records, engineering changes and design-for-manufacture findings.</p>
+      <ul class="qs"><li>Which parts are in the KR-6 robot arm, and how many of each does it use?</li><li>Which parts have only one supplier quote, and which facility is it from?</li><li>Which facilities hold a valid AS9100 certificate today?</li><li>A fire hit our Shenzhen plant. Which parts do we currently source there, and which products do they go into?</li><li>If we moved every SK-9 custom part that has a compliant North American source to it, how would the SK-9 unit BOM cost change? <small>a what-if</small></li></ul>
+      <p class="shows"><b>Shows:</b> the business questions an engineer or buyer asks, including multi-step what-ifs that combine cost, certification and location rules.</p>
+    </div>
+
+    <div class="pack">
+      <h3>Treasury</h3>
+      <p class="tag"><code>treasury</code> · cash, payables, hedges and debt · Postgres and the ERP</p>
+      <p>Accounts, balances, FX rates, payments and payment policy, hedges, debt and covenants, a log of what a treasury agent did, and the ERP's vendors, invoices and ledger.</p>
+      <ul class="qs"><li>What is our consolidated cash position in US dollars across all open accounts?</li><li>Which payments are waiting for approval, and how much is each in US dollars?</li><li>What did the treasury agent do outside policy in the last 30 days?</li><li>Which payments waiting for approval are for invoices that are on hold? <small>reads both systems</small></li><li>For each foreign currency, how much of our open payables is covered by active hedges? <small>reads both systems</small></li></ul>
+      <p class="shows"><b>Shows:</b> one view of cash and obligations that normally sits in separate systems, and the controls around payments (policy limits, second approvers, agent actions).</p>
+    </div>
+
+    <div class="pack">
+      <h3>All packs</h3>
+      <p class="tag"><code>all-packs</code> · six packs at once · a picker in the Ask app</p>
+      <p>Supply chain, manufacturing, IT and operational risk, BOM and sourcing, treasury, and a sample of the Smithsonian Open Access collection (records, with images where they exist) in one deployment, behind the free edition's three data sources. The Ask app offers the packs as a picker so each starts from its own questions.</p>
+      <ul class="qs"><li>Show me what the Smithsonian has about the Civil War</li><li>Which museums have the most records with no image?</li><li>How many records does each museum hold, with its full name and department?</li></ul>
+      <p class="shows"><b>Shows:</b> a realistic mix of sources in one place. It is the heaviest choice and needs the most memory (on AWS the default node size ran it, with little headroom).</p>
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="asking">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">How questions work here</div>
+      <h2>Approved questions and your own</h2>
+    </div>
+    <p class="section-sub">Each set ships with <b>approved questions</b>: questions with SQL that was written once and checked against the data. In the Ask app they appear as starters.
+      On <b>BOM, treasury and all-packs</b> the deployment also runs a small embedding model that matches what you type to an approved question, so asking one as written returns the saved, checked answer.
+      On supply chain and IT risk they are starters to click.</p>
+    <div class="callout">
+      <b>Your own wording is a different story.</b> A question that is not an approved one is written by the model each time, and on these multi-table sets it is noticeably less reliable than an approved question, with answers that are sometimes wrong or declined.
+      Treat approved questions as the dependable demonstration and free-form questions as a way to see how far it gets. Measured results for each set are in the READMEs linked below.
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="local">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Without a cloud account</div>
+      <h2>Run them on your own machine</h2>
+    </div>
+    <p class="section-sub">Each set also runs with Docker, from a clone of the <a href="https://github.com/thinkingsense-ai/Docker" target="_blank" rel="noopener">Docker repository</a>; you need your own Anthropic API key. The default (supply chain) is the repository's <code>docker-compose.yml</code>. The others:</p>
+    <pre class="code"><span class="k">docker compose</span> --project-directory . -f demos/bom-pack/docker-compose.bom.yml up --build
+<span class="k">docker compose</span> --project-directory . -f demos/treasury-pack/docker-compose.treasury.yml up --build
+<span class="k">docker compose</span> -f docker-compose.yml -f demos/all-packs/docker-compose.packs.yml up --build</pre>
+    <p class="section-sub" style="margin-top:18px">Details, accuracy results and the data model for each:
+      <a href="https://github.com/thinkingsense-ai/Docker/tree/main/demos/bom-pack" target="_blank" rel="noopener">BOM</a> ·
+      <a href="https://github.com/thinkingsense-ai/Docker/tree/main/demos/treasury-pack" target="_blank" rel="noopener">Treasury</a> ·
+      <a href="https://github.com/thinkingsense-ai/Docker/tree/main/fixtures/it-risk" target="_blank" rel="noopener">IT and operational risk</a> ·
+      <a href="https://github.com/thinkingsense-ai/Docker/tree/main/demos/all-packs" target="_blank" rel="noopener">All packs</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px">
+          <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
+          <span>ThinkingSense</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The enterprise AI intelligence layer — ASK → ANALYZE → MONITOR → ACT across your enterprise, with governance built into every step.</p>
+      </div>
+      <div>
+        <h4>Get it</h4>
+        <ul>
+          <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
+          <li><a href="https://github.com/thinkingsense-ai/Docker">The Docker repository</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>On this page</h4>
+        <ul>
+          <li><a href="#choose">Choosing one</a></li>
+          <li><a href="#packs">The packs</a></li>
+          <li><a href="#asking">How questions work</a></li>
+          <li><a href="#local">Run them locally</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index.html#architecture">Architecture</a></li>
+          <li><a href="index.html#docs">Local Docker setup</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Contact us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image and this Terraform stack are publicly available — see the Docker repo for terms.</div>
+  </div>
+</footer>
+
+</body>
+</html>
