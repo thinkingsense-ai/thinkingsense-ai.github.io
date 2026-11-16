@@ -252,6 +252,13 @@
         <div><h3>Open the Ask app</h3><p>The deployment's <b>Outputs</b> tab shows <code>askAppUrl</code> — open it, sign in with the login you set in step 3, and ask a real question.</p><p>It opens on HTTPS. The first time, your browser will say the certificate is not trusted, because the stack makes its own: choose <b>Advanced</b>, then continue to the site. The connection is encrypted either way; to remove the warning, give the stack your own certificate in the deploy form (<b>Your own certificate</b>).</p></div>
       </div>
     </div>
+    <div class="callout" style="margin-top:22px">
+      <b>Choose the demo data.</b> A new install is seeded with an invented supply-chain data set by default. To start with another, set the <b>Demo data</b> choice in the deployment wizard:
+      <code>it-risk</code> (IT and operational risk at a financial firm), <code>bom</code> (manufacturing bill of materials and sourcing),
+      <code>treasury</code> (cash, payables, hedges and debt across two systems), or <code>all-packs</code> (every pack at once, with a picker in the Ask app).
+      Each comes with approved questions to try. The choice is read on a fresh install only, so changing it later does not reseed; all-packs is the heaviest and needs the most memory (on AWS the default node size ran it, with little headroom).
+      All of the data is invented.
+    </div>
   </div>
 </section>
 
