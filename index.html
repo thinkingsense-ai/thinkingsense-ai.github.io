@@ -157,6 +157,21 @@
   .usecase-sys{ display:flex; flex-wrap:wrap; gap:6px; }
   .sys-pill{ font-size:11.5px; font-weight:650; padding:4px 10px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); }
   .usecase-out{ font-size:13.6px; color:var(--ink-dim); margin-top:auto; padding-top:10px; border-top:1px solid var(--rule); }
+
+  /* IT-risk workflow example */
+  .wf{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow); padding:26px 24px; margin-top:26px; }
+  .wf-q{ font-family:'Source Serif 4',serif; font-size:21px; font-weight:650; line-height:1.35; margin:0 0 6px; }
+  .wf-who{ font-size:13px; color:var(--ink-faint); margin-bottom:20px; }
+  .wf-steps{ list-style:none; margin:0; padding:0; display:grid; gap:0; }
+  .wf-steps li{ display:grid; grid-template-columns:44px 1fr; gap:14px; padding:16px 0; border-top:1px solid var(--rule); }
+  .wf-n{ width:30px; height:30px; border-radius:50%; background:var(--accent-soft); color:var(--accent-strong); font-weight:750; font-size:13px; display:flex; align-items:center; justify-content:center; }
+  .wf-steps h4{ margin:0 0 4px; font-size:15px; }
+  .wf-steps p{ margin:0 0 8px; font-size:14.2px; color:var(--ink-dim); }
+  .wf-facts{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .wf-fact{ font-size:12.5px; padding:4px 10px; border-radius:8px; background:var(--panel-2); border:1px solid var(--rule); color:var(--ink); }
+  .wf-fact b{ color:var(--accent-strong); font-weight:700; }
+  .wf-note{ margin-top:18px; padding-top:14px; border-top:1px solid var(--rule); font-size:13px; color:var(--ink-dim); }
+  @media (max-width:560px){ .wf{ padding:20px 16px; } .wf-steps li{ grid-template-columns:36px 1fr; gap:10px; } .wf-q{ font-size:18px; } }
   .problem-callout{ background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:14px; padding:22px 24px; margin-top:24px; }
   .problem-callout .pc-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); margin-bottom:10px; }
   .problem-callout p{ font-size:13.8px; color:var(--ink-dim); margin:0; line-height:1.6; max-width:820px; }
@@ -902,6 +917,58 @@
         as a jar — for your own team or a partner, not a no-code upload button in the admin console.
         For most new sources, the generic REST connector already reaches them with zero code at all;
         this path exists for the genuine exceptions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IT-RISK WORKFLOW EXAMPLE ================= -->
+<section id="it-risk-workflow" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">From answer to action · IT and operational risk</div>
+      <h2>Ask a question. Take an informed action.</h2>
+    </div>
+    <p class="section-sub">
+      A risk team's data sits in more than one system: incidents, services and the risk register in one database, vendors and
+      vulnerabilities in another. ThinkingSense reads both where they are, applies each person's access, and carries the answer into a
+      governed workflow. A person decides, and every step is recorded. Nothing is copied into a new store.
+    </p>
+
+    <div class="wf">
+      <p class="wf-q">"Which tier-1 services have both an open critical vulnerability and an outage in the last 90 days?"</p>
+      <div class="wf-who">
+        <span class="sys-pill">Postgres · services, applications, incidents, risk register</span>
+        <span class="sys-pill">MariaDB · vendors, vulnerabilities</span>
+      </div>
+      <ol class="wf-steps">
+        <li><span class="wf-n">1</span><div>
+          <h4>Ask in plain language</h4>
+          <p>One question, answered by a single query that joins the two systems at the time you ask. It runs with your permissions, so you see only what you are allowed to see.</p>
+          <div class="wf-facts"><span class="wf-fact"><b>Payments Processing</b> · 2 critical open · 178 min of outage</span><span class="wf-fact"><b>Online Banking</b> · 1 · 238 min</span><span class="wf-fact"><b>Treasury Management</b> · 1 · 79 min</span></div>
+        </div></li>
+        <li><span class="wf-n">2</span><div>
+          <h4>Gather the evidence for one service</h4>
+          <p>Pick Treasury Management and the workflow collects the facts from both sources, with the source named beside each.</p>
+          <div class="wf-facts"><span class="wf-fact"><b>Vulnerability</b> · CVE-2026-0871, CVSS 9.9, 56 days past its patch deadline</span><span class="wf-fact"><b>Vendor</b> · Helix Treasury Software, tier 1, last assessed 520 days ago, rated High</span><span class="wf-fact"><b>Outage</b> · 64 minutes against a 45-minute recovery objective</span><span class="wf-fact"><b>Revenue at risk</b> · about $341,000 at $320,000 an hour</span><span class="wf-fact"><b>Open risk</b> · "Treasury software vendor not assessed in over a year"</span></div>
+        </div></li>
+        <li><span class="wf-n">3</span><div>
+          <h4>Check it against your rules</h4>
+          <p>Fixed rules decide what is allowed, not the model: critical and overdue, vendor assessment older than 12 months, outage longer than the recovery objective. Each rule shows whether it held.</p>
+        </div></li>
+        <li><span class="wf-n">4</span><div>
+          <h4>Recommend, within the allowed actions</h4>
+          <p>The model proposes an action, such as raising a remediation exception with the vendor owner and bringing the vendor assessment forward. It can only choose from the actions your policy permits, and it explains why.</p>
+        </div></li>
+        <li><span class="wf-n">5</span><div>
+          <h4>A person approves</h4>
+          <p>The approval is tied to the exact facts shown. The person who started the workflow cannot approve it, and an AI identity cannot approve at all. Above a limit, two approvers are required.</p>
+        </div></li>
+        <li><span class="wf-n">6</span><div>
+          <h4>Act, and keep the record</h4>
+          <p>The action is sent to the system that owns it, or shown as a dry run first. Every step is written to a tamper-evident decision record you can check later.</p>
+        </div></li>
+      </ol>
+      <p class="wf-note"><b>About this example.</b> The data is invented and the figures come from the IT and operational risk sample set, so the dates move with the day it is loaded. The approval, segregation-of-duties and decision-record steps are the product's workflow API (commercial edition), shown today on a payment-exception workflow. The IT-risk workflow on this page uses the same steps and is not yet a shipped definition.</p>
     </div>
   </div>
 </section>
