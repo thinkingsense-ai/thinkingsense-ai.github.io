@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security — ThinkingSense</title>
 <meta name="description" content="How ThinkingSense keeps data safe: sign-in, row and column rules that follow the person, what AI models may see, encryption, audit, and how to set each one up.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23102f29'/%3E%3Crect x='30' y='30' width='40' height='40' rx='9' fill='none' stroke='%23c5efdc' stroke-width='6' transform='rotate(-12 50 50)'/%3E%3Crect x='43' y='43' width='14' height='14' rx='3' fill='%23c5efdc' transform='rotate(33 50 50)'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23102f29'/%3E%3Cg transform='translate(50 50) scale(.066) translate(-512 -494)'%3E%3Cpolygon points='512,190 805,350 805,672 512,830 218,672 218,350' fill='none' stroke='%2319d6d1' stroke-width='36' stroke-linejoin='round'/%3E%3Cg stroke='%2361e8e1' stroke-width='34'%3E%3Cline x1='512' y1='190' x2='512' y2='512'/%3E%3Cline x1='218' y1='672' x2='512' y2='512'/%3E%3Cline x1='805' y1='672' x2='512' y2='512'/%3E%3C/g%3E%3Ccircle cx='512' cy='192' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='218' cy='672' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='805' cy='672' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='512' cy='512' r='93' fill='%230ca9a9'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root{
     color-scheme:light;
     --bg:#fbfcf8; --panel:#ffffff; --panel-2:#f3f7f0; --mist:#edf5ef; --ink:#172a26; --ink-dim:#4e635c; --ink-faint:#5f746b;
     --rule:#d6e1d8; --rule-strong:#a8bcb0;
-    --forest:#102f29; --forest-2:#194138; --mint:#c5efdc; --on-accent:#ffffff;
+    --forest:#102f29; --forest-2:#194138; --mint:#c5efdc; --on-accent:#ffffff; --logo-hex:#12b5b0; --logo-node:#5ce0d9; --logo-hub:#0a8f8f;
     --navy:#102f29; --navy-soft:#edf5ef; --accent:#185c4b; --accent-soft:#e3f1e8; --accent-strong:#103f34;
     --teal:#2f7a62; --teal-soft:#dff0e6; --amber:#8a5a14; --amber-soft:#fcf1d9; --purple:#3f5f86; --purple-soft:#e4ecf5;
     --code-bg:#102f29; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
@@ -23,7 +23,7 @@
       color-scheme:dark;
       --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
       --rule:#25433a; --rule-strong:#3a5c50;
-      --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19;
+      --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19; --logo-hex:#19d6d1; --logo-node:#61e8e1; --logo-hub:#0ca9a9;
       --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
       --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
       --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
@@ -35,7 +35,7 @@
     color-scheme:dark;
     --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
     --rule:#25433a; --rule-strong:#3a5c50;
-    --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19;
+    --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19; --logo-hex:#19d6d1; --logo-node:#61e8e1; --logo-hub:#0ca9a9;
     --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
     --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
     --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
@@ -194,8 +194,6 @@
   .wrap, nav.top .inner{ max-width:1160px; }
   nav.top{ background:var(--bg); backdrop-filter:none; }
   .brand{ font-size:1.18rem; font-weight:760; letter-spacing:-.06em; color:var(--ink); }
-  .brand .mark{ width:26px; height:26px; background:none; border:1.5px solid var(--accent); border-radius:7px 7px 7px 2px; transform:rotate(-12deg); display:inline-grid; place-items:center; color:var(--accent); }
-  .brand .mark::before{ content:""; width:9px; height:9px; background:currentColor; border-radius:2px; transform:rotate(45deg); }
   .brand-docs{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; font-size:10.5px; border-radius:5px; color:var(--accent); border-color:var(--accent); }
   .navlinks a, .navlinks .navdrop-trigger{ font-weight:660; }
   .btn{ border-radius:8px; border-color:var(--rule-strong); background:transparent; min-height:41px; }
@@ -232,6 +230,12 @@
   .ls-l span{ background:var(--amber-soft); border-color:var(--amber); }
   .ly-flow-p{ stroke:var(--amber); }
 
+    /* logo */
+  .brand .logo{ width:34px; height:auto; flex:none; }
+  .logo .lg-hex{ stroke:var(--logo-hex); }
+  .logo .lg-spoke{ stroke:var(--logo-node); }
+  .logo .lg-node{ fill:var(--logo-node); }
+  .logo .lg-hub{ fill:var(--logo-hub); }
   /* ===== mobile fit ===== */
   .stepcard > *, .grid2 > *, .grid3 > *, .split > *, .proof-grid > *, .footer-grid > *, .hero-stats > *{ min-width:0; }
   pre, pre.code{ max-width:100%; overflow-x:auto; }
@@ -250,7 +254,7 @@
   <div class="inner">
     <div class="brandwrap">
       <a class="brand" href="https://thinkingsense.ai" title="ThinkingSense home" style="text-decoration:none; color:var(--ink);">
-        <span class="mark" aria-hidden="true"></span><span>thinking sense</span>
+        <svg class="logo" viewBox="150 124 724 740" aria-hidden="true" focusable="false"><polygon class="lg-hex" points="512,190 805,350 805,672 512,830 218,672 218,350" fill="none" stroke-width="36" stroke-linejoin="round"/><g class="lg-spoke" stroke-width="34"><line x1="512" y1="190" x2="512" y2="512"/><line x1="218" y1="672" x2="512" y2="512"/><line x1="805" y1="672" x2="512" y2="512"/></g><circle class="lg-node" cx="512" cy="192" r="53"/><circle class="lg-node" cx="218" cy="672" r="53"/><circle class="lg-node" cx="805" cy="672" r="53"/><circle class="lg-hub" cx="512" cy="512" r="93"/></svg><span>thinking sense</span>
       </a>
       <a class="brand-docs" href="index.html">Docs</a>
     </div>
@@ -639,7 +643,7 @@ $ ls -l data/bootstrap-admin
     <div class="footer-grid">
       <div>
         <div class="brand" style="margin-bottom:12px">
-          <span class="mark" aria-hidden="true"></span><span>thinking sense</span>
+          <svg class="logo" viewBox="150 124 724 740" aria-hidden="true" focusable="false"><polygon class="lg-hex" points="512,190 805,350 805,672 512,830 218,672 218,350" fill="none" stroke-width="36" stroke-linejoin="round"/><g class="lg-spoke" stroke-width="34"><line x1="512" y1="190" x2="512" y2="512"/><line x1="218" y1="672" x2="512" y2="512"/><line x1="805" y1="672" x2="512" y2="512"/></g><circle class="lg-node" cx="512" cy="192" r="53"/><circle class="lg-node" cx="218" cy="672" r="53"/><circle class="lg-node" cx="805" cy="672" r="53"/><circle class="lg-hub" cx="512" cy="512" r="93"/></svg><span>thinking sense</span>
         </div>
         <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The technical guide, one level below <a href="https://thinkingsense.ai">thinkingsense.ai</a>. How each part works, what you configure, and how to run it.</p>
       </div>
