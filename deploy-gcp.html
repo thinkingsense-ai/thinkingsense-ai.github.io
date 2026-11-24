@@ -131,6 +131,18 @@
   .footer-grid a{ color:var(--ink-dim); text-decoration:none; font-size:13.5px; }
   .footer-grid a:hover{ color:var(--accent); }
   .footer-bottom{ font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:20px; }
+
+  /* nav fit */
+  nav.top .inner{ max-width:1240px; gap:14px; }
+  .navlinks{ gap:16px; font-size:13px; }
+  .mobilenav{ display:none; position:relative; margin-left:auto; }
+  .mobilenav summary{ list-style:none; cursor:pointer; font-size:13px; font-weight:650; padding:7px 12px; border:1px solid var(--rule-strong); border-radius:9px; background:var(--panel); color:var(--ink); }
+  .mobilenav summary::-webkit-details-marker{ display:none; }
+  .mobilenav-panel{ position:absolute; right:0; top:calc(100% + 8px); z-index:40; min-width:220px; display:grid; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); }
+  .mobilenav-panel a{ padding:9px 10px; border-radius:6px; font-size:14px; font-weight:600; color:var(--ink); text-decoration:none; }
+  .mobilenav-panel a:hover{ background:var(--panel-2); }
+  @media (max-width:1180px){ .brand-docs{ display:none; } }
+  @media (max-width:980px){ .navlinks{ display:none; } .mobilenav{ display:block; } }
 </style>
 </head>
 <body>
@@ -145,30 +157,51 @@
       <a class="brand-docs" href="index.html">Docs</a>
     </div>
     <div class="navlinks">
+      <a href="ontology.html">Ontology &amp; graph</a>
+      <a href="agents.html">Agents</a>
+      <a href="models.html">Model tuning</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="evidence.html">Evidence</a>
       <div class="navdrop">
-        <button class="navdrop-trigger" aria-haspopup="true">Product <span class="caret">▾</span></button>
+        <button class="navdrop-trigger" aria-haspopup="true">Security &amp; deploy <span class="caret">▾</span></button>
         <div class="navdrop-menu">
-          <a href="index.html#use-cases">Use cases</a>
-          <a href="index.html#architecture">Architecture</a>
-          <a href="index.html#ontology-generation">Ontology</a>
-          <a href="index.html#inside">What's inside</a>
-          <a href="index.html#connectors">Connectors</a>
-          <a href="index.html#capabilities">What's new</a>
-        </div>
-      </div>
-      <a href="index.html#demo">Live demo</a>
-      <a href="guide.html">Admin &amp; Ask guide</a>
-      <a href="security.html">Security</a>
-      <div class="navdrop">
-        <button class="navdrop-trigger" aria-haspopup="true">Deploy <span class="caret">▾</span></button>
-        <div class="navdrop-menu">
+          <a href="security.html">Security</a>
           <a href="deploy-docker.html">Docker image</a>
           <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
           <a href="deploy-aws.html">AWS (EKS)</a>
-          <a href="deploy-gcp.html" style="color:var(--accent)">Google Cloud (GKE)</a>
+          <a href="deploy-gcp.html">Google Cloud (GKE)</a>
           <a href="deploy-azure.html">Microsoft Azure (AKS)</a>
         </div>
       </div>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Reference <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="platform.html">Architecture</a>
+          <a href="platform.html#connectors">Connectors</a>
+          <a href="platform.html#flywheel">Learning loop</a>
+          <a href="platform.html#capabilities">What's new</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="demo-data.html">Demo data</a>
+        </div>
+      </div>
+      <a href="demo.html">Demo</a>
+    </div>
+    <div class="mobilenav">
+      <details>
+        <summary>Menu</summary>
+        <div class="mobilenav-panel">
+          <a href="ontology.html">Ontology &amp; graph</a>
+          <a href="agents.html">Governed agents</a>
+          <a href="models.html">Model tuning</a>
+          <a href="solutions.html">Solutions</a>
+          <a href="evidence.html">Evidence</a>
+          <a href="security.html">Security</a>
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="platform.html">Architecture</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="demo.html">Demo</a>
+        </div>
+      </details>
     </div>
     <div class="navcta">
       <a class="btn small primary" href="#deploy">Deploy now</a>
@@ -411,36 +444,38 @@
           <div class="mark"><svg viewBox="0 0 100 100"><polygon points="50,12 82.9,31 82.9,69 50,88 17.1,69 17.1,31" fill="none" stroke="#3d7fe8" stroke-width="6" stroke-linejoin="round"/><line x1="50" y1="12" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="82.9" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><line x1="17.1" y1="69" x2="50" y2="50" stroke="#5b9ef5" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="12" r="9" fill="#5b9ef5"/><circle cx="82.9" cy="69" r="9" fill="#5b9ef5"/><circle cx="17.1" cy="69" r="9" fill="#5b9ef5"/><circle cx="50" cy="50" r="13" fill="#2f5fd6"/></svg></div>
           <span>ThinkingSense</span>
         </div>
-        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The enterprise AI intelligence layer — ASK → ANALYZE → MONITOR → ACT across your enterprise, with governance built into every step.</p>
+        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The technical guide, one level below <a href="https://thinkingsense.ai">thinkingsense.ai</a>. How each part works, what you configure, and how to run it.</p>
+      </div>
+      <div>
+        <h4>The three parts</h4>
+        <ul>
+          <li><a href="ontology.html">Ontology &amp; knowledge graph</a></li>
+          <li><a href="agents.html">Governed agents</a></li>
+          <li><a href="models.html">Small-model tuning</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Trust</h4>
+        <ul>
+          <li><a href="security.html">Security</a></li>
+          <li><a href="evidence.html">Evidence</a></li>
+          <li><a href="platform.html#architecture">Architecture</a></li>
+          <li><a href="platform.html#connectors">Connectors</a></li>
+        </ul>
       </div>
       <div>
         <h4>Get it</h4>
         <ul>
           <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
-          <li><a href="https://github.com/thinkingsense-ai/Docker/tree/main/resource-manager/omnigategkestack">GKE Terraform stack</a></li>
+          <li><a href="deploy-oci.html">Deploy to Oracle Cloud</a></li>
+          <li><a href="deploy-aws.html">Deploy to AWS</a></li>
+          <li><a href="deploy-azure.html">Deploy to Azure</a></li>
           <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
         </ul>
       </div>
-      <div>
-        <h4>Deploy</h4>
-        <ul>
-          <li><a href="#architecture">Architecture</a></li>
-          <li><a href="#steps">Deploy steps</a></li>
-          <li><a href="#prereqs">Prerequisites</a></li>
-          <li><a href="#cli">CLI path</a></li>
-          <li><a href="#manage">Check &amp; destroy</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Product</h4>
-        <ul>
-          <li><a href="index.html#architecture">Architecture</a></li>
-          <li><a href="index.html#docs">Local Docker setup</a></li>
-          <li><a href="mailto:hello@thinkingsense.ai">Contact us</a></li>
-        </ul>
-      </div>
     </div>
-    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image and this Terraform stack are publicly available — see the Docker repo for terms.</div>
+    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image is publicly available — see the Docker repo for its terms.</div>
   </div>
 </footer>
 
