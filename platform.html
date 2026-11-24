@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works — ThinkingSense</title>
+<meta name="description" content="How ThinkingSense answers across your systems: one governed layer, the pipeline every request passes through, the ontology it learns, the connectors it reaches and how to run it.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23102f29'/%3E%3Crect x='30' y='30' width='40' height='40' rx='9' fill='none' stroke='%23c5efdc' stroke-width='6' transform='rotate(-12 50 50)'/%3E%3Crect x='43' y='43' width='14' height='14' rx='3' fill='%23c5efdc' transform='rotate(33 50 50)'/%3E%3C/svg%3E">
+<style>
+  :root{
+    color-scheme:light;
+    --bg:#fbfcf8; --panel:#ffffff; --panel-2:#f3f7f0; --mist:#edf5ef; --ink:#172a26; --ink-dim:#4e635c; --ink-faint:#5f746b;
+    --rule:#d6e1d8; --rule-strong:#a8bcb0;
+    --forest:#102f29; --forest-2:#194138; --mint:#c5efdc; --on-accent:#ffffff;
+    --navy:#102f29; --navy-soft:#edf5ef; --accent:#185c4b; --accent-soft:#e3f1e8; --accent-strong:#103f34;
+    --teal:#2f7a62; --teal-soft:#dff0e6; --amber:#8a5a14; --amber-soft:#fcf1d9; --purple:#3f5f86; --purple-soft:#e4ecf5;
+    --code-bg:#102f29; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+    --shadow:0 1px 2px rgba(16,47,41,.05), 0 12px 28px -14px rgba(16,47,41,.2);
+    --diagram-ink:#102f29; --diagram-line:#74877f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
+      --rule:#25433a; --rule-strong:#3a5c50;
+      --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19;
+      --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
+      --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
+      --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+      --diagram-ink:#dcebe3; --diagram-line:#5d7a6d;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
+    --rule:#25433a; --rule-strong:#3a5c50;
+    --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19;
+    --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
+    --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
+    --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+    --diagram-ink:#dcebe3; --diagram-line:#5d7a6d;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.6; overflow-x:hidden; }
+  code,.mono{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;}
+  kbd{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; font-size:.85em; background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:4px; padding:1px 6px;}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif; font-weight:600; margin:0; text-wrap:balance;}
+  p{margin:0 0 1em;}
+  a{color:var(--accent);}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+  section{padding:64px 0;}
+  .rule-top{border-top:1px solid var(--rule);}
+
+  /* ---------------- nav ---------------- */
+  nav.top{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); }
+  nav.top .inner{ max-width:1080px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:750; font-size:15px; }
+  .navlinks{ display:flex; gap:22px; font-size:13.5px; font-weight:600; color:var(--ink-dim); }
+  .navlinks a{ color:var(--ink-dim); text-decoration:none; white-space:nowrap; }
+  .navlinks a:hover{ color:var(--accent); }
+  .navdrop{ position:relative; flex:none; }
+  .navdrop-trigger{ display:flex; align-items:center; gap:5px; font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; white-space:nowrap; }
+  .navdrop-trigger:hover{ color:var(--accent); }
+  .navdrop-trigger .caret{ font-size:9px; transition:transform .15s; }
+  .navdrop:hover .navdrop-trigger .caret, .navdrop:focus-within .navdrop-trigger .caret{ transform:rotate(180deg); }
+  .navdrop-menu{ display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); min-width:168px; z-index:30; }
+  .navdrop-menu::before{ content:""; position:absolute; top:-14px; left:0; right:0; height:14px; }
+  .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
+  .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
+  .navdrop-menu a:hover{ background:var(--panel-2); }
+  .brandwrap{ display:flex; align-items:center; gap:10px; flex:none; }
+  .brand-docs{ font-size:12px; font-weight:650; color:var(--ink-dim); text-decoration:none; border:1px solid var(--rule-strong); border-radius:6px; padding:2px 8px; }
+  .brand-docs:hover{ color:var(--accent); border-color:var(--accent); }
+  .navcta{ display:flex; gap:10px; flex:none; }
+  @media (max-width:860px){
+    .navlinks{ display:none; }
+    nav.top .inner{ gap:12px; }
+  }
+  @media (max-width:520px){
+    .navcta .btn:not(.primary){ display:none; }
+  }
+
+  .btn{ display:inline-flex; align-items:center; gap:7px; font-size:13.5px; font-weight:650; padding:9px 16px; border-radius:9px; border:1px solid var(--rule-strong); background:var(--panel); color:var(--ink); text-decoration:none; }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  .btn.primary:hover{ opacity:.92; color:#fff; }
+  .btn.small{ padding:6px 12px; font-size:12px; }
+
+  /* ---------------- hero ---------------- */
+  .hero{ padding:88px 0 56px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); background:var(--accent-soft); padding:5px 12px; border-radius:999px; margin-bottom:22px; }
+  .hero h1{ font-size:52px; line-height:1.08; max-width:760px; margin-bottom:20px; }
+  .hero h1 em{ font-style:normal; color:var(--accent); }
+  .hero p.lede{ color:var(--ink-dim); font-size:18.5px; max-width:640px; margin-bottom:32px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:44px; }
+  .hero-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:14px; overflow:hidden; }
+  @media (max-width:760px){ .hero-stats{ grid-template-columns:repeat(2,1fr);} .hero h1{font-size:38px;} }
+  .hero-stat{ background:var(--panel); padding:18px 20px; }
+  .hero-stat .v{ font-size:22px; font-weight:750; font-variant-numeric:tabular-nums; }
+  .hero-stat .l{ font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; margin-top:2px; }
+
+  /* ---------------- section chrome ---------------- */
+  .section-head{ margin-bottom:8px; }
+  .kicker{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin-bottom:10px; }
+  .section-head h2{ font-size:32px; margin-bottom:14px; }
+  .section-sub{ color:var(--ink-dim); font-size:16px; max-width:680px; margin-bottom:36px; }
+  .capjump{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:34px; }
+  .capjump a{ font-size:12.4px; font-weight:650; padding:6px 13px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); text-decoration:none; }
+  .capjump a:hover{ border-color:var(--accent); color:var(--accent); }
+  .capgroup{ margin-top:40px; scroll-margin-top:90px; }
+  .capgroup:first-of-type{ margin-top:0; }
+  .capgroup-head{ display:flex; align-items:baseline; gap:8px; width:100%; font:inherit; font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-dim); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule); background:none; border-left:none; border-right:none; border-top:none; cursor:pointer; text-align:left; }
+  .capgroup-head:hover{ color:var(--accent); }
+  .capgroup-head .n{ font-variant-numeric:tabular-nums; color:var(--ink-faint); font-weight:600; text-transform:none; letter-spacing:normal; }
+  .capgroup-head .chev{ margin-left:auto; font-size:13px; transition:transform .15s ease; color:var(--ink-faint); }
+  .capgroup.open .capgroup-head .chev{ transform:rotate(90deg); }
+  .capgroup .grid4{ display:none; }
+  .capgroup.open .grid4{ display:grid; }
+
+  .model-strip{ display:flex; align-items:stretch; gap:0; margin-bottom:16px; }
+  .model-step{ flex:1; background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:18px 16px; box-shadow:var(--shadow); }
+  .model-step .model-num{ font-family:Georgia,"Times New Roman",serif; font-size:12px; font-weight:650; color:var(--accent); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .model-step h4{ font-size:16.5px; font-weight:750; margin-bottom:6px; }
+  .model-step p{ font-size:12.6px; color:var(--ink-dim); margin:0; }
+  .model-arrow{ display:flex; align-items:center; justify-content:center; width:34px; flex:none; color:var(--ink-faint); font-size:20px; }
+  @media (max-width:820px){ .model-strip{ flex-direction:column; gap:10px; } .model-arrow{ width:auto; height:20px; transform:rotate(90deg); } }
+  .model-governed{ border:1.5px dashed var(--rule-strong); border-radius:12px; padding:12px 18px; text-align:center; font-size:12.8px; font-weight:650; color:var(--ink-dim); margin-bottom:32px; }
+  .model-governed b{ color:var(--ink); }
+
+  /* ---------------- feature grid ---------------- */
+  .grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .grid4 > *, .grid2 > *, .footer-grid > *{ min-width:0; }
+  .conn-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(108px,1fr)); gap:10px; }
+  .conn-tile{ display:flex; flex-direction:column; align-items:center; gap:7px; padding:12px 6px; border-radius:12px; background:var(--panel); border:1px solid var(--rule); text-align:center; }
+  .conn-badge{ width:34px; height:34px; border-radius:9px; display:grid; place-items:center; color:#fff; font-size:11.5px; font-weight:800; letter-spacing:-0.02em; flex:none; }
+  .conn-tile .conn-label{ font-size:11px; font-weight:600; color:var(--ink-dim); line-height:1.25; }
+  .conn-tile.ghost{ background:var(--panel-2); border-style:dashed; }
+  .conn-tile.ghost .conn-label{ color:var(--ink-faint); }
+  @media (max-width:900px){ .grid4{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .grid4{grid-template-columns:1fr;} }
+  .feature{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:22px 20px; box-shadow:var(--shadow); }
+  .feature .num{ font-family:Georgia,"Times New Roman",serif; font-size:13px; font-weight:650; color:var(--ink-faint); margin-bottom:10px; }
+  .feature h3{ font-family:'Inter'; font-size:15.5px; font-weight:700; margin-bottom:8px; }
+  .feature p{ font-size:13.6px; color:var(--ink-dim); margin:0; }
+
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .grid3 > *{ min-width:0; }
+  .usecase{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:22px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px; }
+  .usecase-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); }
+  .usecase-q{ font-family:Georgia,"Times New Roman",serif; font-size:17px; font-weight:650; line-height:1.35; color:var(--ink); }
+  .usecase-sys{ display:flex; flex-wrap:wrap; gap:6px; }
+  .sys-pill{ font-size:11.5px; font-weight:650; padding:4px 10px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); }
+  .usecase-out{ font-size:13.6px; color:var(--ink-dim); margin-top:auto; padding-top:10px; border-top:1px solid var(--rule); }
+
+  /* IT-risk workflow example */
+  .wf{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; box-shadow:var(--shadow); padding:26px 24px; margin-top:26px; }
+  .wf-q{ font-family:Georgia,"Times New Roman",serif; font-size:21px; font-weight:650; line-height:1.35; margin:0 0 6px; }
+  .wf-who{ font-size:13px; color:var(--ink-faint); margin-bottom:20px; }
+  .wf-steps{ list-style:none; margin:0; padding:0; display:grid; gap:0; }
+  .wf-steps li{ display:grid; grid-template-columns:44px 1fr; gap:14px; padding:16px 0; border-top:1px solid var(--rule); }
+  .wf-n{ width:30px; height:30px; border-radius:50%; background:var(--accent-soft); color:var(--accent-strong); font-weight:750; font-size:13px; display:flex; align-items:center; justify-content:center; }
+  .wf-steps h4{ margin:0 0 4px; font-size:15px; }
+  .wf-steps p{ margin:0 0 8px; font-size:14.2px; color:var(--ink-dim); }
+  .wf-facts{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .wf-fact{ font-size:12.5px; padding:4px 10px; border-radius:8px; background:var(--panel-2); border:1px solid var(--rule); color:var(--ink); }
+  .wf-fact b{ color:var(--accent-strong); font-weight:700; }
+  .wf-note{ margin-top:18px; padding-top:14px; border-top:1px solid var(--rule); font-size:13px; color:var(--ink-dim); }
+  @media (max-width:560px){ .wf{ padding:20px 16px; } .wf-steps li{ grid-template-columns:36px 1fr; gap:10px; } .wf-q{ font-size:18px; } }
+  .problem-callout{ background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:14px; padding:22px 24px; margin-top:24px; }
+  .problem-callout .pc-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); margin-bottom:10px; }
+  .problem-callout p{ font-size:13.8px; color:var(--ink-dim); margin:0; line-height:1.6; max-width:820px; }
+  .problem-callout p + p{ margin-top:12px; }
+
+  /* ---------------- diagrams ---------------- */
+  figure.diagram{ margin:0 0 40px; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 22px 20px; box-shadow:var(--shadow); }
+  figure.diagram.flywheel-diagram{ border:1.5px solid var(--teal); box-shadow:0 0 0 1px var(--teal-soft), var(--shadow); }
+  .flywheel-badges{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+  .flywheel-badge{ background:var(--teal-soft); border:1px solid var(--teal); border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:650; color:var(--teal); }
+  figure.diagram svg{ width:100%; height:auto; display:block; }
+  figure.diagram figcaption{ font-size:13px; color:var(--ink-faint); margin-top:14px; text-align:center; }
+  .diagram text{ font-family:'Inter',sans-serif; }
+
+  /* ---------------- docs / code ---------------- */
+  .docs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  .docs-grid > div{ min-width:0; }
+  @media (max-width:820px){ .docs-grid{grid-template-columns:1fr;} }
+  .table-scroll{ overflow-x:auto; border-radius:12px; }
+  .step{ display:flex; gap:12px; margin-bottom:22px; }
+  .step .num{ flex:none; width:26px; height:26px; border-radius:8px; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:750; display:grid; place-items:center; margin-top:2px; }
+  .step .t{ font-size:14.5px; font-weight:650; margin-bottom:4px; }
+  .step .d{ font-size:13.5px; color:var(--ink-dim); }
+  pre.code{ background:var(--code-bg); color:var(--code-ink); border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:13px; line-height:1.65; margin:8px 0 0; box-shadow:var(--shadow); }
+  pre.code .c{color:var(--code-comment);} pre.code .k{color:var(--code-accent);} pre.code .s{color:var(--code-string);}
+  .cfg-table{ width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border:1px solid var(--rule); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .cfg-table th{ text-align:left; background:var(--panel-2); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:10px 14px; font-weight:700; }
+  .cfg-table td{ padding:10px 14px; border-top:1px solid var(--rule); vertical-align:top; }
+  .cfg-table td:first-child{ font-family:'JetBrains Mono',monospace; font-size:12px; white-space:nowrap; color:var(--accent-strong); }
+  .callout{ border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--panel); padding:16px 18px; font-size:13.8px; color:var(--ink-dim); box-shadow:var(--shadow); }
+  .callout b{ color:var(--ink); }
+
+  /* ---------------- editions ---------------- */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:700px){ .grid2{grid-template-columns:1fr;} }
+  .edition{ background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 24px; box-shadow:var(--shadow); }
+  .edition.commercial{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow); }
+  .edition h3{ font-family:'Inter'; font-size:18px; font-weight:750; margin-bottom:4px; }
+  .edition .price{ font-size:13px; color:var(--ink-faint); margin-bottom:16px; }
+  .edition ul{ margin:0; padding:0 0 0 18px; font-size:13.8px; color:var(--ink-dim); }
+  .edition li{ margin-bottom:7px; }
+
+  /* ---------------- demo ---------------- */
+  .demo-frame-wrap{ border:1px solid var(--rule); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); background:var(--panel-2); }
+  .demo-frame-bar{ display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--rule); font-size:12px; color:var(--ink-faint); }
+  .demo-frame-bar .dots{ display:flex; gap:6px; }
+  .demo-frame-bar .dots span{ width:9px; height:9px; border-radius:50%; background:var(--rule-strong); }
+  iframe.demo{ width:100%; height:640px; border:none; display:block; background:var(--panel); }
+
+  /* ---------------- footer ---------------- */
+  footer{ padding:50px 0 70px; border-top:1px solid var(--rule); }
+  .footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px; margin-bottom:36px; }
+  @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  .footer-grid h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; margin-bottom:12px; }
+  .footer-grid ul{ list-style:none; margin:0; padding:0; }
+  .footer-grid li{ margin-bottom:8px; }
+  .footer-grid a{ color:var(--ink-dim); text-decoration:none; font-size:13.5px; }
+  .footer-grid a:hover{ color:var(--accent); }
+  .footer-bottom{ font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:20px; }
+  @media (max-width:900px){ .grid3{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){ .grid3{ grid-template-columns:1fr; } .hero-stats{ grid-template-columns:1fr 1fr; } }
+
+  /* nav fit */
+  nav.top .inner{ max-width:1240px; gap:14px; }
+  .navlinks{ gap:16px; font-size:13px; }
+  .mobilenav{ display:none; position:relative; margin-left:auto; }
+  .mobilenav summary{ list-style:none; cursor:pointer; font-size:13px; font-weight:650; padding:7px 12px; border:1px solid var(--rule-strong); border-radius:9px; background:var(--panel); color:var(--ink); }
+  .mobilenav summary::-webkit-details-marker{ display:none; }
+  .mobilenav-panel{ position:absolute; right:0; top:calc(100% + 8px); z-index:40; min-width:220px; display:grid; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); }
+  .mobilenav-panel a{ padding:9px 10px; border-radius:6px; font-size:14px; font-weight:600; color:var(--ink); text-decoration:none; }
+  .mobilenav-panel a:hover{ background:var(--panel-2); }
+  @media (max-width:1180px){ .brand-docs{ display:none; } }
+  @media (max-width:980px){ .navlinks{ display:none; } .mobilenav{ display:block; } }
+
+  /* ===== thinkingsense.ai skin ===== */
+  :root{ --radius:18px; }
+  html{ scroll-behavior:auto; }
+  body{ font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  code,.mono,kbd{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; }
+  h1,h2,h3,.model-step .model-num{ font-family:Georgia,"Times New Roman",serif; }
+  h1,h2{ font-weight:500; letter-spacing:-.04em; line-height:1.06; }
+  h3{ font-weight:600; letter-spacing:-.01em; }
+  .wrap, nav.top .inner{ max-width:1160px; }
+  nav.top{ background:var(--bg); backdrop-filter:none; }
+  .brand{ font-size:1.18rem; font-weight:760; letter-spacing:-.06em; color:var(--ink); }
+  .brand .mark{ width:26px; height:26px; background:none; border:1.5px solid var(--accent); border-radius:7px 7px 7px 2px; transform:rotate(-12deg); display:inline-grid; place-items:center; color:var(--accent); }
+  .brand .mark::before{ content:""; width:9px; height:9px; background:currentColor; border-radius:2px; transform:rotate(45deg); }
+  .brand-docs{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; font-size:10.5px; border-radius:5px; color:var(--accent); border-color:var(--accent); }
+  .navlinks a, .navlinks .navdrop-trigger{ font-weight:660; }
+  .btn{ border-radius:8px; border-color:var(--rule-strong); background:transparent; min-height:41px; }
+  .btn:hover{ background:var(--mist); color:var(--ink); border-color:var(--rule-strong); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  .btn.primary:hover{ background:var(--accent-strong); border-color:var(--accent-strong); color:var(--on-accent); opacity:1; }
+  :focus-visible{ outline:3px solid #987219; outline-offset:4px; }
+  .eyebrow, .kicker{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.085em; font-weight:680; }
+  .eyebrow{ background:var(--accent-soft); border:1px solid var(--rule); border-radius:6px; font-size:11px; }
+  .kicker{ font-size:12px; }
+  .hero{ padding:clamp(56px,8vw,104px) 0 clamp(36px,5vw,56px); }
+  .hero h1{ font-size:clamp(2.6rem,5.6vw,4.9rem); max-width:17ch; letter-spacing:-.045em; line-height:1.03; }
+  .hero h1 em{ color:var(--accent); }
+  .hero-ctas{ margin-bottom:40px; }
+  .hero-stats{ border-radius:var(--radius); }
+  .hero-stat .v{ font-family:Georgia,"Times New Roman",serif; font-weight:500; font-size:1.55rem; letter-spacing:-.02em; }
+  .hero-stat .l{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.05em; font-size:10.5px; }
+  .section-head h2{ font-size:clamp(1.9rem,3.6vw,3rem); }
+  section{ padding:clamp(48px,7vw,88px) 0; }
+  section.rule-top:nth-of-type(even){ background:var(--mist); }
+  .rule-top{ border-top:1px solid var(--rule); }
+  .outcome, .role, .start-card, .stack-card, .hero-stat, .card, .panel, figure.diagram, .layer-wrap, .wf, .pack, .model-step, .conn-tile{ border-radius:var(--radius); }
+  :root{ --hero-glow:#e5f1e7; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --hero-glow:#12392f; } }
+  :root[data-theme="dark"]{ --hero-glow:#12392f; }
+  nav.top + .wrap{ background:radial-gradient(ellipse at 78% 20%, var(--hero-glow) 0, transparent 60%); max-width:none; padding:0; }
+  nav.top + .wrap > .hero{ max-width:1160px; margin:0 auto; padding-left:28px; padding-right:28px; }
+  pre.code{ background:var(--code-bg); border-radius:12px; }
+  footer{ background:var(--bg); }
+  /* diagram: data = slate, logic = amber, action = green */
+  .ly-chip-d{ fill:var(--purple-soft); stroke:var(--purple); }
+  .ls-d span{ background:var(--purple-soft); border-color:var(--purple); }
+  .ly-chip-l{ fill:var(--amber-soft); stroke:var(--amber); }
+  .ls-l span{ background:var(--amber-soft); border-color:var(--amber); }
+  .ly-flow-p{ stroke:var(--amber); }
+
+  /* ===== mobile fit ===== */
+  .stepcard > *, .grid2 > *, .grid3 > *, .split > *, .proof-grid > *, .footer-grid > *, .hero-stats > *{ min-width:0; }
+  pre, pre.code{ max-width:100%; overflow-x:auto; }
+  @media (max-width:760px){
+    p, li, h1, h2, h3, h4, td, th, dd, code{ overflow-wrap:anywhere; }
+    table{ display:block; max-width:100%; overflow-x:auto; }
+    .navcta .btn.small{ padding:6px 10px; }
+    nav.top .inner{ padding-left:16px; padding-right:16px; gap:8px; }
+    .brand{ font-size:1.05rem; }
+    .wrap{ padding-left:20px; padding-right:20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <div class="brandwrap">
+      <a class="brand" href="https://thinkingsense.ai" title="ThinkingSense home" style="text-decoration:none; color:var(--ink);">
+        <span class="mark" aria-hidden="true"></span><span>thinking sense</span>
+      </a>
+      <a class="brand-docs" href="index.html">Docs</a>
+    </div>
+    <div class="navlinks">
+      <a href="ontology.html">Ontology &amp; graph</a>
+      <a href="agents.html">Agents</a>
+      <a href="models.html">Model tuning</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="evidence.html">Evidence</a>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Security &amp; deploy <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="security.html">Security</a>
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
+          <a href="deploy-aws.html">AWS (EKS)</a>
+          <a href="deploy-gcp.html">Google Cloud (GKE)</a>
+          <a href="deploy-azure.html">Microsoft Azure (AKS)</a>
+        </div>
+      </div>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Reference <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="platform.html">Architecture</a>
+          <a href="platform.html#connectors">Connectors</a>
+          <a href="platform.html#flywheel">Learning loop</a>
+          <a href="platform.html#capabilities">What's new</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="demo-data.html">Demo data</a>
+        </div>
+      </div>
+      <a href="demo.html">Demo</a>
+    </div>
+    <div class="mobilenav">
+      <details>
+        <summary>Menu</summary>
+        <div class="mobilenav-panel">
+          <a href="ontology.html">Ontology &amp; graph</a>
+          <a href="agents.html">Governed agents</a>
+          <a href="models.html">Model tuning</a>
+          <a href="solutions.html">Solutions</a>
+          <a href="evidence.html">Evidence</a>
+          <a href="security.html">Security</a>
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="platform.html">Architecture</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="demo.html">Demo</a>
+        </div>
+      </details>
+    </div>
+    <div class="navcta">
+      <a class="btn small primary" href="deploy-docker.html">Quick start</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow">● How it works</span>
+    <h1>What sits <em>under</em> the answer</h1>
+    <p class="lede">
+      One governed layer in front of every system. It resolves business meaning, enforces identity and
+      policy before anything executes, and speaks each backend's native protocol underneath, reaching
+      50+ data sources without moving your data. This page is the technical detail behind the outcomes
+      on the home page.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn primary" href="index.html">← Back to outcomes</a>
+      <a class="btn" href="#demo">Try the click-through demo</a>
+      <a class="btn" href="#docs">Quick start</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="v">4</div><div class="l">wire protocols</div></div>
+      <div class="hero-stat"><div class="v">50+</div><div class="l">connectors</div></div>
+      <div class="hero-stat"><div class="v">1</div><div class="l">shared pipeline</div></div>
+      <div class="hero-stat"><div class="v">2</div><div class="l">editions, same code</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= USE CASES ================= -->
+<section id="use-cases" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The problem</div>
+      <h2>The question no single system can answer</h2>
+    </div>
+    <p class="section-sub">
+      Three shapes of question that need more than one system to answer honestly — the kind that
+      today means a data-engineering ticket, a one-off ETL pipeline, and weeks or months of work
+      before anyone sees a number, just to answer one cross-system question a business user could
+      have typed in a sentence.
+    </p>
+
+    <div class="grid3">
+      <div class="usecase">
+        <div class="usecase-label">Ask across systems</div>
+        <div class="usecase-q">"Which customers are at risk because of delayed orders?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">Support data</span>
+        </div>
+        <div class="usecase-out">→ one governed answer — grounded in real order and case records, not a guess stitched from three dashboards.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Investigate risk</div>
+        <div class="usecase-q">"Which applications and customers are exposed to this third-party incident?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">CMDB</span>
+          <span class="sys-pill">Vendor data</span>
+          <span class="sys-pill">Policy documents</span>
+        </div>
+        <div class="usecase-out">→ impact and evidence — the exact systems and accounts touched, with the policy clause that governs the response.</div>
+      </div>
+      <div class="usecase">
+        <div class="usecase-label">Analyze operations</div>
+        <div class="usecase-q">"Why did order-to-cash increase this quarter?"</div>
+        <div class="usecase-sys">
+          <span class="sys-pill">ERP</span>
+          <span class="sys-pill">CRM</span>
+          <span class="sys-pill">Process data</span>
+        </div>
+        <div class="usecase-out">→ real drivers, not a hunch — ranked contributing factors with the underlying transactions behind each one.</div>
+      </div>
+    </div>
+
+    <div class="problem-callout">
+      <div class="pc-label">The obvious shortcut doesn't scale</div>
+      <p>The instinct is to wire an MCP server directly to every database, SaaS app, and document store an AI agent needs. That works for one source. It stops working past a handful: every system needs its own server built, patched, and kept running; every one is a new set of credentials an AI agent holds directly, with no shared access-control layer in between; and nothing stops a model that can reach ten different MCP servers from crossing into data no single team ever reviewed it to see.</p>
+      <p>That's integration and security debt that compounds with every new source — not a governance model. The fix isn't an MCP server per system; it's one governed layer in front of every system, enforcing identity and policy before anything executes, regardless of how many sources sit behind it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POSITIONING ================= -->
+<section id="positioning" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The stack</div>
+      <h2>One intelligence stack. Two specialized layers.</h2>
+    </div>
+    <p class="section-sub"><b>ThinkingSense</b> is the enterprise AI intelligence layer — it understands, governs, plans, and learns, then hands off to a dedicated execution layer underneath that connects, federates, routes, and actually runs the query (see the diagram below). Neither replaces the other; ThinkingSense decides <i>what</i> should happen, the layer beneath it makes it happen.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 640 390" role="img" aria-label="ThinkingSense, enterprise AI intelligence that understands, governs, plans, and learns, sits above a governed execution layer that connects, federates, routes, and executes, reaching databases, SaaS, and documents or APIs." style="color:var(--diagram-ink)">
+        <defs>
+          <marker id="arrowS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <!-- ThinkingSense layer -->
+        <rect x="40" y="20" width="560" height="100" rx="14" fill="var(--accent)"/>
+        <text x="320" y="56" text-anchor="middle" font-size="20" font-weight="700" font-family="Source Serif 4, serif" fill="#fff">THINKINGSENSE</text>
+        <text x="320" y="78" text-anchor="middle" font-size="13" font-weight="600" fill="#dbe6fd">Enterprise AI Intelligence</text>
+        <text x="320" y="104" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.03em" fill="#fff">Understand · Govern · Plan · Learn</text>
+
+        <path d="M320,120 L320,156" stroke="var(--diagram-line)" stroke-width="1.6" fill="none" marker-end="url(#arrowS)"/>
+
+        <!-- Governed execution layer -->
+        <rect x="40" y="160" width="560" height="90" rx="14" fill="var(--navy)"/>
+        <text x="320" y="200" text-anchor="middle" font-size="20" font-weight="700" font-family="Source Serif 4, serif" fill="#fff">GOVERNED EXECUTION</text>
+        <text x="320" y="226" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.02em" fill="#c3d3ea">Connect · Federate · Route · Execute</text>
+
+        <path d="M320,250 L320,270" stroke="var(--diagram-line)" stroke-width="1.6" fill="none"/>
+        <path d="M320,270 C320,290 105,290 105,310" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrowS)"/>
+        <path d="M320,270 L320,310" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrowS)"/>
+        <path d="M320,270 C320,290 515,290 515,310" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrowS)"/>
+
+        <g font-size="13" font-weight="700">
+          <rect x="20" y="314" width="170" height="50" rx="10" fill="var(--amber-soft)"/><text x="105" y="344" text-anchor="middle" fill="var(--amber)">Databases</text>
+          <rect x="235" y="314" width="170" height="50" rx="10" fill="var(--amber-soft)"/><text x="320" y="344" text-anchor="middle" fill="var(--amber)">SaaS</text>
+          <rect x="450" y="314" width="170" height="50" rx="10" fill="var(--amber-soft)"/><text x="535" y="344" text-anchor="middle" fill="var(--amber)">Documents / APIs</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 1 — ThinkingSense (understand/govern/plan/learn) sits above a governed execution layer (connect/federate/route/execute) that reaches databases, SaaS, and documents/APIs.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= THE FLYWHEEL ================= -->
+<section id="flywheel" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The flywheel</div>
+      <h2>It gets smarter every time someone asks</h2>
+    </div>
+    <p class="section-sub">
+      This is the part that compounds. Every answer feeds evidence back into the ontology — a
+      question asked repeatedly promotes a candidate join into a reviewed rollup; a 👎 demotes a
+      bad one. The semantic layer improves with usage, not just with engineering time spent on it
+      directly — the longer it runs, the further ahead it gets.
+    </p>
+
+    <div class="flywheel-badges">
+      <div class="flywheel-badge">Repeated questions → promoted joins</div>
+      <div class="flywheel-badge">👎 feedback → demoted joins</div>
+      <div class="flywheel-badge">Every candidate reviewed, never auto-applied</div>
+    </div>
+
+    <figure class="diagram flywheel-diagram">
+      <svg viewBox="0 0 1000 362" role="img" aria-label="A business question is answered through NL2SQL guided by the ontology, planned into a federated query, executed, and fed back as evidence that improves the ontology and rollups for every question after it — a closed, compounding loop." style="color:var(--diagram-ink)">
+        <defs>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+          <marker id="arrowLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"/>
+          </marker>
+        </defs>
+
+        <text x="500" y="20" text-anchor="middle" font-size="14" font-weight="750" fill="var(--teal)">🔁 repeated questions promote better joins &amp; rollups — 👎 demotes bad ones</text>
+        <path d="M897,180 C897,46 289,46 289,60" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#arrowLoop)"/>
+
+        <rect x="20" y="124" width="150" height="56" rx="10" fill="var(--navy-soft)" stroke="none"/>
+        <text x="95" y="148" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">Business question</text>
+        <text x="95" y="166" text-anchor="middle" font-size="10" fill="var(--navy)" opacity=".85">Ask app or Claude via MCP</text>
+
+        <path d="M170,152 L210,152" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="214" y="60" width="150" height="60" rx="10" fill="var(--teal)" stroke="none"/>
+        <text x="289" y="85" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Ontology</text>
+        <text x="289" y="105" text-anchor="middle" font-size="10" fill="#fff" opacity=".9">join keys, glossary</text>
+
+        <rect x="214" y="184" width="150" height="56" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="289" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">NL2SQL</text>
+        <text x="289" y="226" text-anchor="middle" font-size="10" fill="var(--ink-dim)">generate + judge</text>
+
+        <path d="M289,120 L289,184" stroke="var(--diagram-line)" stroke-width="1.4" fill="none" marker-end="url(#arrow2)"/>
+
+        <path d="M364,212 L410,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="414" y="184" width="160" height="56" rx="10" fill="var(--accent)" stroke="none"/>
+        <text x="494" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Federated plan</text>
+        <text x="494" y="226" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">semi-join pushdown</text>
+
+        <path d="M574,212 L616,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+
+        <rect x="620" y="184" width="150" height="56" rx="10" fill="var(--purple-soft)" stroke="none"/>
+        <text x="695" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--purple)">Backends</text>
+        <text x="695" y="226" text-anchor="middle" font-size="10" fill="var(--purple)" opacity=".85">JDBC + REST + S3</text>
+
+        <path d="M770,212 L810,212" stroke="var(--diagram-line)" stroke-width="1.5" fill="none" marker-end="url(#arrow2)"/>
+        <rect x="814" y="184" width="166" height="56" rx="10" fill="var(--amber-soft)" stroke="none"/>
+        <text x="897" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="var(--amber)">Sourced answer</text>
+        <text x="897" y="226" text-anchor="middle" font-size="10" fill="var(--amber)" opacity=".85">evidence + feedback</text>
+
+        <text x="95" y="276" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">ask once</text>
+        <text x="695" y="276" font-size="11.5" fill="var(--ink-faint)" text-anchor="middle">execute across every connected source</text>
+
+        <line x1="20" y1="308" x2="980" y2="308" stroke="var(--rule)" stroke-width="1"/>
+        <text x="500" y="338" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Every question ever asked is training data for the next one.</text>
+      </svg>
+      <figcaption>Fig. 2 — the flywheel: a question is answered, and the answer becomes evidence — repeated patterns promote rollups, negative feedback demotes bad joins, and every candidate still lands in a reviewable queue rather than being auto-applied.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= ARCHITECTURE ================= -->
+<section id="architecture" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Architecture</div>
+      <h2>Every request becomes the same shape, once</h2>
+    </div>
+    <p class="section-sub">
+      Four frontends, one canonical <code>Statement</code> record, one ordered pipeline. A Postgres
+      client that speaks Postgres wire v3 doesn't care whether the row behind it actually lives in
+      Oracle — that one seam is what lets the firewall, router, stats collector, access-control layer,
+      and NL2SQL translator each serve every protocol without quadrupling the logic.
+    </p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1100 780" role="img" aria-label="Four wire-protocol frontends converge into one Statement record, flow through a shared six-stage pipeline, and fan out to any JDBC, REST, or object-storage backend." style="color:var(--diagram-ink)">
+        <defs>
+          <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <!-- ===== FRONTENDS (left) ===== -->
+        <rect x="20" y="20" width="220" height="36" rx="8" fill="var(--navy)"/>
+        <text x="38" y="43" font-size="12" font-weight="700" letter-spacing="0.04em" fill="#fff">FRONTENDS</text>
+        <rect x="20" y="64" width="220" height="276" rx="10" fill="var(--panel)" stroke="var(--rule-strong)" stroke-width="1.3"/>
+
+        <g font-size="12.5" font-weight="700">
+          <rect x="32" y="76" width="196" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="56" cy="100" r="15" fill="var(--navy-soft)"/><text x="56" y="104" font-size="10.5" font-weight="800" text-anchor="middle" fill="var(--navy)">PG</text>
+          <text x="82" y="97" fill="var(--ink)">Postgres wire</text>
+          <text x="82" y="113" font-size="10.5" font-weight="500" fill="var(--ink-faint)">:5433</text>
+
+          <rect x="32" y="140" width="196" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="56" cy="164" r="15" fill="var(--navy-soft)"/><text x="56" y="168" font-size="10.5" font-weight="800" text-anchor="middle" fill="var(--navy)">My</text>
+          <text x="82" y="161" fill="var(--ink)">MySQL wire</text>
+          <text x="82" y="177" font-size="10.5" font-weight="500" fill="var(--ink-faint)">:3306</text>
+
+          <rect x="32" y="204" width="196" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="56" cy="228" r="15" fill="var(--navy-soft)"/><text x="56" y="232" font-size="10.5" font-weight="800" text-anchor="middle" fill="var(--navy)">Or</text>
+          <text x="82" y="225" fill="var(--ink)">Oracle wire</text>
+          <text x="82" y="241" font-size="10.5" font-weight="500" fill="var(--ink-faint)">:1521</text>
+
+          <rect x="32" y="268" width="196" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="56" cy="292" r="15" fill="var(--navy-soft)"/><text x="56" y="296" font-size="13" text-anchor="middle" fill="var(--navy)">⇄</text>
+          <text x="82" y="289" fill="var(--ink)">gRPC / MCP</text>
+          <text x="82" y="305" font-size="10.5" font-weight="500" fill="var(--ink-faint)">:7070</text>
+        </g>
+
+        <!-- merge curves -> single funnel, matching the diverge curves on the right -->
+        <g stroke="var(--diagram-line)" stroke-width="1.4" fill="none" opacity="0.8">
+          <path d="M228,100 C262,100 270,196 300,196"/>
+          <path d="M228,164 C262,164 270,196 300,196"/>
+          <path d="M228,228 C262,228 270,196 300,196"/>
+          <path d="M228,292 C262,292 270,196 300,196"/>
+        </g>
+        <path d="M300,196 L316,196" stroke="var(--diagram-line)" stroke-width="1.8" fill="none" marker-end="url(#arrow1)"/>
+
+        <!-- Statement -->
+        <rect x="320" y="170" width="118" height="52" rx="10" fill="var(--accent)"/>
+        <text x="379" y="193" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Statement</text>
+        <text x="379" y="210" text-anchor="middle" font-size="10" fill="#fff" opacity=".85">canonical record</text>
+        <path d="M438,196 L460,196" stroke="var(--diagram-line)" stroke-width="1.8" fill="none" marker-end="url(#arrow1)"/>
+
+        <!-- ===== SHARED PIPELINE (middle) ===== -->
+        <rect x="460" y="20" width="340" height="36" rx="8" fill="var(--accent-strong)"/>
+        <text x="478" y="43" font-size="12" font-weight="700" letter-spacing="0.04em" fill="#fff">SHARED PIPELINE</text>
+        <rect x="460" y="64" width="340" height="472" rx="10" fill="var(--panel)" stroke="var(--rule-strong)" stroke-width="1.3"/>
+
+        <g font-size="13" font-weight="700">
+          <rect x="472" y="76" width="316" height="64" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="502" cy="108" r="15" fill="var(--navy)"/><text x="502" y="113" font-size="12" text-anchor="middle" fill="#fff">1</text>
+          <text x="528" y="103" fill="var(--ink)">Firewall</text>
+          <text x="528" y="121" font-size="10.5" font-weight="500" fill="var(--ink-faint)">Allow/deny, injection filter</text>
+
+          <rect x="472" y="152" width="316" height="64" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="502" cy="184" r="15" fill="var(--navy)"/><text x="502" y="189" font-size="12" text-anchor="middle" fill="#fff">2</text>
+          <text x="528" y="179" fill="var(--ink)">Router</text>
+          <text x="528" y="197" font-size="10.5" font-weight="500" fill="var(--ink-faint)">Schema / predicate / shard select</text>
+
+          <rect x="472" y="228" width="316" height="64" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="502" cy="260" r="15" fill="var(--navy)"/><text x="502" y="265" font-size="12" text-anchor="middle" fill="#fff">3</text>
+          <text x="528" y="255" fill="var(--ink)">Access control</text>
+          <text x="528" y="273" font-size="10.5" font-weight="500" fill="var(--ink-faint)">Row filter, column mask (RLS)</text>
+
+          <rect x="472" y="304" width="316" height="64" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <circle cx="502" cy="336" r="15" fill="var(--navy)"/><text x="502" y="341" font-size="12" text-anchor="middle" fill="#fff">4</text>
+          <text x="528" y="331" fill="var(--ink)">QoS + Stats</text>
+          <text x="528" y="349" font-size="10.5" font-weight="500" fill="var(--ink-faint)">Admission control, exec metrics</text>
+
+          <rect x="472" y="380" width="316" height="64" rx="8" fill="var(--teal-soft)"/>
+          <circle cx="502" cy="412" r="15" fill="var(--teal)"/><text x="502" y="417" font-size="12" text-anchor="middle" fill="#fff">5</text>
+          <text x="528" y="407" fill="var(--teal)">NL2SQL</text>
+          <text x="528" y="425" font-size="10.5" font-weight="500" fill="var(--teal)" opacity=".85">LLM generates SQL, judged before running</text>
+
+          <rect x="472" y="456" width="316" height="64" rx="8" fill="var(--purple-soft)"/>
+          <circle cx="502" cy="488" r="15" fill="var(--purple)"/><text x="502" y="493" font-size="12" text-anchor="middle" fill="#fff">6</text>
+          <text x="528" y="483" fill="var(--purple)">Federation</text>
+          <text x="528" y="501" font-size="10.5" font-weight="500" fill="var(--purple)" opacity=".85">Calcite planner — pushdown + in-process join</text>
+        </g>
+        <g stroke="var(--diagram-line)" stroke-width="1.8" marker-end="url(#arrow1)">
+          <line x1="630" y1="140" x2="630" y2="152"/>
+          <line x1="630" y1="216" x2="630" y2="228"/>
+          <line x1="630" y1="292" x2="630" y2="304"/>
+          <line x1="630" y1="368" x2="630" y2="380"/>
+          <line x1="630" y1="444" x2="630" y2="456"/>
+        </g>
+
+        <!-- ===== BACKENDS (right) ===== -->
+        <rect x="840" y="20" width="240" height="36" rx="8" fill="var(--purple)"/>
+        <text x="858" y="43" font-size="12" font-weight="700" letter-spacing="0.04em" fill="#fff">BACKENDS</text>
+        <rect x="840" y="64" width="240" height="276" rx="10" fill="var(--panel)" stroke="var(--rule-strong)" stroke-width="1.3"/>
+
+        <g font-size="12.5" font-weight="700">
+          <rect x="852" y="76" width="216" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="872" y="97" fill="var(--ink)">Oracle · Postgres · MySQL</text>
+          <text x="872" y="113" font-size="10.5" font-weight="500" fill="var(--ink-faint)">native dialect pushdown</text>
+
+          <rect x="852" y="152" width="216" height="48" rx="8" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="872" y="173" fill="var(--ink)">Snowflake · BigQuery · Databricks</text>
+          <text x="872" y="189" font-size="10.5" font-weight="500" fill="var(--ink-faint)">native dialect pushdown</text>
+
+          <rect x="852" y="228" width="216" height="48" rx="8" fill="var(--amber-soft)"/>
+          <text x="872" y="249" fill="var(--amber)">REST / S3 (any source)</text>
+          <text x="872" y="265" font-size="10.5" font-weight="500" fill="var(--amber)" opacity=".85">via the Connector SDK</text>
+        </g>
+
+        <!-- diverge curves, symmetric with the merge curves on the left -->
+        <path d="M788,488 L810,488" stroke="var(--diagram-line)" stroke-width="1.8" fill="none"/>
+        <g stroke="var(--diagram-line)" stroke-width="1.4" fill="none" opacity="0.8">
+          <path d="M810,488 C850,488 800,100 852,100" marker-end="url(#arrow1)"/>
+          <path d="M810,488 C850,488 800,176 852,176" marker-end="url(#arrow1)"/>
+          <path d="M810,488 C850,488 800,252 852,252" marker-end="url(#arrow1)"/>
+        </g>
+
+        <!-- ===== SQL example, below ===== -->
+        <rect x="20" y="576" width="1060" height="180" rx="12" fill="var(--panel-2)" stroke="var(--rule)"/>
+        <text x="44" y="606" font-size="13" font-weight="700" fill="var(--ink)">A federated statement, concretely:</text>
+        <text x="44" y="634" font-family="JetBrains Mono, monospace" font-size="12.5" fill="var(--ink-dim)">SELECT o.reason, sf.status FROM sap_orders.credit_holds o</text>
+        <text x="44" y="656" font-family="JetBrains Mono, monospace" font-size="12.5" fill="var(--ink-dim)">JOIN salesforce.commercial_exceptions sf ON sf.account_id = o.account_id</text>
+        <text x="44" y="686" font-size="12" fill="var(--ink-faint)">→ SAP side pushed down as real SQL; Salesforce fetched via REST connector and joined in-process</text>
+        <text x="44" y="708" font-size="12" fill="var(--ink-faint)">→ measured per-backend timing captured in Federation Plans, real join key promoted via Ontology review</text>
+      </svg>
+      <figcaption>Fig. 3 — wire-protocol core: every frontend converges on one canonical statement, flows through the same six-stage pipeline, and fans out to any backend.</figcaption>
+    </figure>
+
+    <p class="section-sub">Every statement — every wire frontend, gRPC, the HTTP API — passes through <code>StatsCollectorStage</code> exactly once. That single point feeds three export surfaces, so a Prometheus scrape, the admin console, and an OTLP-speaking vendor are never looking at three different sets of numbers.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 1040 610" role="img" aria-label="StatsCollectorStage, the single point every statement passes through, feeds three export surfaces — a Prometheus /metrics endpoint, a JSON API, and an OTLP push over gRPC or HTTP — which reach scrapers, the admin console, and Datadog, New Relic, Grafana Cloud, CloudWatch, Azure Monitor, or GCP by their real ingest paths." style="color:var(--diagram-ink)">
+        <defs>
+          <marker id="arrow5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="20" y="20" width="190" height="30" rx="8" fill="var(--navy)"/>
+        <text x="38" y="40" font-size="11" font-weight="700" letter-spacing="0.04em" fill="#fff">SOURCE</text>
+        <rect x="380" y="20" width="230" height="30" rx="8" fill="var(--accent-strong)"/>
+        <text x="398" y="40" font-size="11" font-weight="700" letter-spacing="0.04em" fill="#fff">EXPORT SURFACES</text>
+        <rect x="680" y="20" width="280" height="30" rx="8" fill="var(--teal)"/>
+        <text x="698" y="40" font-size="11" font-weight="700" letter-spacing="0.04em" fill="#fff">CONSUMERS</text>
+
+        <!-- source -->
+        <rect x="20" y="245" width="190" height="90" rx="12" fill="var(--navy)"/>
+        <text x="40" y="278" font-size="13.5" font-weight="700" fill="#fff">StatsCollectorStage</text>
+        <text x="40" y="296" font-size="10.5" fill="#dbe6fd">one call site, every statement</text>
+        <text x="40" y="312" font-size="10.5" fill="#dbe6fd">protocol · read/write · backend</text>
+
+        <!-- fan-out: source -> surfaces -->
+        <path d="M210,290 L230,290" stroke="var(--diagram-line)" stroke-width="1.8" fill="none"/>
+        <g stroke="var(--diagram-line)" stroke-width="1.4" fill="none" opacity="0.85">
+          <path d="M230,290 C300,290 320,208 380,208" marker-end="url(#arrow5)"/>
+          <path d="M230,290 C300,290 320,290 380,290" marker-end="url(#arrow5)"/>
+          <path d="M230,290 C300,290 320,372 380,372" marker-end="url(#arrow5)"/>
+        </g>
+
+        <!-- surfaces -->
+        <rect x="380" y="176" width="230" height="64" rx="10" fill="var(--teal-soft)"/>
+        <text x="400" y="200" font-size="13" font-weight="700" fill="var(--teal)">/metrics</text>
+        <text x="400" y="218" font-size="10.5" fill="var(--teal)" opacity=".85">Prometheus text exposition</text>
+
+        <rect x="380" y="258" width="230" height="64" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="400" y="282" font-size="13" font-weight="700" fill="var(--ink)">/api/metrics.json</text>
+        <text x="400" y="300" font-size="10.5" fill="var(--ink-faint)">admin console + chat tool</text>
+
+        <rect x="380" y="340" width="230" height="64" rx="10" fill="var(--purple-soft)"/>
+        <text x="400" y="364" font-size="13" font-weight="700" fill="var(--purple)">OTLP push</text>
+        <text x="400" y="382" font-size="10.5" fill="var(--purple)" opacity=".85">gRPC or HTTP, opt-in</text>
+
+        <!-- surfaces -> consumers -->
+        <path d="M610,208 L680,208" stroke="var(--diagram-line)" stroke-width="1.6" fill="none" marker-end="url(#arrow5)"/>
+        <path d="M610,290 L680,290" stroke="var(--diagram-line)" stroke-width="1.6" fill="none" marker-end="url(#arrow5)"/>
+        <path d="M610,372 C645,372 660,442 680,442" stroke="var(--diagram-line)" stroke-width="1.6" fill="none" marker-end="url(#arrow5)"/>
+
+        <!-- consumers -->
+        <rect x="680" y="176" width="280" height="64" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="700" y="200" font-size="12.5" font-weight="700" fill="var(--ink)">Prometheus-compatible scraper</text>
+        <text x="700" y="218" font-size="10" fill="var(--ink-faint)">Prometheus · Datadog · CloudWatch agents</text>
+
+        <rect x="680" y="258" width="280" height="64" rx="10" fill="var(--panel-2)" stroke="var(--rule-strong)"/>
+        <text x="700" y="282" font-size="12.5" font-weight="700" fill="var(--ink)">Admin console + chat assistant</text>
+        <text x="700" y="300" font-size="10" fill="var(--ink-faint)">reads the same JSON shape</text>
+
+        <rect x="680" y="340" width="280" height="28" rx="8" fill="var(--purple)"/>
+        <text x="698" y="359" font-size="10" font-weight="700" letter-spacing="0.03em" fill="#fff">OMNIGATE_OTEL_VENDOR PRESET</text>
+        <rect x="680" y="372" width="280" height="218" rx="10" fill="var(--panel)" stroke="var(--rule-strong)" stroke-width="1.3"/>
+
+        <g font-size="10.3" font-weight="700">
+          <rect x="692" y="384" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="398" fill="var(--ink)">otlp (default)</text>
+          <text x="704" y="407" font-size="8.6" font-weight="500" fill="var(--ink-faint)">any collector — gRPC or HTTP</text>
+
+          <rect x="692" y="412" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="426" fill="var(--ink)">datadog / datadog-eu</text>
+          <text x="704" y="435" font-size="8.6" font-weight="500" fill="var(--ink-faint)">dd-api-key header</text>
+
+          <rect x="692" y="440" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="454" fill="var(--ink)">newrelic / newrelic-eu</text>
+          <text x="704" y="463" font-size="8.6" font-weight="500" fill="var(--ink-faint)">api-key header</text>
+
+          <rect x="692" y="468" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="482" fill="var(--ink)">grafana-cloud</text>
+          <text x="704" y="491" font-size="8.6" font-weight="500" fill="var(--ink-faint)">HTTP Basic auth, HTTP-only</text>
+
+          <rect x="692" y="496" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="510" fill="var(--ink)">cloudwatch</text>
+          <text x="704" y="519" font-size="8.6" font-weight="500" fill="var(--ink-faint)">alias for otlp — via ADOT collector</text>
+
+          <rect x="692" y="524" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="538" fill="var(--ink)">azure-monitor</text>
+          <text x="704" y="547" font-size="8.6" font-weight="500" fill="var(--ink-faint)">alias for otlp — via azuremonitor exporter</text>
+
+          <rect x="692" y="552" width="256" height="26" rx="6" fill="var(--panel-2)" stroke="var(--rule)"/>
+          <text x="704" y="566" fill="var(--ink)">gcp</text>
+          <text x="704" y="575" font-size="8.6" font-weight="500" fill="var(--ink-faint)">alias for otlp — via googlecloud exporter</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 4 — observability: one collector, three export surfaces, reaching any scraper, the admin console, and Datadog/New Relic/Grafana Cloud directly, or CloudWatch/Azure Monitor/GCP via a collector — by their real ingest paths, not invented ones.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= ONTOLOGY GENERATION ================= -->
+<section id="ontology-generation" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Ontology generation</div>
+      <h2>The moment you register a backend, ThinkingSense starts learning it</h2>
+    </div>
+    <p class="section-sub">
+      No manual data-dictionary work. Registering a backend triggers auto-onboarding immediately —
+      four independent signal sources build the ontology from what's actually there, not from a
+      schema a human had to describe by hand.
+    </p>
+
+    <div class="grid4">
+      <div class="feature">
+        <div class="num">01 · immediate</div>
+        <h3>Schema metadata</h3>
+        <p>Mechanical, not probabilistic — no LLM call. Every foreign key becomes a relationship; a detected junction table becomes a many-to-many edge. Runs the instant the backend is registered.</p>
+      </div>
+      <div class="feature">
+        <div class="num">02 · async</div>
+        <h3>Row data</h3>
+        <p>Samples actual column values across tables to catch joins no foreign key declares — two columns that share overlapping values are a join candidate, PII-typed columns get flagged for access policy.</p>
+      </div>
+      <div class="feature">
+        <div class="num">03 · continuous</div>
+        <h3>Query logs</h3>
+        <p>Mines the audit log of executed NL2SQL statements — a join pattern analysts actually use repeatedly is stronger evidence than a schema guess, and gets weighted accordingly.</p>
+      </div>
+      <div class="feature">
+        <div class="num">04 · on upload</div>
+        <h3>Policy &amp; reference documents</h3>
+        <p>Extracts computed business terms a schema alone can't express — "revenue" means <code>quantity × price</code>, a credit policy's threshold clause becomes a queryable term.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:6px">
+      <div class="card-head"><div class="card-title">Every candidate lands in a review queue — never straight into production</div></div>
+      <p style="margin:0; font-size:13.6px; color:var(--ink-dim)">
+        None of these four sources write to the live ontology directly. Structural, mechanically-certain
+        candidates (a declared foreign key) can auto-accept; everything inferred — value-overlap joins, mined
+        query patterns, document-derived terms — lands in <b>Ontology review</b> for a human decision.
+        A bad join degrades one answer; a bad access-policy grant is a security decision — this project
+        never lets an inference make that second kind of call on its own.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= WHAT'S INSIDE ================= -->
+<section id="inside" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">What's inside</div>
+      <h2>Four connected layers, each independently opt-in</h2>
+    </div>
+    <p class="section-sub">A deployment that only wants the gateway never has to configure the rest.</p>
+    <div class="grid4">
+      <div class="feature">
+        <div class="num">01</div>
+        <h3>The gateway</h3>
+        <p>Four frontends sharing one pipeline — Oracle, Postgres, MySQL wire, and a native gRPC JDBC driver — plus an MCP frontend so AI agents get the identical firewall/routing/rate-limit path a human session does.</p>
+      </div>
+      <div class="feature">
+        <div class="num">02</div>
+        <h3>Governed evolving ontology</h3>
+        <p>Join keys and entity relationships inferred from real query logs and value overlap — every candidate lands in a reviewable queue, never silently applied to production.</p>
+      </div>
+      <div class="feature">
+        <div class="num">03</div>
+        <h3>Semantic model</h3>
+        <p>NL2SQL with a judge/self-correction pass, federated query planning with real measured per-backend timing, and an automatic Rollup Advisor that suggests pre-aggregations from repeated questions.</p>
+      </div>
+      <div class="feature">
+        <div class="num">04</div>
+        <h3>Admin console</h3>
+        <p>Groups (data-source access boundaries), row/column access control tied to real end-user identity, ontology review, rollups, federation plan history, and a question-activity log spanning every entry point.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONNECTORS ================= -->
+<section id="connectors" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Connectors</div>
+      <h2>65+ data sources, extensible with zero core rebuild</h2>
+    </div>
+    <p class="section-sub">
+      Named JDBC presets for every major database including SAP HANA, real lakehouse table-format
+      readers for Iceberg, Delta Lake, Apache Hudi, and Delta Sharing (the open protocol behind SAP
+      Business Data Cloud and Databricks Marketplace — schema evolution, partition pruning, and
+      snapshot metadata, not just flat files), NoSQL connectors for MongoDB/Cassandra/DynamoDB, a
+      real bounded-snapshot Kafka connector, a generic REST connector that reaches any authenticated
+      JSON API, object-storage connectors for S3/Azure Blob, and a dynamic
+      <code>ConnectorProvider</code> SPI — drop a connector JAR in a directory, no restart, no
+      rebuild, to register a new source.
+    </p>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:12px">Databases — named JDBC presets, cost-based federated planning</h3>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#c74634">OR</div><div class="conn-label">Oracle</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#336791">PG</div><div class="conn-label">Postgres</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#00758f">My</div><div class="conn-label">MySQL / MariaDB</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#cc2927">MS</div><div class="conn-label">SQL Server</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#29b5e8">SF</div><div class="conn-label">Snowflake</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#8c4fff">RS</div><div class="conn-label">Redshift</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#4285f4">BQ</div><div class="conn-label">BigQuery</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#ff3621">DB</div><div class="conn-label">Databricks</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#527fff">AU</div><div class="conn-label">Aurora</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#669df6">AD</div><div class="conn-label">AlloyDB</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#3ecf8e">SB</div><div class="conn-label">Supabase</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#ffcc01;color:#1c2b4a">CH</div><div class="conn-label">ClickHouse</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#6933ff">CR</div><div class="conn-label">CockroachDB</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#003b57">Sq</div><div class="conn-label">SQLite</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#2a2a2a">Dr</div><div class="conn-label">Druid</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#3b6cf6">Pn</div><div class="conn-label">Pinot</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#054ada">Db</div><div class="conn-label">IBM Db2</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0091da">Vt</div><div class="conn-label">Vertica</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#aa00ff">Ss</div><div class="conn-label">SingleStore</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0faaff">HA</div><div class="conn-label">SAP HANA</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">Lakehouse table formats — real schema evolution and partition pruning, not flat files</h3>
+    <p style="font-size:12.6px; color:var(--ink-faint); margin-bottom:12px">Beyond flat Parquet/CSV objects: real table metadata, snapshots, and schema evolution, read directly — no separate query engine required.</p>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#0b6cb3">Ic</div><div class="conn-label">Apache Iceberg</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#00add4">De</div><div class="conn-label">Delta Lake</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#c62a88">Hu</div><div class="conn-label">Apache Hudi</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#00294d">DS</div><div class="conn-label">Delta Sharing</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">NoSQL &amp; document stores</h3>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#00684a">Mo</div><div class="conn-label">MongoDB</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#1287b1">Ca</div><div class="conn-label">Cassandra</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#4053d6">Dy</div><div class="conn-label">DynamoDB</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">Streaming</h3>
+    <p style="font-size:12.6px; color:var(--ink-faint); margin-bottom:12px">A real bounded-snapshot scan per query — each partition's watermark captured once, same semantics Trino's own Kafka connector uses.</p>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#000000">Ka</div><div class="conn-label">Apache Kafka</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:6px">SaaS &amp; productivity — via the generic REST connector</h3>
+    <p style="font-size:12.6px; color:var(--ink-faint); margin-bottom:12px">One connector reaches any authenticated JSON API — these are real, working examples, not a fixed list.</p>
+    <div class="conn-grid" style="margin-bottom:32px">
+      <div class="conn-tile"><div class="conn-badge" style="background:#00a1e0">SF</div><div class="conn-label">Salesforce</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#ff7a59">Hu</div><div class="conn-label">HubSpot</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#62d84e">SN</div><div class="conn-label">ServiceNow</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#4a154b">Sl</div><div class="conn-label">Slack</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#181717">Gh</div><div class="conn-label">GitHub</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0078d4">Sp</div><div class="conn-label">SharePoint</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#000000">No</div><div class="conn-label">Notion</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#fcb400;color:#1c2b4a">At</div><div class="conn-label">Airtable</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0079bf">Tr</div><div class="conn-label">Trello</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#f06a6a">As</div><div class="conn-label">Asana</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0052cc">Ji</div><div class="conn-label">Jira</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#2684ff">Co</div><div class="conn-label">Confluence</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#003d2b">NS</div><div class="conn-label">NetSuite</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#c74634">OF</div><div class="conn-label">Oracle Fusion Apps</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#03363d">Ze</div><div class="conn-label">Zendesk</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#95bf47">Sh</div><div class="conn-label">Shopify</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#635bff">St</div><div class="conn-label">Stripe</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#5865f2">Di</div><div class="conn-label">Discord</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#ff0000">Yt</div><div class="conn-label">YouTube</div></div>
+      <div class="conn-tile ghost"><div class="conn-badge" style="background:var(--rule-strong);color:var(--ink-dim)">+</div><div class="conn-label">any REST API</div></div>
+    </div>
+
+    <h3 style="font-family:'Inter'; font-size:14.5px; margin-bottom:12px">Storage &amp; custom sources</h3>
+    <div class="conn-grid">
+      <div class="conn-tile"><div class="conn-badge" style="background:#ff9900">S3</div><div class="conn-label">Amazon S3</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#c9a227">S3</div><div class="conn-label">S3-compatible</div></div>
+      <div class="conn-tile"><div class="conn-badge" style="background:#0078d4">Az</div><div class="conn-label">Azure Blob</div></div>
+      <div class="conn-tile ghost"><div class="conn-badge" style="background:var(--purple);color:#fff">+</div><div class="conn-label">custom via SDK</div></div>
+    </div>
+
+    <div class="problem-callout" style="margin-top:32px">
+      <div class="pc-label">Don't see your source? Add it — no core rebuild</div>
+      <p>Every connector above ships with the product. When one genuinely doesn't exist yet, a
+        <code class="mono" style="font-size:12.6px">ConnectorProvider</code> implementation dropped
+        into a directory (<code class="mono" style="font-size:12.6px">OMNIGATE_CONNECTORS_DIR</code>)
+        is picked up at startup with no ThinkingSense rebuild and no core product change — the same
+        mechanism the built-in connectors themselves are written against, not a separate, lesser
+        extension API.</p>
+      <p>Honestly scoped: this is a real engineering task — implement a small interface, package it
+        as a jar — for your own team or a partner, not a no-code upload button in the admin console.
+        For most new sources, the generic REST connector already reaches them with zero code at all;
+        this path exists for the genuine exceptions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IT-RISK WORKFLOW EXAMPLE ================= -->
+<section id="it-risk-workflow" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">From answer to action · IT and operational risk</div>
+      <h2>Ask a question. Take an informed action.</h2>
+    </div>
+    <p class="section-sub">
+      A risk team's data sits in more than one system: incidents, services and the risk register in one database, vendors and
+      vulnerabilities in another. ThinkingSense reads both where they are, applies each person's access, and carries the answer into a
+      governed workflow. A person decides, and every step is recorded. Nothing is copied into a new store.
+    </p>
+
+    <div class="wf">
+      <p class="wf-q">"Which tier-1 services have both an open critical vulnerability and an outage in the last 90 days?"</p>
+      <div class="wf-who">
+        <span class="sys-pill">Postgres · services, applications, incidents, risk register</span>
+        <span class="sys-pill">MariaDB · vendors, vulnerabilities</span>
+      </div>
+      <ol class="wf-steps">
+        <li><span class="wf-n">1</span><div>
+          <h4>Ask in plain language</h4>
+          <p>One question, answered by a single query that joins the two systems at the time you ask. It runs with your permissions, so you see only what you are allowed to see.</p>
+          <div class="wf-facts"><span class="wf-fact"><b>Payments Processing</b> · 2 critical open · 178 min of outage</span><span class="wf-fact"><b>Online Banking</b> · 1 · 238 min</span><span class="wf-fact"><b>Treasury Management</b> · 1 · 79 min</span></div>
+        </div></li>
+        <li><span class="wf-n">2</span><div>
+          <h4>Gather the evidence for one service</h4>
+          <p>Pick Treasury Management and the workflow collects the facts from both sources, with the source named beside each.</p>
+          <div class="wf-facts"><span class="wf-fact"><b>Vulnerability</b> · CVE-2026-0871, CVSS 9.9, 56 days past its patch deadline</span><span class="wf-fact"><b>Vendor</b> · Helix Treasury Software, tier 1, last assessed 520 days ago, rated High</span><span class="wf-fact"><b>Outage</b> · 64 minutes against a 45-minute recovery objective</span><span class="wf-fact"><b>Revenue at risk</b> · about $341,000 at $320,000 an hour</span><span class="wf-fact"><b>Open risk</b> · "Treasury software vendor not assessed in over a year"</span></div>
+        </div></li>
+        <li><span class="wf-n">3</span><div>
+          <h4>Check it against your rules</h4>
+          <p>Fixed rules decide what is allowed, not the model: critical and overdue, vendor assessment older than 12 months, outage longer than the recovery objective. Each rule shows whether it held.</p>
+        </div></li>
+        <li><span class="wf-n">4</span><div>
+          <h4>Recommend, within the allowed actions</h4>
+          <p>The model proposes an action, such as raising a remediation exception with the vendor owner and bringing the vendor assessment forward. It can only choose from the actions your policy permits, and it explains why.</p>
+        </div></li>
+        <li><span class="wf-n">5</span><div>
+          <h4>A person approves</h4>
+          <p>The approval is tied to the exact facts shown. The person who started the workflow cannot approve it, and an AI identity cannot approve at all. Above a limit, two approvers are required.</p>
+        </div></li>
+        <li><span class="wf-n">6</span><div>
+          <h4>Act, and keep the record</h4>
+          <p>The action is sent to the system that owns it, or shown as a dry run first. Every step is written to a tamper-evident decision record you can check later.</p>
+        </div></li>
+      </ol>
+      <p class="wf-note"><b>About this example.</b> The data is invented and the figures come from the IT and operational risk sample set, so the dates move with the day it is loaded. The workflow is the product's workflow API (commercial edition): rules, a recommendation limited to the allowed actions, named approvers and a hash-chained record. The IT-risk definition is built and unit-tested; the figures here were worked out from the sample data, not taken from a recorded run, and the final step is a dry run because the demo has no ticketing tool connected.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAPABILITIES / WHAT'S NEW ================= -->
+<section id="capabilities" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The product model</div>
+      <h2>Ask → Analyze → Monitor → Act — governed end to end</h2>
+    </div>
+    <p class="section-sub">Every capability below is a working part of <a href="demo.html" target="_blank">demo.html</a>: context checks before an answer, live charts instead of static numbers, and admin surfaces for the parts of the product that make answers trustworthy in the first place.</p>
+
+    <div class="model-strip">
+      <div class="model-step"><div class="model-num">1 · Ask</div><h4>Ask</h4><p>A question in plain language, across every connected system — one governed, sourced answer back.</p></div>
+      <div class="model-arrow">→</div>
+      <div class="model-step"><div class="model-num">2 · Analyze</div><h4>Analyze</h4><p>Go deeper on that answer — a real query console, PDF extraction, evaluation runs, domain health.</p></div>
+      <div class="model-arrow">→</div>
+      <div class="model-step"><div class="model-num">3 · Monitor</div><h4>Monitor</h4><p>Turn an answer into an ongoing view — live dashboards, shared links, dashboard-to-chat and back.</p></div>
+      <div class="model-arrow">→</div>
+      <div class="model-step"><div class="model-num">4 · Act</div><h4>Act</h4><p>Automate the response — scheduled agents that run on a trigger, deliver, and get reviewed.</p></div>
+    </div>
+    <div class="model-governed"><b>Governed end to end</b> — access control, sensitivity classification, and an audit trail enforced at every step above, not bolted on after.</div>
+
+    <nav class="capjump" aria-label="Jump to a capability group">
+      <a href="#cap-ask" onclick="document.getElementById('cap-ask').classList.add('open')">Ask</a>
+      <a href="#cap-analyze" onclick="document.getElementById('cap-analyze').classList.add('open')">Analyze</a>
+      <a href="#cap-monitor" onclick="document.getElementById('cap-monitor').classList.add('open')">Monitor</a>
+      <a href="#cap-act" onclick="document.getElementById('cap-act').classList.add('open')">Act</a>
+      <a href="#cap-governed" onclick="document.getElementById('cap-governed').classList.add('open')">Govern</a>
+    </nav>
+
+    <div class="capgroup open" id="cap-ask">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Ask <span class="n">14</span><span class="chev">&#9656;</span></button>
+      <div class="grid4">
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Free-text Ask</h3>
+          <p>Type any question instead of only clicking a preset chip — matched against the demo's own scenarios by keyword overlap, with an honest "not covered by this demo" fallback rather than a fabricated answer.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Context checks &amp; validated answers</h3>
+          <p>Every answer runs through five visible checks — entity/metric resolution, access, routing, conflict detection, validation — before a <b>Validated</b> badge appears, mirroring how governed-analytics tools show their work instead of just a number.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Chart engine</h3>
+          <p>Gradient bar charts, a smooth cubic-bezier trend/area view, and a table view — with grid lines, animated draw-in, value labels, and hover tooltips. Heterogeneous KPIs are chart-scaled honestly, never silently misleading.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>AI Workstream &amp; command palette</h3>
+          <p>"View workstream" opens the generated SQL, checks, and backends touched for any answer. <kbd>⌘K</kbd> / <kbd>Ctrl K</kbd> jumps to any admin view, team, or question from anywhere.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Skills</div>
+          <h3>Reusable admin-authored skills</h3>
+          <p>Admins define a name, trigger description, and instructions once; business users invoke it with <code class="mono">/skill-name</code> or it loads automatically when a question matches its trigger — full CRUD in the admin console.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Prompt templates</h3>
+          <p>Reusable question phrasings, lighter than a Skill — no matching logic, just a starting shape with <code class="mono">{placeholder}</code>s the user fills in themselves, never auto-filled.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Knowledge signals from chat</h3>
+          <p>"Extract knowledge from this conversation" surfaces a candidate fact grounded in what an answer already states — reviewed and accepted in admin, then visible per-answer via a new "Knowledge" button.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Slack</div>
+          <h3>Data query on Slack</h3>
+          <p>Link a channel to a group's data area, then anyone in it can ask by mentioning ThinkingSense — the answer posts as a thread so the channel stays clean, with the same access control as Ask.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Deep Analysis</div>
+          <h3>Plan, approve, then investigate</h3>
+          <p>A toggle in Ask switches from the fast path to a proposed investigation plan you approve before it runs — producing a full report with an executive summary, key findings, visualizations, and a suggested next step.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Ghost-text autocomplete</h3>
+          <p>Typing a prefix of a known question shows the rest greyed out inline — <kbd>Tab</kbd> to accept.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Auto-detect group</h3>
+          <p>A toggle that searches across every team's questions instead of just the current one, and switches your active group automatically when a question matches a different team's.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Web search fallback</h3>
+          <p>When nothing internal matches, an honest toggle explains this demo has no live web connector — never a fabricated external-results answer blended in as if it were internal data.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>File attachments</h3>
+          <p>A paperclip button attaches a CSV/TXT/XLSX file, shown as a chip in the composer and carried into the sent message.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Ask</div>
+          <h3>Request help from admin</h3>
+          <p>A "🆘 Ask an admin for help" button opens a message form landing in a dedicated admin view — distinct from 👎 feedback: "I'm stuck," not "this answer was wrong."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="capgroup" id="cap-analyze">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Analyze <span class="n">7</span><span class="chev">&#9656;</span></button>
+      <div class="grid4">
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>SQL Playground &amp; Evaluation</h3>
+          <p>A manual query console against any registered backend, plus prompt sets with expected SQL and scored run history — the admin-facing counterpart to this project's own internal NL2SQL eval suite.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>Context builder</h3>
+          <p>Upload a document once and it becomes part of a group's <b>permanent</b> knowledge base — different from a chat attachment, which only applies to that one message.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>Reviewed queries</h3>
+          <p>Every question shown as an NL ↔ SQL pair, mark/unmark reviewed, plus a CSV import — the admin surface for this project's own <code class="mono">QuestionBankGenerator</code>.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>Negative feedback monitor</h3>
+          <p>A 👎 plus a tag in Ask now records a real, resolvable entry — question, group, tag, timestamp — in one aggregated admin view, not just a toast that vanishes.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>Domain health</h3>
+          <p>A composite 0-100 score per group from live counts — ontology backlog, open negative feedback, rollup coverage, skills defined — not a fabricated number.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>Knowledge playground</h3>
+          <p>An isolated draft → refine → run workspace for turning a question into a trusted query — "Mark as reviewed" writes into the same store Reviewed queries reads from, not a disconnected mock.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Explore</div>
+          <h3>PDF Extract</h3>
+          <p>Reconciles POs stored as PDF/OCR in S3 against SAP via a working <code class="mono">PDF_EXTRACT()</code> table function — every value is independently checked against the document's own text before a join is allowed to trust it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="capgroup" id="cap-monitor">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Monitor <span class="n">7</span><span class="chev">&#9656;</span></button>
+      <div class="grid4">
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>Pin any answer to a dashboard</h3>
+          <p>"+ Add to dashboard" on any chat answer creates a live widget using the same chart engine — an actual chat-answer-to-dashboard round trip, not a mockup screenshot.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>Share with pre-auth &amp; authenticated links</h3>
+          <p>Share to specific people, your org, or just yourself, with two distinct link types: an authenticated link that honors each viewer's own row/column-level security, and a pre-auth link safe to hand outside the org — both served from a pre-computed Rollup snapshot, not a live re-query.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>Tabs &amp; instant filters</h3>
+          <p>Organize widgets into named tabs (move any widget between them), and filter what's visible by group with no re-query — the same "no live re-query" posture as sharing.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>Version history</h3>
+          <p>"Save version" snapshots the full dashboard and its tabs with a label and timestamp; "Version history" lists and restores any saved version.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>Dual-axis charts</h3>
+          <p>A new chart mode — left axis is each KPI's raw, unscaled value (bars); right axis is a 0-100 relative index (line) — two axes because the units genuinely differ, not for decoration.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>DashChat</h3>
+          <p>An "Ask this dashboard" box scoped by the instant filter, producing an inline result with a one-click "Pin to tab" — the dashboard-to-chat direction, not just chat-to-dashboard.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dashboards</div>
+          <h3>MCP-sourced widgets</h3>
+          <p>Question activity rows that came from Claude via MCP get a "+ Pin" action too — the resulting widget carries a visible "via MCP" badge, not just internal Ask answers.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="capgroup" id="cap-act">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Act <span class="n">4</span><span class="chev">&#9656;</span></button>
+      <div class="grid4">
+        <div class="feature">
+          <div class="num">Agents</div>
+          <h3>Scheduled agents</h3>
+          <p>A running-agents table plus a read-only node-graph preview (Schedule → Data → Summary → Email) — the same trigger/data/reasoning/delivery node shape as production workflow builders.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Agents</div>
+          <h3>Parameterized runs</h3>
+          <p>"Run with parameters" on an agent produces a one-off preview using the same chart engine — labeled honestly when this demo has no backend to actually segment by the chosen parameters.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Agents</div>
+          <h3>Full agent CRUD</h3>
+          <p>Add/edit/delete agent definitions — name, trigger, delivery, group — the same admin pattern already established for Skills and Prompt templates.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Agents</div>
+          <h3>Reviewed runs</h3>
+          <p>Approve or flag an agent's individual past runs to vouch for that exact output — distinct from a one-off parameterized preview, this is trust in a specific, already-delivered result.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="capgroup" id="cap-governed">
+      <button type="button" class="capgroup-head" onclick="this.parentElement.classList.toggle('open')">Govern <span class="n">8</span><span class="chev">&#9656;</span></button>
+      <div class="grid4">
+        <div class="feature">
+          <div class="num">Security</div>
+          <h3>Row &amp; column-level security</h3>
+          <p>Per-table policies using <code class="mono">USER_ATTRIBUTE()</code>-style conditions, enforced by rewriting SQL before it reaches the backend — configured per group in Users &amp; access, not bolted on after the fact.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Security</div>
+          <h3>Sensitivity-gated sharing approval</h3>
+          <p>Every source is classified L0 (Public) through L4 (Highly Restricted); sharing a dashboard that touches a sensitive one is blocked behind an approval DAG — Data owner, Manager, and Security &amp; Privacy as the classification escalates — with a timestamped audit trail, not just a label.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Security</div>
+          <h3>Explorer &amp; Observer roles</h3>
+          <p>A "Viewing as" selector that actually gates the UI — Observer hides Skills/Templates entirely, Explorer keeps them but can't reach Admin console.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Security</div>
+          <h3>Limited context</h3>
+          <p>A safety knob separate from RLS — Full context / Schema only / Metadata only — restricting what the AI can even see for a group, not which rows come back.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Security</div>
+          <h3>User attributes editor</h3>
+          <p>The key/value pairs an RLS policy's <code class="mono">USER_ATTRIBUTE('desk')</code> reads from — previously only implied in policy text, now an editable table per user.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dev</div>
+          <h3>Multi-org</h3>
+          <p>An org switcher in the topbar plus an Organizations admin view — plan, seats, created date, and a "Current" badge that follows whichever org is active.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dev</div>
+          <h3>API keys &amp; embedding</h3>
+          <p>Generate/revoke API keys, and embed snippets for both an <code class="mono">&lt;iframe&gt;</code> and the <code class="mono">@thinkingsense/react</code> SDK — the two ways this would actually get embedded in another product.</p>
+        </div>
+        <div class="feature">
+          <div class="num">Dev</div>
+          <h3>SSO &amp; SCIM provisioning</h3>
+          <p>Require-SSO toggle, an SSO-group-to-ThinkingSense-group mapping table, and a SCIM base URL — new members provisioned into their mapped group automatically on next login.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= DEMO ================= -->
+<section id="demo" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Live demo</div>
+      <h2>Click through the admin console yourself</h2>
+    </div>
+    <p class="section-sub">
+      A scripted, self-contained mockup — no server behind it — covering the full admin console
+      (data-source groups, LLM settings, Skills, Slack, RLS/CLS policies, ontology review, rollups,
+      federation plans, SQL Playground, Evaluation, Agents, and Developers/embedding) plus a live
+      Ask experience with live charts, Deep Analysis, and Dashboards — see
+      <a href="#capabilities">What's new</a> for the full list.
+    </p>
+    <div class="demo-frame-wrap">
+      <div class="demo-frame-bar">
+        <span class="dots"><span></span><span></span><span></span></span>
+        demo.html — click-through prototype
+        <a class="btn small" style="margin-left:auto" href="demo.html" target="_blank">Open full-screen ↗</a>
+      </div>
+      <iframe class="demo" src="demo.html" title="ThinkingSense admin console click-through demo" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOCS / SETUP ================= -->
+<section id="docs" class="rule-top">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Docs &amp; setup</div>
+      <h2>Running in under five minutes</h2>
+    </div>
+    <p class="section-sub">ThinkingSense's source is proprietary — the free edition ships as a ready-to-run Docker image, no source access required. <a href="mailto:hello@thinkingsense.ai">Contact us</a> for a commercial license and full source/docs access.</p>
+
+    <div class="docs-grid">
+      <div>
+        <div class="step">
+          <div class="num">1</div>
+          <div><div class="t">Get the free-edition image</div><div class="d">Public build recipe — Docker Compose brings up ThinkingSense and a demo Postgres together.</div></div>
+        </div>
+        <pre class="code"><span class="k">git clone</span> https://github.com/thinkingsense-ai/Docker.git
+<span class="k">cd</span> Docker
+docker compose up --build</pre>
+
+        <div class="step" style="margin-top:26px">
+          <div class="num">2</div>
+          <div><div class="t">Open the console</div><div class="d">Same container, same port by default, for both surfaces.</div></div>
+        </div>
+        <pre class="code"><span class="c"># admin console</span>
+open http://localhost:8080/admin
+<span class="c"># business-user Ask app</span>
+open http://localhost:8080/</pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">
+          Want them on separate ports instead — e.g. to expose the Ask app publicly while keeping
+          the admin console internal-only? Set <code>OMNIGATE_ASK_PORT</code> (e.g. <code>8081</code>)
+          alongside <code>OMNIGATE_HTTP_PORT</code>. It's a hard split: once set, the admin port
+          stops serving Ask-app routes and the Ask port stops serving admin routes. Leave it unset
+          to keep the single-port default above.
+        </p>
+
+        <div class="step" style="margin-top:26px">
+          <div class="num">3</div>
+          <div><div class="t">Connect like it's a genuine Postgres</div><div class="d">Because, on the wire, it is one.</div></div>
+        </div>
+        <pre class="code">psql -h localhost -p 5433 -U myuser -d mydb</pre>
+      </div>
+
+      <div>
+        <div class="step">
+          <div class="num">4</div>
+          <div><div class="t">Point at your own backend</div><div class="d">Minimal single-backend run — proxy Postgres wire traffic straight through to an actual database.</div></div>
+        </div>
+        <pre class="code"><span class="k">export</span> OMNIGATE_BACKENDS=<span class="s">"primary=jdbc:postgresql://host:5432/mydb|user|pass"</span></pre>
+        <p style="font-size:13px; color:var(--ink-faint); margin-top:10px">
+          Set this as an environment variable on the <code>omnigate</code> service in
+          <code>docker-compose.yml</code> before <code>docker compose up --build</code>.
+        </p>
+
+        <div class="step" style="margin-top:26px">
+          <div class="num">5</div>
+          <div><div class="t">Key configuration</div><div class="d">Everything else is additive — set only what you need.</div></div>
+        </div>
+        <div class="table-scroll">
+        <table class="cfg-table">
+          <thead><tr><th>Variable</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td>OMNIGATE_BACKENDS</td><td>Named backend connections, <code>name=jdbcUrl|user|pass</code>, semicolon-separated.</td></tr>
+            <tr><td>OMNIGATE_ROUTER_SCHEMA_RULES</td><td>Schema-prefix → backend routing, and what triggers federation across 2+ backends.</td></tr>
+            <tr><td>OMNIGATE_LLM_API_KEY</td><td>Enables NL2SQL generation via an external provider (or run fully local via a bundled llama-server).</td></tr>
+            <tr><td>OMNIGATE_STATS_REFRESH_INTERVAL_MINUTES</td><td>Turns on statistics collection that feeds cost-based federated planning.</td></tr>
+            <tr><td>OMNIGATE_SQL_PLAN_HISTORY_SIZE</td><td>Turns on Federation Plans — measured per-backend leaf-scan timing.</td></tr>
+            <tr><td>OMNIGATE_CONNECTORS_DIR</td><td>Drop-in directory for dynamically-loaded connector JARs — new sources with zero core rebuild.</td></tr>
+            <tr><td>OMNIGATE_ASK_PORT</td><td>Serves the Ask app on its own port, hard-split from the admin console (see step 2).</td></tr>
+            <tr><td>OMNIGATE_APP_USERS</td><td>Business-user accounts for the Ask app (distinct from admin login).</td></tr>
+            <tr><td>OMNIGATE_INSIGHTS_INTERVAL_MINUTES</td><td>Turns on Proactive Insights — scheduled re-checks of approved questions, flags material changes.</td></tr>
+            <tr><td>OMNIGATE_SLACK_WEBHOOK_URL</td><td>Sends Proactive Insights findings to a Slack channel.</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:36px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+      <div>
+        <b>Want it running in the cloud instead of on your own machine?</b><br>
+        A one-click stack brings up a right-sized cluster, Postgres, and ThinkingSense — no local tools required.
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn small primary" href="deploy-oci.html">Deploy to Oracle Cloud →</a>
+        <a class="btn small primary" href="deploy-aws.html">Deploy to AWS →</a>
+        <a class="btn small primary" href="deploy-azure.html">Deploy to Azure →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px">
+          <span class="mark" aria-hidden="true"></span><span>thinking sense</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The technical guide, one level below <a href="https://thinkingsense.ai">thinkingsense.ai</a>. How each part works, what you configure, and how to run it.</p>
+      </div>
+      <div>
+        <h4>The three parts</h4>
+        <ul>
+          <li><a href="ontology.html">Ontology &amp; knowledge graph</a></li>
+          <li><a href="agents.html">Governed agents</a></li>
+          <li><a href="models.html">Small-model tuning</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Trust</h4>
+        <ul>
+          <li><a href="security.html">Security</a></li>
+          <li><a href="evidence.html">Evidence</a></li>
+          <li><a href="platform.html#architecture">Architecture</a></li>
+          <li><a href="platform.html#connectors">Connectors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get it</h4>
+        <ul>
+          <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
+          <li><a href="deploy-oci.html">Deploy to Oracle Cloud</a></li>
+          <li><a href="deploy-aws.html">Deploy to AWS</a></li>
+          <li><a href="deploy-azure.html">Deploy to Azure</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image is publicly available — see the Docker repo for its terms.</div>
+  </div>
+</footer>
+
+</body>
+</html>
