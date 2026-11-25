@@ -470,9 +470,9 @@
 
 <section id="measure" class="rule-top">
   <div class="wrap">
-    <div class="section-head"><div class="kicker">Method</div><h2>Three measures, and why only one counts</h2></div>
-    
-    <div class="grid3"><div class="feature"><div class="num">01</div><h3>The query ran</h3><p>The weakest signal. A wrong answer can run perfectly. We do not call this a pass.</p></div><div class="feature"><div class="num">02</div><h3>It returned rows</h3><p>Better, but an unfiltered or wrongly joined query also returns rows.</p></div><div class="feature"><div class="num">03</div><h3>It matches the reference</h3><p>Result rows compared with a known-good query, never the SQL text. Numbers are rounded to two decimals and column order is ignored. This is the one that counts.</p></div></div><p style="margin-top:18px;max-width:72ch" class="section-sub">Right rows with fewer columns than the reference are tracked as a diagnostic and are not a pass. When the reference needs columns a question never asked for, the semantic layer supplies them. The scorer is not loosened to hide that.</p>
+    <div class="section-head"><div class="kicker">Method</div><h2>How a pilot scores an answer</h2></div>
+    <p class="section-sub">Three things can be measured about a generated query. In a pilot on your own workflow, only the third counts as a pass. The published benchmark counts below describe that benchmark's own setup; the <a href="https://www.thinkingsense.ai/labs">methodology in ThinkingSense Labs</a> says how they were scored.</p>
+    <div class="grid3"><div class="feature"><div class="num">01</div><h3>The query ran</h3><p>The weakest signal. A wrong answer can run perfectly. In a pilot this is not a pass.</p></div><div class="feature"><div class="num">02</div><h3>It returned rows</h3><p>Better, but an unfiltered or wrongly joined query also returns rows.</p></div><div class="feature"><div class="num">03</div><h3>It matches the reference</h3><p>Result rows compared with a known-good query, never the SQL text. Numbers are rounded to two decimals and column order is ignored. This is the pilot pass.</p></div></div><p style="margin-top:18px;max-width:72ch" class="section-sub">Right rows with fewer columns than the reference are tracked as a diagnostic and are not a pilot pass. When the reference needs columns a question never asked for, the semantic layer supplies them. The scorer is not loosened to hide that.</p>
   </div>
 </section>
 
