@@ -298,7 +298,7 @@
     </div>
     <p class="section-sub">The choice is the <b>Demo data</b> setting on the AWS, Oracle Cloud and Azure forms, and <code>demo_dataset</code> on Google Cloud.
       The sets replace each other (the free edition allows three data sources), and the choice is read on a fresh install only, so changing it later does not reseed.
-      <b>Supply chain</b> is the default.</p>
+      <b>All packs</b> is the default on AWS; pick one pack on the form if you want a lighter start.</p>
     <div class="table-scroll">
       <table class="cfg-table">
         <tr><th>Setting</th><th>What it is</th><th>Where the data lives</th><th>Questions</th></tr>
@@ -322,7 +322,7 @@
 
     <div class="pack">
       <h3>Supply chain</h3>
-      <p class="tag">The default · suppliers, inventory and procurement as three separate sources</p>
+      <p class="tag"><code>supply-chain</code> · suppliers, inventory and procurement as three separate sources</p>
       <p>A small manufacturer's suppliers, warehouse stock, purchase orders and shipments. Three of these five questions read across two or three of the sources; the other two stay in one.</p>
       <ul class="qs"><li>Which suppliers do we hold the most stock from?</li><li>How many units are on order from suppliers in each region?</li><li>Which in-transit purchase orders arrive first, and from which supplier and carrier?</li><li>How many shipments does each carrier have?</li><li>How much stock is in each warehouse?</li></ul>
       <p class="shows"><b>Shows:</b> a plain-English question answered across several sources, with the sources and checks listed under the answer.</p>
@@ -362,6 +362,23 @@
   </div>
 </section>
 
+<section class="rule-top" id="first">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">If you just installed it</div>
+      <h2>Your first ten minutes</h2>
+    </div>
+    <div class="steps">
+      <div class="stepcard"><div class="n">1</div><div><h3>Open the Ask app and sign in</h3><p>Use the address from your deployment's outputs (<code>AskAppUrl</code> on AWS) and the login you chose at deploy time. Your browser will warn about the certificate the first time, because the stack makes its own; continue past it.</p></div></div>
+      <div class="stepcard"><div class="n">2</div><div><h3>Pick a pack</h3><p>With all packs installed, each pack is a Workspace you choose from the picker: supply chain, manufacturing, IT and operational risk, BOM, Treasury and the Smithsonian sample. The Workspace decides which data a question can use.</p></div></div>
+      <div class="stepcard"><div class="n">3</div><div><h3>Click an approved question</h3><p>Approved questions are written once and checked against the data, so they are the dependable way to see what the product does. The answer shows the rows, a chart where one fits, and the sources and checks used, listed under it.</p></div></div>
+      <div class="stepcard"><div class="n">4</div><div><h3>Try a question that reads two systems</h3><p>In Treasury, ask which payments waiting for approval are for invoices that are on hold. It joins a Postgres database to the ERP in MariaDB, which a single-database tool cannot do.</p></div></div>
+      <div class="stepcard"><div class="n">5</div><div><h3>Then ask in your own words</h3><p>This is written by the model each time, and on the multi-table packs it is less reliable than an approved question. It needs the Anthropic API key you gave at deploy time. It is the fair way to see how far it gets.</p></div></div>
+      <div class="stepcard"><div class="n">6</div><div><h3>Look behind the answer</h3><p>Sign in to the admin console at <code>/admin</code> on the same address with the admin login: data sources, the approved-question bank and the ontology live there. Every record is invented, so nothing you do can touch real data.</p></div></div>
+    </div>
+  </div>
+</section>
+
 <section class="rule-top" id="asking">
   <div class="wrap">
     <div class="section-head">
@@ -374,6 +391,44 @@
     <div class="callout">
       <b>Your own wording is a different story.</b> A question that is not an approved one is written by the model each time, and on these multi-table sets it is noticeably less reliable than an approved question, with answers that are sometimes wrong or declined.
       Treat approved questions as the dependable demonstration and free-form questions as a way to see how far it gets. Measured results for each set are in the READMEs linked below.
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="agency">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Optional</div>
+      <h2>Agency: risk management on the same data</h2>
+    </div>
+    <p class="section-sub">Agency is a second front end beside the Ask app, with its own address and the same logins. Turn it on in the deploy form (<b>Install Agency beside the Ask app</b>). It adds the IT-risk investigation data and needs about 1 GiB more memory, so use nodes of 8 GiB or more.</p>
+    <ul class="qs" style="max-width:760px">
+      <li><b>Watch</b> lists events in the news under review (an outage, a breach, a claim that AI was behind it). An optional pod reads 12 public feeds every 30 minutes; it keeps headlines and links only.</li>
+      <li><b>Exposure</b> asks five questions of a simulated company estate and gives one rating: Low, Medium, High or Critical, naming the questions that set it.</li>
+      <li><b>Priorities</b> ranks the estate's systems by that rating and the reasons, and <b>Notifications</b> shows regulator deadlines once a person has recorded that an incident is major. Nothing is ever sent to a regulator.</li>
+      <li><b>Problem records</b> trace an incident from symptom to cause, grading each link by its evidence, and a read-only <b>Quickstart tour</b> walks through it.</li>
+    </ul>
+    <div class="callout" style="margin-top:18px">
+      <b>Workflows.</b> Sending a record for approval, the approvals inbox and the audit view run on the workflow API, which is part of the commercial edition at present. In the free edition you can read everything above but not start or approve a run. Write-back is always a dry run: nothing is sent to a real system.
+    </div>
+  </div>
+</section>
+
+<section class="rule-top" id="editions">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Free and commercial</div>
+      <h2>What the free edition includes</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="cfg-table">
+        <tr><th></th><th>Free edition</th><th>Commercial edition</th></tr>
+        <tr><td>The six packs and their approved questions</td><td>Yes, all together</td><td>Yes</td></tr>
+        <tr><td>Data sources</td><td>Up to three</td><td>More, by licence</td></tr>
+        <tr><td>Agency screens (Watch, Exposure, Priorities, Notifications, problem records)</td><td>Yes, read only</td><td>Yes</td></tr>
+        <tr><td>Approval workflows and the audit view</td><td>Not yet</td><td>Yes</td></tr>
+        <tr><td>Your own data and questions</td><td>Yes, within the source limit</td><td>Yes</td></tr>
+      </table>
     </div>
   </div>
 </section>

@@ -351,11 +351,16 @@
       </div>
     </div>
     <div class="callout" style="margin-top:22px">
-      <b>Choose the demo data.</b> A new install is seeded with an invented supply-chain data set by default. To start with another, set the <b>Demo data</b> choice in the Resource Manager wizard:
-      <code>it-risk</code> (IT and operational risk at a financial firm), <code>bom</code> (manufacturing bill of materials and sourcing),
-      <code>treasury</code> (cash, payables, hedges and debt across two systems), or <code>all-packs</code> (every pack at once, with a picker in the Ask app).
-      Each comes with approved questions to try. The choice is read on a fresh install only, so changing it later does not reseed; all-packs is the heaviest and needs the most memory (on AWS the default node size ran it, with little headroom).
-      All of the data is invented. <a href="demo-data.html">See what is in each set, with example questions.</a>
+      <b>Choose the demo data.</b> A new install is seeded with <code>all-packs</code> by default: every pack at once (supply chain, manufacturing, IT and operational risk, BOM, Treasury and the Smithsonian sample), with a picker in the Ask app. To start with just one, set the <b>Demo data</b> choice in the Resource Manager wizard:
+      <code>supply-chain</code>, <code>it-risk</code> (IT and operational risk at a financial firm), <code>bom</code> (manufacturing bill of materials and sourcing) or
+      <code>treasury</code> (cash, payables, hedges and debt across two systems).
+      Each comes with approved questions to try. The choice is read on a fresh install only, so changing it later does not reseed; all-packs is the heaviest and needs the most memory and outbound access to GitHub and Hugging Face (on AWS the default node size ran it, with little headroom; it has not yet been run on Oracle Cloud as the default).
+      All of the data is invented. <a href="demo-data.html">See what is in each set, with example questions and a first-ten-minutes walkthrough.</a>
+    </div>
+    <div class="callout" style="margin-top:22px">
+      <b>Add Agency (optional).</b> Tick <b>Install Agency beside the Ask app</b> in the wizard's <b>Agency</b> section (<code>install_agency</code> on the CLI).
+      Agency is a second front end for risk management that sits beside the Ask app, with its own address and the same logins. It adds the IT-risk investigation data and needs about 1 GiB more memory, so use nodes of 8 GiB or more. The live news feed and a read-only Quickstart tour are separate options, and all are off by default. The approval workflows need the commercial edition. Agency on Oracle Cloud has been rendered and checked, but not yet deployed to a real Oracle Cloud account.
+      <a href="demo-data.html#agency">What Agency adds.</a>
     </div>
   </div>
 </section>
