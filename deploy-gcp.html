@@ -350,8 +350,15 @@
       <b>Choose the demo data.</b> A new install is seeded with an invented supply-chain data set by default. To start with another, set <code>demo_dataset</code> in <code>terraform.tfvars</code> (before the script applies it):
       <code>it-risk</code> (IT and operational risk at a financial firm), <code>bom</code> (manufacturing bill of materials and sourcing),
       <code>treasury</code> (cash, payables, hedges and debt across two systems), or <code>all-packs</code> (every pack at once, with a picker in the Ask app).
-      Each comes with approved questions to try. The choice is read on a fresh install only, so changing it later does not reseed; all-packs is the heaviest and needs the most memory (on AWS the default node size ran it, with little headroom).
+      Each comes with approved questions to try. The choice is read on a fresh install only, so changing it later does not reseed; all-packs is the heaviest and needs the most memory and outbound access to GitHub and Hugging Face. With all-packs the Ask app's Workspace dropdown has one entry per pack plus All data.
       All of the data is invented. <a href="demo-data.html">See what is in each set, with example questions.</a>
+    </div>
+    <div class="callout" style="margin-top:22px">
+      <b>Add Agency (optional).</b> Agency is a second front end for risk management that sits beside the Ask app, with its own address (port 8097) and the same logins. Set <code>install_agency = true</code> in <code>terraform.tfvars</code> before the script applies it. It adds the IT-risk investigation data and a Workspace per pack, and needs about 1 GiB more memory, so use a node with 16 GB: set <code>node_machine_type = "t2a-standard-4"</code>. We ran all packs with Agency, workflows and the feed on one <code>t2a-standard-4</code> node, using under a third of its memory requests. Three more switches, all off by default and all needing <code>install_agency</code>:
+      <code>agency_workflows</code> (the approval workflows: commercial edition only, with your licence and the admin API token; nothing is ever sent to a real system, write-back is a dry run),
+      <code>agency_feed</code> (a small pod reads 12 public news and advisory feeds every 30 minutes and lists matching stories on the Watch screen: headlines and links only, no article text; the publishers' reuse terms have not been reviewed, so it is your call) and
+      <code>agency_tour</code> (a Quickstart tour button for the screens that only read; it signs in nobody else and starts no workflow run).
+      The Agency add-on has had one live GCP deploy, with the settings above.
     </div>
   </div>
 </section>
