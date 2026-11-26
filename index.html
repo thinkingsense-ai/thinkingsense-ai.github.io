@@ -388,6 +388,8 @@
     .brand{ font-size:1.05rem; }
     .wrap{ padding-left:20px; padding-right:20px; }
   }
+  .ly-node-s{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:2.4; }
+  .ly-dom{ font-size:10px; font-weight:700; letter-spacing:.12em; }
 </style>
 </head>
 <body>
@@ -585,32 +587,56 @@
 <line class="ly-grid" x1="562" y1="300" x2="602" y2="440"/>
 <line class="ly-grid" x1="625" y1="300" x2="705" y2="440"/>
 <line class="ly-grid" x1="688" y1="300" x2="808" y2="440"/>
-<line class="ly-link" x1="340" y1="332" x2="500" y2="338"/>
-<line class="ly-link" x1="500" y1="338" x2="660" y2="332"/>
-<line class="ly-link" x1="500" y1="338" x2="432" y2="392"/>
-<line class="ly-link" x1="500" y1="338" x2="568" y2="392"/>
-<line class="ly-link" x1="340" y1="332" x2="285" y2="388"/>
-<line class="ly-link" x1="432" y1="392" x2="285" y2="388"/>
-<line class="ly-link" x1="660" y1="332" x2="715" y2="388"/>
-<line class="ly-link" x1="568" y1="392" x2="715" y2="388"/>
-<rect class="ly-node" x="311" y="321" width="58" height="22" rx="7"/><text class="ly-text ly-chip-t" x="340" y="336" text-anchor="middle" style="font-size:10.5px">Vendor</text>
-<rect class="ly-node" x="471" y="327" width="58" height="22" rx="7"/><text class="ly-text ly-chip-t" x="500" y="342" text-anchor="middle" style="font-size:10.5px">Service</text>
-<rect class="ly-node" x="631" y="321" width="58" height="22" rx="7"/><text class="ly-text ly-chip-t" x="660" y="336" text-anchor="middle" style="font-size:10.5px">Incident</text>
-<rect class="ly-node" x="245" y="377" width="80" height="22" rx="7"/><text class="ly-text ly-chip-t" x="285" y="392" text-anchor="middle" style="font-size:10.5px">Vulnerability</text>
-<rect class="ly-node" x="392" y="381" width="80" height="22" rx="7"/><text class="ly-text ly-chip-t" x="432" y="396" text-anchor="middle" style="font-size:10.5px">Application</text>
-<rect class="ly-node" x="539" y="381" width="58" height="22" rx="7"/><text class="ly-text ly-chip-t" x="568" y="396" text-anchor="middle" style="font-size:10.5px">Control</text>
-<rect class="ly-node" x="686" y="377" width="58" height="22" rx="7"/><text class="ly-text ly-chip-t" x="715" y="392" text-anchor="middle" style="font-size:10.5px">Risk</text>
-<rect class="ly-act" x="354" y="353" width="92" height="18" rx="9"/><text class="ly-text ly-chip-t" x="400" y="366" text-anchor="middle" style="font-size:10px">Raise exception</text>
-<rect class="ly-act" x="204" y="336" width="92" height="18" rx="9"/><text class="ly-text ly-chip-t" x="250" y="349" text-anchor="middle" style="font-size:10px">Reassess vendor</text>
+<text class="ly-text ly-dim ly-dom" x="262" y="318">IT RISK</text>
+<text class="ly-text ly-dim ly-dom" x="738" y="318" text-anchor="end">FINANCE RISK</text>
+<text class="ly-text ly-dim ly-dom" x="500" y="318" text-anchor="middle">SHARED</text>
+<line class="ly-link" x1="275" y1="338" x2="365" y2="338"/>
+<line class="ly-link" x1="365" y1="338" x2="500" y2="338"/>
+<line class="ly-link" x1="365" y1="338" x2="345" y2="370"/>
+<line class="ly-link" x1="345" y1="370" x2="245" y2="370"/>
+<line class="ly-link" x1="345" y1="370" x2="500" y2="370"/>
+<line class="ly-link" x1="500" y1="370" x2="500" y2="402"/>
+<line class="ly-link" x1="500" y1="338" x2="500" y2="370"/>
+<line class="ly-link" x1="500" y1="338" x2="635" y2="338"/>
+<line class="ly-link" x1="635" y1="338" x2="725" y2="338"/>
+<line class="ly-link" x1="635" y1="338" x2="655" y2="370"/>
+<line class="ly-link" x1="725" y1="338" x2="655" y2="370"/>
+<line class="ly-link" x1="655" y1="370" x2="755" y2="370"/>
+<line class="ly-link" x1="500" y1="370" x2="655" y2="370"/>
+<line class="ly-link" x1="500" y1="402" x2="655" y2="370"/>
+<rect class="ly-node" x="243" y="327" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="275" y="342" text-anchor="middle" style="font-size:11px">Incident</text>
+<rect class="ly-node" x="333" y="327" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="365" y="342" text-anchor="middle" style="font-size:11px">Service</text>
+<rect class="ly-node-s" x="468" y="327" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="500" y="342" text-anchor="middle" style="font-size:11px">Vendor</text>
+<rect class="ly-node" x="603" y="327" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="635" y="342" text-anchor="middle" style="font-size:11px">Invoice</text>
+<rect class="ly-node" x="693" y="327" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="725" y="342" text-anchor="middle" style="font-size:11px">Payment</text>
+<rect class="ly-node" x="202" y="359" width="86" height="22" rx="7"/><text class="ly-text ly-chip-t" x="245" y="374" text-anchor="middle" style="font-size:11px">Vulnerability</text>
+<rect class="ly-node" x="302" y="359" width="86" height="22" rx="7"/><text class="ly-text ly-chip-t" x="345" y="374" text-anchor="middle" style="font-size:11px">Application</text>
+<rect class="ly-node-s" x="468" y="359" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="500" y="374" text-anchor="middle" style="font-size:11px">Control</text>
+<rect class="ly-node" x="612" y="359" width="86" height="22" rx="7"/><text class="ly-text ly-chip-t" x="655" y="374" text-anchor="middle" style="font-size:11px">Counterparty</text>
+<rect class="ly-node" x="723" y="359" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="374" text-anchor="middle" style="font-size:11px">Hedge</text>
+<rect class="ly-node-s" x="468" y="391" width="64" height="22" rx="7"/><text class="ly-text ly-chip-t" x="500" y="406" text-anchor="middle" style="font-size:11px">Risk</text>
+<rect class="ly-act" x="284" y="393" width="92" height="18" rx="9"/><text class="ly-text ly-chip-t" x="330" y="406" text-anchor="middle" style="font-size:10px">Reassess vendor</text>
+<rect class="ly-act" x="624" y="393" width="92" height="18" rx="9"/><text class="ly-text ly-chip-t" x="670" y="406" text-anchor="middle" style="font-size:10px">Hold payment</text>
 <text class="ly-text ly-cap" x="500" y="429" text-anchor="middle" style="font-size:12px">MEANING AND RULES</text>
 <rect class="ly-shadow" x="55" y="525" width="260" height="104" rx="10"/>
 <rect class="ly-panel" x="50" y="520" width="260" height="104" rx="10"/>
-<rect class="ly-chip-d" x="58" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="115" y="545" text-anchor="middle">Databases</text>
-    <rect class="ly-chip-d" x="180" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="237" y="545" text-anchor="middle">Lakehouse</text>
-    <rect class="ly-chip-d" x="58" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="115" y="572" text-anchor="middle">SaaS apps</text>
-    <rect class="ly-chip-d" x="180" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="237" y="572" text-anchor="middle">Documents</text>
-    <rect class="ly-chip-d" x="58" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="115" y="599" text-anchor="middle">Streams</text>
-    <rect class="ly-chip-d" x="180" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="237" y="599" text-anchor="middle">REST APIs</text>
+<rect class="ly-chip-d" x="58" y="530" width="114" height="22" rx="7"/>
+<circle cx="71" cy="541" r="4.5" fill="#00a1e0"/>
+<text class="ly-text ly-chip-t" x="82" y="545" text-anchor="start">Salesforce</text>
+<rect class="ly-chip-d" x="180" y="530" width="114" height="22" rx="7"/>
+<circle cx="193" cy="541" r="4.5" fill="#c74634"/>
+<text class="ly-text ly-chip-t" x="204" y="545" text-anchor="start">Oracle EBS</text>
+<rect class="ly-chip-d" x="58" y="557" width="114" height="22" rx="7"/>
+<circle cx="71" cy="568" r="4.5" fill="#c74634"/>
+<text class="ly-text ly-chip-t" x="82" y="572" text-anchor="start">Fusion Apps</text>
+<rect class="ly-chip-d" x="180" y="557" width="114" height="22" rx="7"/>
+<circle cx="193" cy="568" r="4.5" fill="#2e7d5b"/>
+<text class="ly-text ly-chip-t" x="204" y="572" text-anchor="start">NetSuite</text>
+<rect class="ly-chip-d" x="58" y="584" width="114" height="22" rx="7"/>
+<circle cx="71" cy="595" r="4.5" fill="#0faaff"/>
+<text class="ly-text ly-chip-t" x="82" y="599" text-anchor="start">SAP HANA</text>
+<rect class="ly-chip-d" x="180" y="584" width="114" height="22" rx="7"/>
+<text class="ly-text ly-chip-t" x="237" y="599" text-anchor="middle">65+ sources</text>
 <text class="ly-text ly-cap" x="180" y="650" text-anchor="middle">WHERE DATA LIVES</text>
 <text class="ly-text ly-faint ly-sub" x="180" y="668" text-anchor="middle">Read in place, never copied</text>
 <rect class="ly-shadow" x="375" y="525" width="260" height="104" rx="10"/>
@@ -625,12 +651,12 @@
 <text class="ly-text ly-faint ly-sub" x="500" y="668" text-anchor="middle">Written once, checked, reused</text>
 <rect class="ly-shadow" x="695" y="525" width="260" height="104" rx="10"/>
 <rect class="ly-panel" x="690" y="520" width="260" height="104" rx="10"/>
-<rect class="ly-chip-a" x="698" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="545" text-anchor="middle">Ticketing</text>
-    <rect class="ly-chip-a" x="820" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="545" text-anchor="middle">ERP</text>
-    <rect class="ly-chip-a" x="698" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="572" text-anchor="middle">Slack</text>
-    <rect class="ly-chip-a" x="820" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="572" text-anchor="middle">Email</text>
-    <rect class="ly-chip-a" x="698" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="599" text-anchor="middle">Your APIs</text>
-    <rect class="ly-chip-a" x="820" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="599" text-anchor="middle">More…</text>
+<rect class="ly-chip-a" x="698" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="545" text-anchor="middle">ServiceNow</text>
+<rect class="ly-chip-a" x="820" y="530" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="545" text-anchor="middle">Jira</text>
+<rect class="ly-chip-a" x="698" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="572" text-anchor="middle">Slack</text>
+<rect class="ly-chip-a" x="820" y="557" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="572" text-anchor="middle">Email</text>
+<rect class="ly-chip-a" x="698" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="755" y="599" text-anchor="middle">NetSuite</text>
+<rect class="ly-chip-a" x="820" y="584" width="114" height="22" rx="7"/><text class="ly-text ly-chip-t" x="877" y="599" text-anchor="middle">Your APIs</text>
 <text class="ly-text ly-cap" x="820" y="650" text-anchor="middle">WHERE DECISIONS LAND</text>
 <text class="ly-text ly-faint ly-sub" x="820" y="668" text-anchor="middle">After a person approves</text>
 <path class="ly-flow" d="M110 520 C110 490 300 486 300 458" marker-end="url(#ly-ar-a)"/>
@@ -654,13 +680,13 @@
       <div class="ls-arrow" aria-hidden="true">↕</div>
       <div class="ls-core"><b>Meaning and rules</b><span>What the business means, who may see what, and the rules that apply, enforced before anything runs</span></div>
       <div class="ls-arrow" aria-hidden="true">↕</div>
-      <div class="ls-tier ls-d"><h4>Where data lives · read in place, never copied</h4><div class="ls-chips"><span>Databases</span><span>Lakehouse</span><span>SaaS apps</span><span>Documents</span><span>Streams</span><span>REST APIs</span></div></div>
+      <div class="ls-tier ls-d"><h4>Where data lives · read in place, never copied</h4><div class="ls-chips"><span>Salesforce</span><span>Oracle EBS</span><span>Fusion Apps</span><span>NetSuite</span><span>SAP HANA</span><span>65+ sources</span></div></div>
       <div style="height:10px"></div>
       <div class="ls-tier ls-l"><h4>How answers are made · written once, checked, reused</h4><div class="ls-chips"><span>Approved SQL</span><span>Metrics</span><span>Business rules</span><span>Rollups</span><span>Language model</span><span>Policies</span></div></div>
       <div style="height:10px"></div>
-      <div class="ls-tier ls-a"><h4>Where decisions land · after a person approves</h4><div class="ls-chips"><span>Ticketing</span><span>ERP</span><span>Slack</span><span>Email</span><span>Your APIs</span><span>More…</span></div></div>
+      <div class="ls-tier ls-a"><h4>Where decisions land · after a person approves</h4><div class="ls-chips"><span>ServiceNow</span><span>Jira</span><span>Slack</span><span>Email</span><span>NetSuite</span><span>Your APIs</span></div></div>
     </div>
-      <p class="layer-note">Illustration. The object names come from the invented IT and operational risk sample set. Actions run through the workflow API (commercial edition), and the systems shown at the bottom right are examples.</p>
+      <p class="layer-note">Illustration. The object names come from the invented IT-risk and finance-risk sample sets, and the systems shown are examples of what can be connected. Actions run through the workflow API (commercial edition), and the systems shown at the bottom right are examples.</p>
     </div>
   </div>
 </section>
