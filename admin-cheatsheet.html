@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin cheat sheet — ThinkingSense</title>
+<meta name="description" content="Every page of the ThinkingSense admin console on one page: where it is, what it is for, and the one thing to know.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23102f29'/%3E%3Cg transform='translate(50 50) scale(.066) translate(-512 -494)'%3E%3Cpolygon points='512,190 805,350 805,672 512,830 218,672 218,350' fill='none' stroke='%2319d6d1' stroke-width='36' stroke-linejoin='round'/%3E%3Cg stroke='%2361e8e1' stroke-width='34'%3E%3Cline x1='512' y1='190' x2='512' y2='512'/%3E%3Cline x1='218' y1='672' x2='512' y2='512'/%3E%3Cline x1='805' y1='672' x2='512' y2='512'/%3E%3C/g%3E%3Ccircle cx='512' cy='192' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='218' cy='672' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='805' cy='672' r='53' fill='%2361e8e1'/%3E%3Ccircle cx='512' cy='512' r='93' fill='%230ca9a9'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root{
+    color-scheme:light;
+    --bg:#fbfcf8; --panel:#ffffff; --panel-2:#f3f7f0; --mist:#edf5ef; --ink:#172a26; --ink-dim:#4e635c; --ink-faint:#5f746b;
+    --rule:#d6e1d8; --rule-strong:#a8bcb0;
+    --forest:#102f29; --forest-2:#194138; --mint:#c5efdc; --on-accent:#ffffff; --logo-hex:#12b5b0; --logo-node:#5ce0d9; --logo-hub:#0a8f8f;
+    --navy:#102f29; --navy-soft:#edf5ef; --accent:#185c4b; --accent-soft:#e3f1e8; --accent-strong:#103f34;
+    --teal:#2f7a62; --teal-soft:#dff0e6; --amber:#8a5a14; --amber-soft:#fcf1d9; --purple:#3f5f86; --purple-soft:#e4ecf5;
+    --code-bg:#102f29; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+    --shadow:0 1px 2px rgba(16,47,41,.05), 0 12px 28px -14px rgba(16,47,41,.2);
+    --diagram-ink:#102f29; --diagram-line:#74877f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
+      --rule:#25433a; --rule-strong:#3a5c50;
+      --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19; --logo-hex:#19d6d1; --logo-node:#61e8e1; --logo-hub:#0ca9a9;
+      --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
+      --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
+      --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+      --diagram-ink:#dcebe3; --diagram-line:#5d7a6d;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --bg:#0b1d19; --panel:#12302a; --panel-2:#143630; --mist:#10282a; --ink:#e6f1ea; --ink-dim:#a9c2b5; --ink-faint:#86a193;
+    --rule:#25433a; --rule-strong:#3a5c50;
+    --forest:#0b1d19; --forest-2:#12302a; --mint:#c5efdc; --on-accent:#0b1d19; --logo-hex:#19d6d1; --logo-node:#61e8e1; --logo-hub:#0ca9a9;
+    --navy:#9edcba; --navy-soft:#173a31; --accent:#7fd3ab; --accent-soft:#17382f; --accent-strong:#c5efdc;
+    --teal:#7fd3ab; --teal-soft:#17382f; --amber:#e3b56a; --amber-soft:#33291a; --purple:#8fb0d8; --purple-soft:#1c2b3d;
+    --code-bg:#07130f; --code-ink:#d9ebe1; --code-accent:#9edcba; --code-string:#e6d38f; --code-comment:#7f9d90;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 12px 28px -14px rgba(0,0,0,.55);
+    --diagram-ink:#dcebe3; --diagram-line:#5d7a6d;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.6; overflow-x:hidden; }
+  code,.mono{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;}
+  kbd{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; font-size:.85em; background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:4px; padding:1px 6px;}
+  h1,h2,h3{font-family:Georgia,"Times New Roman",serif; font-weight:600; margin:0; text-wrap:balance;}
+  p{margin:0 0 1em;}
+  a{color:var(--accent);}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+  section{padding:64px 0;}
+  .rule-top{border-top:1px solid var(--rule);}
+
+  /* ---------------- nav ---------------- */
+  nav.top{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); }
+  nav.top .inner{ max-width:1080px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:750; font-size:15px; }
+  .navlinks{ display:flex; gap:22px; font-size:13.5px; font-weight:600; color:var(--ink-dim); }
+  .navlinks a{ color:var(--ink-dim); text-decoration:none; white-space:nowrap; }
+  .navlinks a:hover{ color:var(--accent); }
+  .navdrop{ position:relative; flex:none; }
+  .navdrop-trigger{ display:flex; align-items:center; gap:5px; font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; white-space:nowrap; }
+  .navdrop-trigger:hover{ color:var(--accent); }
+  .navdrop-trigger .caret{ font-size:9px; transition:transform .15s; }
+  .navdrop:hover .navdrop-trigger .caret, .navdrop:focus-within .navdrop-trigger .caret{ transform:rotate(180deg); }
+  .navdrop-menu{ display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); min-width:168px; z-index:30; }
+  .navdrop-menu::before{ content:""; position:absolute; top:-14px; left:0; right:0; height:14px; }
+  .navdrop:hover .navdrop-menu, .navdrop:focus-within .navdrop-menu{ display:block; }
+  .navdrop-menu a{ display:block; padding:8px 10px; border-radius:6px; font-weight:600; white-space:nowrap; }
+  .navdrop-menu a:hover{ background:var(--panel-2); }
+  .brandwrap{ display:flex; align-items:center; gap:10px; flex:none; }
+  .brand-docs{ font-size:12px; font-weight:650; color:var(--ink-dim); text-decoration:none; border:1px solid var(--rule-strong); border-radius:6px; padding:2px 8px; }
+  .brand-docs:hover{ color:var(--accent); border-color:var(--accent); }
+  .navcta{ display:flex; gap:10px; flex:none; }
+  @media (max-width:860px){
+    .navlinks{ display:none; }
+    nav.top .inner{ gap:12px; }
+  }
+  @media (max-width:520px){
+    .navcta .btn:not(.primary){ display:none; }
+  }
+
+  .btn{ display:inline-flex; align-items:center; gap:7px; font-size:13.5px; font-weight:650; padding:9px 16px; border-radius:9px; border:1px solid var(--rule-strong); background:var(--panel); color:var(--ink); text-decoration:none; }
+  .btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  .btn.primary:hover{ opacity:.92; color:#fff; }
+  .btn.small{ padding:6px 12px; font-size:12px; }
+
+  /* ---------------- hero ---------------- */
+  .hero{ padding:88px 0 56px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); background:var(--accent-soft); padding:5px 12px; border-radius:999px; margin-bottom:22px; }
+  .hero h1{ font-size:52px; line-height:1.08; max-width:760px; margin-bottom:20px; }
+  .hero h1 em{ font-style:normal; color:var(--accent); }
+  .hero p.lede{ color:var(--ink-dim); font-size:18.5px; max-width:640px; margin-bottom:32px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:44px; }
+  .hero-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:14px; overflow:hidden; }
+  @media (max-width:760px){ .hero-stats{ grid-template-columns:repeat(2,1fr);} .hero h1{font-size:38px;} }
+  .hero-stat{ background:var(--panel); padding:18px 20px; }
+  .hero-stat .v{ font-size:22px; font-weight:750; font-variant-numeric:tabular-nums; }
+  .hero-stat .l{ font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; margin-top:2px; }
+
+  /* ---------------- section chrome ---------------- */
+  .section-head{ margin-bottom:8px; }
+  .kicker{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--accent); margin-bottom:10px; }
+  .section-head h2{ font-size:32px; margin-bottom:14px; }
+  .section-sub{ color:var(--ink-dim); font-size:16px; max-width:680px; margin-bottom:36px; }
+  .capjump{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:34px; }
+  .capjump a{ font-size:12.4px; font-weight:650; padding:6px 13px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); text-decoration:none; }
+  .capjump a:hover{ border-color:var(--accent); color:var(--accent); }
+  .capgroup{ margin-top:40px; scroll-margin-top:90px; }
+  .capgroup:first-of-type{ margin-top:0; }
+  .capgroup-head{ display:flex; align-items:baseline; gap:8px; width:100%; font:inherit; font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-dim); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--rule); background:none; border-left:none; border-right:none; border-top:none; cursor:pointer; text-align:left; }
+  .capgroup-head:hover{ color:var(--accent); }
+  .capgroup-head .n{ font-variant-numeric:tabular-nums; color:var(--ink-faint); font-weight:600; text-transform:none; letter-spacing:normal; }
+  .capgroup-head .chev{ margin-left:auto; font-size:13px; transition:transform .15s ease; color:var(--ink-faint); }
+  .capgroup.open .capgroup-head .chev{ transform:rotate(90deg); }
+  .capgroup .grid4{ display:none; }
+  .capgroup.open .grid4{ display:grid; }
+
+  .model-strip{ display:flex; align-items:stretch; gap:0; margin-bottom:16px; }
+  .model-step{ flex:1; background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:18px 16px; box-shadow:var(--shadow); }
+  .model-step .model-num{ font-family:Georgia,"Times New Roman",serif; font-size:12px; font-weight:650; color:var(--accent); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .model-step h4{ font-size:16.5px; font-weight:750; margin-bottom:6px; }
+  .model-step p{ font-size:12.6px; color:var(--ink-dim); margin:0; }
+  .model-arrow{ display:flex; align-items:center; justify-content:center; width:34px; flex:none; color:var(--ink-faint); font-size:20px; }
+  @media (max-width:820px){ .model-strip{ flex-direction:column; gap:10px; } .model-arrow{ width:auto; height:20px; transform:rotate(90deg); } }
+  .model-governed{ border:1.5px dashed var(--rule-strong); border-radius:12px; padding:12px 18px; text-align:center; font-size:12.8px; font-weight:650; color:var(--ink-dim); margin-bottom:32px; }
+  .model-governed b{ color:var(--ink); }
+
+  /* ---------------- feature grid ---------------- */
+  .grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .grid4 > *, .grid2 > *, .footer-grid > *{ min-width:0; }
+  .conn-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(108px,1fr)); gap:10px; }
+  .conn-tile{ display:flex; flex-direction:column; align-items:center; gap:7px; padding:12px 6px; border-radius:12px; background:var(--panel); border:1px solid var(--rule); text-align:center; }
+  .conn-badge{ width:34px; height:34px; border-radius:9px; display:grid; place-items:center; color:#fff; font-size:11.5px; font-weight:800; letter-spacing:-0.02em; flex:none; }
+  .conn-tile .conn-label{ font-size:11px; font-weight:600; color:var(--ink-dim); line-height:1.25; }
+  .conn-tile.ghost{ background:var(--panel-2); border-style:dashed; }
+  .conn-tile.ghost .conn-label{ color:var(--ink-faint); }
+  @media (max-width:900px){ .grid4{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .grid4{grid-template-columns:1fr;} }
+  .feature{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:22px 20px; box-shadow:var(--shadow); }
+  .feature .num{ font-family:Georgia,"Times New Roman",serif; font-size:13px; font-weight:650; color:var(--ink-faint); margin-bottom:10px; }
+  .feature h3{ font-family:'Inter'; font-size:15.5px; font-weight:700; margin-bottom:8px; }
+  .feature p{ font-size:13.6px; color:var(--ink-dim); margin:0; }
+
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .grid3 > *{ min-width:0; }
+  .usecase{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:22px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px; }
+  .usecase-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); }
+  .usecase-q{ font-family:Georgia,"Times New Roman",serif; font-size:17px; font-weight:650; line-height:1.35; color:var(--ink); }
+  .usecase-sys{ display:flex; flex-wrap:wrap; gap:6px; }
+  .sys-pill{ font-size:11.5px; font-weight:650; padding:4px 10px; border-radius:999px; border:1px solid var(--rule-strong); color:var(--ink-dim); }
+  .usecase-out{ font-size:13.6px; color:var(--ink-dim); margin-top:auto; padding-top:10px; border-top:1px solid var(--rule); }
+  .problem-callout{ background:var(--panel-2); border:1px solid var(--rule-strong); border-radius:14px; padding:22px 24px; margin-top:24px; }
+  .problem-callout .pc-label{ font-size:11.5px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); margin-bottom:10px; }
+  .problem-callout p{ font-size:13.8px; color:var(--ink-dim); margin:0; line-height:1.6; max-width:820px; }
+  .problem-callout p + p{ margin-top:12px; }
+
+  /* ---------------- diagrams ---------------- */
+  figure.diagram{ margin:0 0 40px; background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 22px 20px; box-shadow:var(--shadow); }
+  figure.diagram.flywheel-diagram{ border:1.5px solid var(--teal); box-shadow:0 0 0 1px var(--teal-soft), var(--shadow); }
+  .flywheel-badges{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+  .flywheel-badge{ background:var(--teal-soft); border:1px solid var(--teal); border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:650; color:var(--teal); }
+  figure.diagram svg{ width:100%; height:auto; display:block; }
+  figure.diagram figcaption{ font-size:13px; color:var(--ink-faint); margin-top:14px; text-align:center; }
+  .diagram text{ font-family:'Inter',sans-serif; }
+
+  /* ---------------- docs / code ---------------- */
+  .docs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  .docs-grid > div{ min-width:0; }
+  @media (max-width:820px){ .docs-grid{grid-template-columns:1fr;} }
+  .table-scroll{ overflow-x:auto; border-radius:12px; }
+  .step{ display:flex; gap:12px; margin-bottom:22px; }
+  .step .num{ flex:none; width:26px; height:26px; border-radius:8px; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:750; display:grid; place-items:center; margin-top:2px; }
+  .step .t{ font-size:14.5px; font-weight:650; margin-bottom:4px; }
+  .step .d{ font-size:13.5px; color:var(--ink-dim); }
+  pre.code{ background:var(--code-bg); color:var(--code-ink); border-radius:12px; padding:16px 18px; overflow-x:auto; font-size:13px; line-height:1.65; margin:8px 0 0; box-shadow:var(--shadow); }
+  pre.code .c{color:var(--code-comment);} pre.code .k{color:var(--code-accent);} pre.code .s{color:var(--code-string);}
+  .cfg-table{ width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border:1px solid var(--rule); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .cfg-table th{ text-align:left; background:var(--panel-2); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:10px 14px; font-weight:700; }
+  .cfg-table td{ padding:10px 14px; border-top:1px solid var(--rule); vertical-align:top; }
+  .cfg-table td:first-child{ font-family:'JetBrains Mono',monospace; font-size:12px; white-space:nowrap; color:var(--accent-strong); }
+  .callout{ border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--panel); padding:16px 18px; font-size:13.8px; color:var(--ink-dim); box-shadow:var(--shadow); }
+  .callout b{ color:var(--ink); }
+
+  /* ---------------- editions ---------------- */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:700px){ .grid2{grid-template-columns:1fr;} }
+  .edition{ background:var(--panel); border:1px solid var(--rule); border-radius:16px; padding:26px 24px; box-shadow:var(--shadow); }
+  .edition.commercial{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), var(--shadow); }
+  .edition h3{ font-family:'Inter'; font-size:18px; font-weight:750; margin-bottom:4px; }
+  .edition .price{ font-size:13px; color:var(--ink-faint); margin-bottom:16px; }
+  .edition ul{ margin:0; padding:0 0 0 18px; font-size:13.8px; color:var(--ink-dim); }
+  .edition li{ margin-bottom:7px; }
+
+  /* ---------------- demo ---------------- */
+  .demo-frame-wrap{ border:1px solid var(--rule); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); background:var(--panel-2); }
+  .demo-frame-bar{ display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:1px solid var(--rule); font-size:12px; color:var(--ink-faint); }
+  .demo-frame-bar .dots{ display:flex; gap:6px; }
+  .demo-frame-bar .dots span{ width:9px; height:9px; border-radius:50%; background:var(--rule-strong); }
+  iframe.demo{ width:100%; height:640px; border:none; display:block; background:var(--panel); }
+
+  /* ---------------- footer ---------------- */
+  footer{ padding:50px 0 70px; border-top:1px solid var(--rule); }
+  .footer-grid{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:24px; margin-bottom:36px; }
+  @media (max-width:760px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+  .footer-grid h4{ font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); font-weight:700; margin-bottom:12px; }
+  .footer-grid ul{ list-style:none; margin:0; padding:0; }
+  .footer-grid li{ margin-bottom:8px; }
+  .footer-grid a{ color:var(--ink-dim); text-decoration:none; font-size:13.5px; }
+  .footer-grid a:hover{ color:var(--accent); }
+  .footer-bottom{ font-size:12.5px; color:var(--ink-faint); border-top:1px solid var(--rule); padding-top:20px; }
+
+  .g-fig{margin:18px 0 8px;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:var(--shadow)}
+  .g-fig img{display:block;width:100%;height:auto}
+  .g-fig figcaption{padding:10px 16px;font-size:13px;color:var(--ink-dim);border-top:1px solid var(--rule)}
+  .g-sec h3{font-size:20px;margin:30px 0 8px}
+  .g-sec p,.g-sec li{color:var(--ink-dim);max-width:720px}
+  .g-sec code{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:13px;background:var(--panel-2);border:1px solid var(--rule);padding:1px 6px;border-radius:5px}
+  .g-table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0}
+  .g-table th,.g-table td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  .g-table th{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-faint)}
+
+  /* nav fit */
+  nav.top .inner{ max-width:1240px; gap:14px; }
+  .navlinks{ gap:16px; font-size:13px; }
+  .mobilenav{ display:none; position:relative; margin-left:auto; }
+  .mobilenav summary{ list-style:none; cursor:pointer; font-size:13px; font-weight:650; padding:7px 12px; border:1px solid var(--rule-strong); border-radius:9px; background:var(--panel); color:var(--ink); }
+  .mobilenav summary::-webkit-details-marker{ display:none; }
+  .mobilenav-panel{ position:absolute; right:0; top:calc(100% + 8px); z-index:40; min-width:220px; display:grid; padding:6px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow); }
+  .mobilenav-panel a{ padding:9px 10px; border-radius:6px; font-size:14px; font-weight:600; color:var(--ink); text-decoration:none; }
+  .mobilenav-panel a:hover{ background:var(--panel-2); }
+  @media (max-width:1180px){ .brand-docs{ display:none; } }
+  @media (max-width:980px){ .navlinks{ display:none; } .mobilenav{ display:block; } }
+
+  /* ===== thinkingsense.ai skin ===== */
+  :root{ --radius:18px; }
+  html{ scroll-behavior:auto; }
+  body{ font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  code,.mono,kbd{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; }
+  h1,h2,h3,.model-step .model-num{ font-family:Georgia,"Times New Roman",serif; }
+  h1,h2{ font-weight:500; letter-spacing:-.04em; line-height:1.06; }
+  h3{ font-weight:600; letter-spacing:-.01em; }
+  .wrap, nav.top .inner{ max-width:1160px; }
+  nav.top{ background:var(--bg); backdrop-filter:none; }
+  .brand{ font-size:1.18rem; font-weight:760; letter-spacing:-.06em; color:var(--ink); }
+  .brand-docs{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; font-size:10.5px; border-radius:5px; color:var(--accent); border-color:var(--accent); }
+  .navlinks a, .navlinks .navdrop-trigger{ font-weight:660; }
+  .btn{ border-radius:8px; border-color:var(--rule-strong); background:transparent; min-height:41px; }
+  .btn:hover{ background:var(--mist); color:var(--ink); border-color:var(--rule-strong); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+  .btn.primary:hover{ background:var(--accent-strong); border-color:var(--accent-strong); color:var(--on-accent); opacity:1; }
+  :focus-visible{ outline:3px solid #987219; outline-offset:4px; }
+  .eyebrow, .kicker{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.085em; font-weight:680; }
+  .eyebrow{ background:var(--accent-soft); border:1px solid var(--rule); border-radius:6px; font-size:11px; }
+  .kicker{ font-size:12px; }
+  .hero{ padding:clamp(56px,8vw,104px) 0 clamp(36px,5vw,56px); }
+  .hero h1{ font-size:clamp(2.6rem,5.6vw,4.9rem); max-width:17ch; letter-spacing:-.045em; line-height:1.03; }
+  .hero h1 em{ color:var(--accent); }
+  .hero-ctas{ margin-bottom:40px; }
+  .hero-stats{ border-radius:var(--radius); }
+  .hero-stat .v{ font-family:Georgia,"Times New Roman",serif; font-weight:500; font-size:1.55rem; letter-spacing:-.02em; }
+  .hero-stat .l{ font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; letter-spacing:.05em; font-size:10.5px; }
+  .section-head h2{ font-size:clamp(1.9rem,3.6vw,3rem); }
+  section{ padding:clamp(48px,7vw,88px) 0; }
+  section.rule-top:nth-of-type(even){ background:var(--mist); }
+  .rule-top{ border-top:1px solid var(--rule); }
+  .outcome, .role, .start-card, .stack-card, .hero-stat, .card, .panel, figure.diagram, .layer-wrap, .wf, .pack, .model-step, .conn-tile{ border-radius:var(--radius); }
+  :root{ --hero-glow:#e5f1e7; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --hero-glow:#12392f; } }
+  :root[data-theme="dark"]{ --hero-glow:#12392f; }
+  nav.top + .wrap{ background:radial-gradient(ellipse at 78% 20%, var(--hero-glow) 0, transparent 60%); max-width:none; padding:0; }
+  nav.top + .wrap > .hero{ max-width:1160px; margin:0 auto; padding-left:28px; padding-right:28px; }
+  pre.code{ background:var(--code-bg); border-radius:12px; }
+  footer{ background:var(--bg); }
+  /* diagram: data = slate, logic = amber, action = green */
+  .ly-chip-d{ fill:var(--purple-soft); stroke:var(--purple); }
+  .ls-d span{ background:var(--purple-soft); border-color:var(--purple); }
+  .ly-chip-l{ fill:var(--amber-soft); stroke:var(--amber); }
+  .ls-l span{ background:var(--amber-soft); border-color:var(--amber); }
+  .ly-flow-p{ stroke:var(--amber); }
+
+    /* logo */
+  .brand .logo{ width:34px; height:auto; flex:none; }
+  .logo .lg-hex{ stroke:var(--logo-hex); }
+  .logo .lg-spoke{ stroke:var(--logo-node); }
+  .logo .lg-node{ fill:var(--logo-node); }
+  .logo .lg-hub{ fill:var(--logo-hub); }
+  /* ===== mobile fit ===== */
+  .stepcard > *, .grid2 > *, .grid3 > *, .split > *, .proof-grid > *, .footer-grid > *, .hero-stats > *{ min-width:0; }
+  pre, pre.code{ max-width:100%; overflow-x:auto; }
+  @media (max-width:760px){
+    p, li, h1, h2, h3, h4, td, th, dd, code{ overflow-wrap:anywhere; }
+    table{ display:block; max-width:100%; overflow-x:auto; }
+    .navcta .btn.small{ padding:6px 10px; }
+    nav.top .inner{ padding-left:16px; padding-right:16px; gap:8px; }
+    .brand{ font-size:1.05rem; }
+    .wrap{ padding-left:20px; padding-right:20px; }
+  }
+
+  /* ---------------- cheat sheet ---------------- */
+  .cs .callout{margin:0 0 22px;max-width:760px}
+  .cs-toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+  .cs-toc a{font-size:13px;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:5px 12px}
+  .cs-toc a:hover{border-color:var(--accent);color:var(--accent)}
+  .cs h3{scroll-margin-top:84px}
+  .cs-sub{font-family:system-ui,-apple-system,sans-serif;font-size:13px;font-weight:500;color:var(--ink-faint);margin-left:8px}
+  .cs .tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--panel);box-shadow:var(--shadow);margin:12px 0 4px}
+  .cs-table{margin:0;font-size:14px}
+  .cs-table td:first-child{width:24%;color:var(--ink)}
+  .cs-table td:nth-child(2){width:42%}
+  .cs-table td{color:var(--ink-dim)}
+  .cs-table td b{color:var(--ink);font-weight:650}
+  .cs-table td code{font-size:12px}
+  .cs-table tr:last-child td{border-bottom:0}
+  .cs-table tr.grp td{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--panel-2);font-weight:700;padding-top:7px;padding-bottom:7px}
+  .cs-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);border-radius:5px;padding:0 5px;margin-left:4px;vertical-align:1px}
+  .cs-tasks td:first-child{width:52%;color:var(--ink)}
+  @media (max-width:720px){ .cs-table td:first-child{width:auto} .cs-table{min-width:620px} .cs-tasks{min-width:0} }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <div class="brandwrap">
+      <a class="brand" href="https://thinkingsense.ai" title="ThinkingSense home" style="text-decoration:none; color:var(--ink);">
+        <svg class="logo" viewBox="150 124 724 740" aria-hidden="true" focusable="false"><polygon class="lg-hex" points="512,190 805,350 805,672 512,830 218,672 218,350" fill="none" stroke-width="36" stroke-linejoin="round"/><g class="lg-spoke" stroke-width="34"><line x1="512" y1="190" x2="512" y2="512"/><line x1="218" y1="672" x2="512" y2="512"/><line x1="805" y1="672" x2="512" y2="512"/></g><circle class="lg-node" cx="512" cy="192" r="53"/><circle class="lg-node" cx="218" cy="672" r="53"/><circle class="lg-node" cx="805" cy="672" r="53"/><circle class="lg-hub" cx="512" cy="512" r="93"/></svg><span>thinking sense</span>
+      </a>
+      <a class="brand-docs" href="index.html">Docs</a>
+    </div>
+    <div class="navlinks">
+      <a href="ontology.html">Ontology &amp; graph</a>
+      <a href="agents.html">Agents</a>
+      <a href="models.html">Model tuning</a>
+      <a href="solutions.html">Solutions</a>
+      <a href="evidence.html">Evidence</a>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Security &amp; deploy <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="security.html">Security</a>
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="deploy-oci.html">Oracle Cloud (OCI)</a>
+          <a href="deploy-aws.html">AWS (EKS)</a>
+          <a href="deploy-gcp.html">Google Cloud (GKE)</a>
+          <a href="deploy-azure.html">Microsoft Azure (AKS)</a>
+        </div>
+      </div>
+      <div class="navdrop">
+        <button class="navdrop-trigger" aria-haspopup="true">Reference <span class="caret">▾</span></button>
+        <div class="navdrop-menu">
+          <a href="platform.html">Architecture</a>
+          <a href="platform.html#connectors">Connectors</a>
+          <a href="platform.html#flywheel">Learning loop</a>
+          <a href="platform.html#capabilities">What's new</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="admin-cheatsheet.html">Admin cheat sheet</a>
+          <a href="demo-data.html">Demo data</a>
+        </div>
+      </div>
+      <a href="demo.html">Demo</a>
+    </div>
+    <div class="mobilenav">
+      <details>
+        <summary>Menu</summary>
+        <div class="mobilenav-panel">
+          <a href="ontology.html">Ontology &amp; graph</a>
+          <a href="agents.html">Governed agents</a>
+          <a href="models.html">Model tuning</a>
+          <a href="solutions.html">Solutions</a>
+          <a href="evidence.html">Evidence</a>
+          <a href="security.html">Security</a>
+          <a href="deploy-docker.html">Docker image</a>
+          <a href="platform.html">Architecture</a>
+          <a href="guide.html">Admin &amp; Ask guide</a>
+          <a href="admin-cheatsheet.html">Admin cheat sheet</a>
+          <a href="demo.html">Demo</a>
+        </div>
+      </details>
+    </div>
+    <div class="navcta">
+      <a class="btn small primary" href="deploy-docker.html">Quick start</a>
+    </div>
+  </div>
+</nav>
+
+<section class="rule-top g-sec cs"><div class="wrap">
+ <div class="section-head"><span class="eyebrow">Reference</span><h2>Admin console cheat sheet</h2></div>
+ <p class="section-sub">Every page of the admin console (<code>/admin</code>) on one page: where it is, what it is for, and the one thing to know. Press <kbd>⌘K</kbd> (<kbd>Ctrl K</kbd>) anywhere in the console to jump to any page, data source, trusted question, term, group, skill or dashboard by name.</p>
+ <div class="callout"><b>Which release?</b> This is the console layout on <code>main</code>, shipping in the first release after 0.10.22. In 0.10.22 and earlier the same pages are grouped as Data Sources, Business Catalog, Answer Quality, Automation, Operations and Settings: see the <a href="guide.html">Admin &amp; Ask guide</a>.</div>
+
+ <nav class="cs-toc" aria-label="On this page">
+  <a href="#everywhere">On every page</a><a href="#context">Context</a><a href="#develop">Develop</a><a href="#monitor">Monitor</a><a href="#ship">Ship</a><a href="#org">Org settings</a><a href="#tasks">I want to…</a>
+ </nav>
+
+ <h3 id="everywhere">On every page</h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Part</th><th>What it does</th><th>Know this</th></tr></thead><tbody>
+  <tr><td><b>🏠 Home</b><br><code>/admin</code></td><td>What needs you now (suggested fixes, failed questions) and four status cards: trusted questions, tests passing, questions in the last 7 days, dashboards. Then data sources and models.</td><td>Home and Conversations count the same way: questions asked by people in the last 7 days, test runs and alerts left out, a deep analysis counted once.</td></tr>
+  <tr><td><b>Workspace switcher</b></td><td>The breadcrumb's first step (<code>Org / Default</code>) picks the workspace every page edits.</td><td>Each workspace has its own context, tests and versions.</td></tr>
+  <tr><td><b>Version bar</b></td><td>Under the top bar: the draft (<em>Draft · N changes</em> or <em>No unpublished changes</em>), the live version and its tests (<em>v4 live · 12/12 tests</em>), <b>Save version</b> and <b>Publish</b>.</td><td>Edits land in the draft; business users keep getting the live version until you publish. Save version runs the tests first. Click the live pill for the full history and roll-back. Read-only admins see the state without the buttons.</td></tr>
+  <tr><td><b>🔔 Bell</b></td><td>Everything waiting on an admin: failed questions, thumbs-down votes, open help requests, data-model decisions, MCP tools awaiting a decision, and data sources with a failed step.</td><td>Click it for the list; each item opens its page.</td></tr>
+  <tr><td><b>More</b> (in each group)</td><td>Less-used pages of that group, with a badge summing theirs.</td><td>Everything is also in <kbd>⌘K</kbd>.</td></tr>
+  <tr><td><b>⚙️ Org settings</b></td><td>The foot of the sidebar: settings shared by every workspace.</td><td>Badge sums the settings pages' badges. See <a href="#org">Org settings</a>.</td></tr>
+  <tr><td><b>💬 Open Ask</b></td><td>Opens the business users' Ask app.</td><td>To see what a particular person would get, use <a href="#develop">Playground</a> instead.</td></tr>
+ </tbody></table></div>
+
+ <h3 id="context">Context <span class="cs-sub">what your data means</span></h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Page</th><th>What it is for</th><th>Know this</th></tr></thead><tbody>
+  <tr><td><b>🗺️ Data model</b><br><code>/admin/ontology</code></td><td>Which tables and columns the agent may use, what they mean, how tables relate, and which inferred relationships you approved. Tabs: Tables, Entities &amp; terms, Relationships, Review.</td><td><em>Test access as</em> shows the model as a given user sees it. Undescribed tables? Let <b>Builder</b> draft the descriptions.</td></tr>
+  <tr><td><b>📖 Business terms</b><br><code>/admin/context-builder</code></td><td>The glossary every answer uses: what “revenue at risk” means in your data, with its formula and definition.</td><td>A term is applied only when a question uses it; Playground's <em>What it used</em> shows which terms an answer used.</td></tr>
+  <tr><td><b>📐 Metrics</b><br><code>/admin/metrics</code></td><td>Named, governed measures; dbt import; an ad-hoc metric query runner.</td><td>Metrics can be watched by Alerts.</td></tr>
+  <tr><td><b>⭐ Trusted questions</b><br><code>/admin/question-bank</code></td><td>Approved question-to-SQL pairs. A matching question is answered directly from its approved SQL.</td><td>Every trusted question is also a test (see Tests). Answers that matched one show “Matches a trusted question” in Ask.</td></tr>
+  <tr><td><b>📜 Instructions</b><br><code>/admin/instructions</code></td><td>Plain-language rules every answer in the workspace follows, such as “Fiscal year starts in April”.</td><td>Apply to every answer in the workspace.</td></tr>
+  <tr class="more"><td><b>📚 Knowledge</b> <span class="cs-tag">More</span><br><code>/admin/knowledge</code></td><td>Documents answers can cite (policies, runbooks, contracts, notes), who may read each one, and the facts and preferences the system remembers.</td><td>Cited documents show as a chip under the answer in Ask.</td></tr>
+  <tr class="more"><td><b>📏 Rules</b> <span class="cs-tag">More</span><br><code>/admin/domain-rules</code></td><td>Mechanically verified facts about your data: NOT NULL, UNIQUE, allowed values, ranges.</td><td>Verified against the data, not typed in by hand.</td></tr>
+  <tr class="more"><td><b>🗂️ Versions</b><br><code>/admin/versions</code></td><td>The draft, every saved version with its test results, and which one is live.</td><td>Reached from the version bar's live pill (not in the sidebar). Publish or roll back from here.</td></tr>
+ </tbody></table></div>
+
+ <h3 id="develop">Develop <span class="cs-sub">make answers right before people rely on them</span></h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Page</th><th>What it is for</th><th>Know this</th></tr></thead><tbody>
+  <tr><td><b>🧪 Tests</b><br><code>/admin/tests</code></td><td>Trusted questions asked through Ask the way a business user asks them, and checked against their known right answer, row by row.</td><td>Shows the score of the latest run and the run history; open a test to see expected rows next to the answer.</td></tr>
+  <tr><td><b>🛠️ Improvements</b><br><code>/admin/improvements</code></td><td>Wrong, corrected and failed answers turned into suggested fixes.</td><td>Accept a fix to apply it to the draft, add a test, and see the answer before and after.</td></tr>
+  <tr><td><b>🛝 Playground</b><br><code>/admin/explore</code></td><td>Ask a question and see exactly how it is answered: business meaning, data used, SQL and execution plan.</td><td><em>Asking as</em> a user applies their access rules; <em>What it used</em> lists the tables, terms, filters and model.</td></tr>
+  <tr><td><b>🧱 Builder</b><br><code>/admin/builder</code></td><td>An agent that reads your tables and proposes business terms, metrics, descriptions, join keys and trusted questions.</td><td>Nothing is saved until you accept each proposal.</td></tr>
+ </tbody></table></div>
+
+ <h3 id="monitor">Monitor <span class="cs-sub">what people asked and how it went</span></h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Page</th><th>What it is for</th><th>Know this</th></tr></thead><tbody>
+  <tr><td><b>💬 Conversations</b><br><code>/admin/query-intelligence</code></td><td>Every question asked. <b>Sessions</b> shows one row per conversation; <b>Answers</b> one row per question. Each row: outcome, feedback (with the “Not right” reason), where it was asked, the version, time and cost.</td><td>A deep analysis is one session (“🔬 Deep analysis · N steps”); open it for its steps. <em>Where</em> defaults to <em>Asked by people</em>: choose <em>Anywhere, with tests and alerts</em> to include test runs. Columns and CSV export in the toolbar.</td></tr>
+  <tr><td><b>📝 Review queue</b><br><code>/admin/review</code></td><td>Answers people marked “Not right” and requests for help, each with a drafted correction.</td><td>The reason the person picked (wrong data, wrong numbers, misread question, wrong period, presentation) shows on the case.</td></tr>
+  <tr><td><b>📈 Usage</b><br><code>/admin/usage</code></td><td>Who asks what; answer and no-answer rates; thumbs; latency; model cost by tier, workspace and entry point.</td><td>Counts each deep-analysis step as its own question.</td></tr>
+  <tr class="more"><td><b>🚨 Failing questions</b> <span class="cs-tag">More</span><br><code>/admin/needs-attention</code></td><td>Questions that failed, each classified as fixable here or a backend problem.</td><td>Its badge counts all time; Home's failed count is the last 7 days.</td></tr>
+  <tr class="more"><td><b>🔔 Alerts</b> <span class="cs-tag">More</span><br><code>/admin/alerts</code></td><td>Trusted questions, metrics and questions checked on a schedule, as a chosen person, telling people when a condition is met.</td><td>Business users can also set one from an answer's <em>⋯ → Alert me when…</em>.</td></tr>
+ </tbody></table></div>
+
+ <h3 id="ship">Ship <span class="cs-sub">get answers to people and systems</span></h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Page</th><th>What it is for</th><th>Know this</th></tr></thead><tbody>
+  <tr><td><b>📊 Dashboards</b><br><code>/admin/dashboards</code></td><td>Saved collections of approved questions, re-run live each time they open.</td><td>Users add answers with <em>Save</em> on the answer card.</td></tr>
+  <tr><td><b>🧩 Skills</b><br><code>/admin/skills</code></td><td>Named shortcuts to a saved question that business users type as <code>/name</code> in Ask.</td><td>Indexed by <kbd>⌘K</kbd> as <code>/name</code>.</td></tr>
+  <tr><td><b>🔌 Embed, API &amp; MCP</b><br><code>/admin/developers</code></td><td>The MCP endpoints and embedding SDK this deployment exposes, with copy-paste client config.</td><td>See <a href="guide.html#agent-mcp">Securing /mcp/agent</a>.</td></tr>
+  <tr class="more"><td><b>📮 Destinations</b> <span class="cs-tag">More</span><br><code>/admin/destinations</code></td><td>Where answers are sent (Slack, webhooks and APIs, email), the hosts they may reach, and a log of every send.</td><td>Alerts and <em>Send to…</em> deliver through these.</td></tr>
+  <tr class="more"><td><b>🚀 Deploy</b> <span class="cs-tag">More</span><br><code>/admin/deploy</code></td><td>Publish a trusted question as an API endpoint or embeddable card, computed as the person you choose.</td><td>The endpoint runs with that person's access rules.</td></tr>
+  <tr class="more"><td><b>📡 Change watch</b> <span class="cs-tag">More</span><br><code>/admin/insights</code></td><td>Approved questions watched on a schedule, flagging material changes and broken queries.</td><td>Shown when insights are enabled.</td></tr>
+  <tr class="more"><td><b>🔀 Workflows</b> <span class="cs-tag">More</span><br><code>/admin/workflows</code></td><td>AI decision workflows started from Ask: definitions, recent runs and the tamper-evident decision record (read-only).</td><td>Shown when the workflow engine is on (commercial licence). Runs are started and approved in Ask.</td></tr>
+ </tbody></table></div>
+
+ <h3 id="org">Org settings <span class="cs-sub">shared by every workspace · <code>/admin/settings</code></span></h3>
+ <div class="tablewrap"><table class="g-table cs-table">
+  <thead><tr><th>Page</th><th>What it is for</th><th>Know this</th></tr></thead><tbody>
+  <tr class="grp"><td colspan="3">Data</td></tr>
+  <tr><td><b>🗄️ Data sources</b><br><code>/admin/sources</code></td><td>Register and manage the databases, APIs and files questions are answered from.</td><td>Connection health is also on Infrastructure.</td></tr>
+  <tr><td><b>📤 Uploads</b><br><code>/admin/csv-uploads</code></td><td>Upload a CSV and query it like any other source.</td><td>Business users can also drop a file into Ask if allowed to.</td></tr>
+  <tr><td><b>🧾 Documents</b><br><code>/admin/pdf-extract</code></td><td>Pull structured fields out of a PDF with the configured model.</td><td></td></tr>
+  <tr><td><b>☁️ SaaS apps</b><br><code>/admin/oauth-connectors</code></td><td>Connect SaaS sources with one click instead of pasting a token.</td><td>Shown when OAuth connectors are enabled.</td></tr>
+  <tr><td><b>🔗 MCP servers</b><br><code>/admin/mcp-servers</code></td><td>External MCP tools a question may call, discovered from each server and approved by you.</td><td>Configure with <code>OMNIGATE_MCP_SERVERS</code>; only approved or read-only tools run.</td></tr>
+  <tr class="grp"><td colspan="3">Models</td></tr>
+  <tr><td><b>🧠 Models</b><br><code>/admin/llm-settings</code></td><td>Which models answer questions, their live status and today's traffic split.</td><td>Local first with escalation to a stronger model when unsure is one of the modes.</td></tr>
+  <tr class="grp"><td colspan="3">People &amp; access</td></tr>
+  <tr><td><b>🔑 Users &amp; access</b><br><code>/admin/users</code></td><td>Admin and business-user accounts and their roles; whether a user may see SQL, see source names, upload files.</td><td>A user who may not see sources gets “Sources hidden” in Ask.</td></tr>
+  <tr><td><b>👥 Groups</b><br><code>/admin/groups</code></td><td>Which data sources and members each group can see and query.</td><td>With single sign-on, workspaces can follow your provider's groups; see <a href="guide.html#sso-workspaces">Workspaces from provider groups</a>.</td></tr>
+  <tr><td><b>🛡️ Security</b><br><code>/admin/security</code></td><td>What is switched on, column classification (tags), and review of access-policy changes.</td><td>See <a href="guide.html#security-page">column tags and policy history</a>.</td></tr>
+  <tr class="grp"><td colspan="3">System</td></tr>
+  <tr><td><b>⚡ Rollups</b><br><code>/admin/rollups</code></td><td>Pre-aggregated tables that speed up common queries.</td><td></td></tr>
+  <tr><td><b>🏗️ Infrastructure</b><br><code>/admin/infrastructure</code></td><td>Version, uptime, licence, certificate, source connectivity, query engine and model health.</td><td>First stop when something is slow or down. See <a href="guide.html#infrastructure">Infrastructure</a>.</td></tr>
+  <tr><td><b>🔎 Audit log</b><br><code>/admin/audit</code></td><td>Every query and admin action taken on this deployment.</td><td></td></tr>
+ </tbody></table></div>
+
+ <h3 id="tasks">I want to…</h3>
+ <div class="tablewrap"><table class="g-table cs-table cs-tasks">
+  <thead><tr><th>I want to…</th><th>Go to</th></tr></thead><tbody>
+  <tr><td>Connect a database, API or file</td><td>Org settings → Data sources (or Uploads)</td></tr>
+  <tr><td>Hide a table or column from the agent, or describe it</td><td>Context → Data model</td></tr>
+  <tr><td>Define what a business word means</td><td>Context → Business terms</td></tr>
+  <tr><td>Make a common question always answered the same way</td><td>Context → Trusted questions</td></tr>
+  <tr><td>Set a rule every answer follows</td><td>Context → Instructions</td></tr>
+  <tr><td>Get a first draft of all of the above</td><td>Develop → Builder</td></tr>
+  <tr><td>Check answers are still right after a change</td><td>Develop → Tests, or Save version in the version bar</td></tr>
+  <tr><td>See what a particular person would get</td><td>Develop → Playground, <em>Asking as</em></td></tr>
+  <tr><td>Make changes live for business users</td><td>Version bar → Save version → Publish</td></tr>
+  <tr><td>Undo a published change</td><td>Version bar → live pill → Versions → roll back</td></tr>
+  <tr><td>Find answers people said were wrong</td><td>Monitor → Review queue, or Conversations with Feedback = Thumbs down</td></tr>
+  <tr><td>Fix a wrong answer</td><td>Develop → Improvements (accept the suggested fix and add a test)</td></tr>
+  <tr><td>Follow one deep analysis</td><td>Monitor → Conversations → Sessions → the 🔬 row</td></tr>
+  <tr><td>Tell people when a number crosses a line</td><td>Monitor → More → Alerts</td></tr>
+  <tr><td>Send answers to Slack, email or a webhook</td><td>Ship → More → Destinations</td></tr>
+  <tr><td>Use ThinkingSense from Claude, an IDE or your app</td><td>Ship → Embed, API &amp; MCP</td></tr>
+  <tr><td>Control who sees what</td><td>Org settings → Users &amp; access, Groups, Security</td></tr>
+  <tr><td>Choose or check the models</td><td>Org settings → Models</td></tr>
+  <tr><td>Check the deployment is healthy</td><td>Org settings → Infrastructure</td></tr>
+  <tr><td>See who did what</td><td>Org settings → Audit log</td></tr>
+ </tbody></table></div>
+</div></section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px">
+          <svg class="logo" viewBox="150 124 724 740" aria-hidden="true" focusable="false"><polygon class="lg-hex" points="512,190 805,350 805,672 512,830 218,672 218,350" fill="none" stroke-width="36" stroke-linejoin="round"/><g class="lg-spoke" stroke-width="34"><line x1="512" y1="190" x2="512" y2="512"/><line x1="218" y1="672" x2="512" y2="512"/><line x1="805" y1="672" x2="512" y2="512"/></g><circle class="lg-node" cx="512" cy="192" r="53"/><circle class="lg-node" cx="218" cy="672" r="53"/><circle class="lg-node" cx="805" cy="672" r="53"/><circle class="lg-hub" cx="512" cy="512" r="93"/></svg><span>thinking sense</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--ink-dim); max-width:320px;">The technical guide, one level below <a href="https://thinkingsense.ai">thinkingsense.ai</a>. How each part works, what you configure, and how to run it.</p>
+      </div>
+      <div>
+        <h4>The three parts</h4>
+        <ul>
+          <li><a href="ontology.html">Ontology &amp; knowledge graph</a></li>
+          <li><a href="agents.html">Governed agents</a></li>
+          <li><a href="models.html">Small-model tuning</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Trust</h4>
+        <ul>
+          <li><a href="security.html">Security</a></li>
+          <li><a href="evidence.html">Evidence</a></li>
+          <li><a href="platform.html#architecture">Architecture</a></li>
+          <li><a href="platform.html#connectors">Connectors</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get it</h4>
+        <ul>
+          <li><a href="deploy-docker.html">Free-edition Docker image</a></li>
+          <li><a href="deploy-oci.html">Deploy to Oracle Cloud</a></li>
+          <li><a href="deploy-aws.html">Deploy to AWS</a></li>
+          <li><a href="deploy-azure.html">Deploy to Azure</a></li>
+          <li><a href="mailto:hello@thinkingsense.ai">Commercial license</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 ThinkingSense. ThinkingSense is proprietary software; the free-edition Docker image is publicly available — see the Docker repo for its terms.</div>
+  </div>
+</footer>
+
+</body>
+</html>
