@@ -1078,14 +1078,15 @@
     <p class="section-sub">Every capability below is a working part of <a href="demo.html" target="_blank">demo.html</a>: context checks before an answer, live charts instead of static numbers, and admin surfaces for the parts of the product that make answers trustworthy in the first place.</p>
 
     <div class="callout" style="margin:0 0 28px">
-      <b>New in 0.10.23.</b> In the <a href="demo.html" target="_blank">demo</a> and the product:
+      <b>New in 0.10.24 and 0.10.25.</b> In the product:
       <ul style="margin:8px 0 0 18px; padding:0">
-        <li><b>Answer cards you can check at a glance.</b> A headline, then always-visible trust chips (matched a trusted question, sources, confidence, checks passed), a “Worth knowing” line, readable column names, and a “Not right” that asks why.</li>
-        <li><b>Charts that fit the data.</b> Split by a second column (grouped or stacked), donut, bar list, area, scatter, heat map and a single-number card, plus Download image. Only the types that fit are offered.</li>
-        <li><b>Deep Analysis as one investigation.</b> Plan, approve and run the steps; every number in the report is checked against its step, and the finished investigation folds into one card and one session in Conversations.</li>
-        <li><b>Develop before you publish.</b> Edits go to a draft. Tests ask trusted questions as a user would and check them against the known answer, Improvements turns “Not right” into a fix, Builder proposes context, Playground shows what an answer used. Then Save version and Publish, with roll-back.</li>
-        <li><b>A simpler console.</b> Context, Develop, Monitor and Ship, with org-wide settings on one page: see the <a href="admin-cheatsheet.html">admin cheat sheet</a>.</li>
+        <li><b>Generated SQL is checked before it runs.</b> The database or federation engine that will run a query validates it first. A rejected query is repaired using facts from the schema, such as which table really has a column, with the cloud model as the last attempt.</li>
+        <li><b>A cross-source optimizer.</b> Statistics are collected by default, filters reach S3, REST and Iceberg, tables of one source are joined inside it, and grouping happens in a source when its measured link makes sending rows the slower choice.</li>
+        <li><b>Parallel workers for signed-in users.</b> Joins across workers apply each person's database row policy, and large aggregates split by key range across workers.</li>
+        <li><b>Questions over MCP tools and databases that finish or say why.</b> Paged tools are read to the end, inputs stage to disk, a question can resume after a source fails, and an incomplete input is named rather than half-answered.</li>
+        <li><b>Fixes.</b> Same-named tables in two MySQL or MariaDB databases stay apart, timestamps keep their time zone in results, and outer and ASOF joins across sources no longer drop unmatched rows.</li>
       </ul>
+      <p style="margin:8px 0 0">0.10.23 brought the answer cards with trust chips, charts that fit the data, Deep Analysis as one investigation, draft-and-publish with Tests, and the simpler console (<a href="admin-cheatsheet.html">admin cheat sheet</a>). All of it is in the <a href="demo.html" target="_blank">demo</a>.</p>
     </div>
 
     <div class="model-strip">
